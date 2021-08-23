@@ -2,29 +2,33 @@
 
 namespace AgeZodiacCalculator.Managers
 {
-    class NavigationManager
+    internal class NavigationManager
     {
         private static NavigationManager _instance;
-        private static object _lock = new object();
+        private static readonly object Lock = new object();
+
         private NavigationModel _navigation;
 
         public static NavigationManager Instance
         {
+            // todo recall what happens here
             get
             {
-                if (_instance == null)
+                if (_instance != null)
                 {
-                    lock (_lock)
-                    {
-                        _instance = new NavigationManager();
-                    }
+                    return _instance;
+                }
+
+                lock (Lock)
+                {
+                    _instance = new NavigationManager();
                 }
 
                 return _instance;
             }
         }
 
-        public void Initialise(NavigationModel model)
+        public void Initialize(NavigationModel model)
         {
             _navigation = model;
         }

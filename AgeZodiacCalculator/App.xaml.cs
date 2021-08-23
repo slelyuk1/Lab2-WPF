@@ -1,21 +1,20 @@
 ﻿using System.Windows;
 using AgeZodiacCalculator.Managers;
 using AgeZodiacCalculator.Models;
+using AgeZodiacCalculator.Windows;
 
 namespace AgeZodiacCalculator
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    // todo recall how it works
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            ContentWindow window = new ContentWindow();
+            var window = new ContentWindow();
 
 
-            NavigationManager.Instance.Initialise(new NavigationModel(window));
+            NavigationManager.Instance.Initialize(new NavigationModel(window));
             window.Show();
             NavigationManager.Instance.Navigate(Models.Views.PickData);
         }

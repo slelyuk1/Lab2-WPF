@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace AgeZodiacCalculator.Models
 {
-    public class PickDataModel
+    // todo maybe make static
+    internal class PickDataModel
     {
-        private static readonly string[] _chinezeSigns =
+        private static readonly string[] ChineseSigns =
             {"Monkey", "Rooster", "Dog", "Pig", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Sheep"};
-
-        public PickDataModel()
-        {
-        }
-
 
         public string CalculateAge(DateTime date)
         {
@@ -34,7 +25,7 @@ namespace AgeZodiacCalculator.Models
 
         public string CalculateChineseSign(DateTime date)
         {
-            return _chinezeSigns[date.Year % 12];
+            return ChineseSigns[date.Year % 12];
         }
 
         public string CalculateWesternSign(DateTime date)

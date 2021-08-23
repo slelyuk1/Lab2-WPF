@@ -13,11 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AgeZodiacCalculator
+namespace AgeZodiacCalculator.Windows
 {
-    /// <summary>
-    /// Interaction logic for ContentWindow.xaml
-    /// </summary>
+    // todo recall how it works
     public partial class MainWindow : Window
     {
         public MainWindow()
