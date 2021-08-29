@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 // todo recall what happens here
-namespace AgeZodiacCalculator.Tools
+namespace AgeZodiacCalculator.Tool
 {
     public class ObservableItem : INotifyPropertyChanged
     {

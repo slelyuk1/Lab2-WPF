@@ -1,4 +1,4 @@
-﻿namespace AgeZodiacCalculator.Windows
+﻿namespace AgeZodiacCalculator.Window
 {
     // todo recall how it works
     public partial class ContentWindow

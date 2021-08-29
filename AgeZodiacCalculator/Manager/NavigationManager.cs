@@ -1,6 +1,6 @@
-﻿using AgeZodiacCalculator.Models;
+﻿using AgeZodiacCalculator.Model;
 
-namespace AgeZodiacCalculator.Managers
+namespace AgeZodiacCalculator.Manager
 {
     internal class NavigationManager
     {
@@ -33,7 +33,7 @@ namespace AgeZodiacCalculator.Managers
             _navigation = model;
         }
 
-        public void Navigate(Models.Views view)
+        public void Navigate(Model.View view)
         {
             _navigation?.Navigate(view);
         }

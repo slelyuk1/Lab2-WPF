@@ -2,7 +2,7 @@
 using System.Windows.Input;
 
 // todo recall what happens here
-namespace AgeZodiacCalculator.Tools
+namespace AgeZodiacCalculator.Tool
 {
     internal class RelayCommand : ICommand
     {

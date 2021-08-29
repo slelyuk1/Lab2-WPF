@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using AgeZodiacCalculator.Managers;
-using AgeZodiacCalculator.Models;
-using AgeZodiacCalculator.Windows;
+using AgeZodiacCalculator.Manager;
+using AgeZodiacCalculator.Model;
+using AgeZodiacCalculator.Window;
 
 namespace AgeZodiacCalculator
 {
@@ -16,7 +16,7 @@ namespace AgeZodiacCalculator
 
             NavigationManager.Instance.Initialize(new NavigationModel(window));
             window.Show();
-            NavigationManager.Instance.Navigate(Models.Views.PickData);
+            NavigationManager.Instance.Navigate(Model.View.PickData);
         }
     }
 }

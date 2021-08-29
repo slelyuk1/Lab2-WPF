@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,6 +14,8 @@
         <WarningLevel>4</WarningLevel>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
         <Deterministic>true</Deterministic>
+        <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,38 +37,44 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System"/>
-        <Reference Include="System.Data"/>
-        <Reference Include="System.Drawing"/>
-        <Reference Include="System.Windows.Forms"/>
-        <Reference Include="System.Xml"/>
-        <Reference Include="Microsoft.CSharp"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Xml.Linq"/>
-        <Reference Include="System.Data.DataSetExtensions"/>
-        <Reference Include="System.Net.Http"/>
+        <Reference Include="System" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Drawing" />
+        <Reference Include="System.Windows.Forms" />
+        <Reference Include="System.Xml" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="System.Net.Http" />
         <Reference Include="System.Xaml">
-            <RequiredTargetFramework>4.0</RequiredTargetFramework>
         </Reference>
-        <Reference Include="WindowsBase"/>
-        <Reference Include="PresentationCore"/>
-        <Reference Include="PresentationFramework"/>
+        <Reference Include="WindowsBase" />
+        <Reference Include="PresentationCore" />
+        <Reference Include="PresentationFramework" />
     </ItemGroup>
     <ItemGroup>
         <ApplicationDefinition Include="App.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="Managers\NavigationManager.cs"/>
-        <Compile Include="Models\NavigationModel.cs"/>
-        <Compile Include="Models\PickDataModel.cs"/>
-        <Compile Include="Tools\ObservableItem.cs"/>
-        <Compile Include="Tools\RelayCommand.cs"/>
-        <Compile Include="ViewModels\PickDataViewModel.cs"/>
-        <Compile Include="Views\PickDataView.xaml.cs">
+        <Compile Include="Converter\AgeInfoConverter.cs" />
+        <Compile Include="Converter\ChineseSignConverter.cs" />
+        <Compile Include="Converter\WesternSignConverter.cs" />
+        <Compile Include="Info\AgeInfo.cs" />
+        <Compile Include="Info\ChineseSign.cs" />
+        <Compile Include="Info\WesternSign.cs" />
+        <Compile Include="Manager\NavigationManager.cs" />
+        <Compile Include="Model\Impl\ConverterBasedPickDataModel.cs" />
+        <Compile Include="Model\NavigationModel.cs" />
+        <Compile Include="Model\IPickDataModel.cs" />
+        <Compile Include="Tool\ObservableItem.cs" />
+        <Compile Include="Tool\RelayCommand.cs" />
+        <Compile Include="ViewModel\PickDateViewModel.cs" />
+        <Compile Include="View\PickDataView.xaml.cs">
             <DependentUpon>PickDataView.xaml</DependentUpon>
         </Compile>
-        <Page Include="Windows\ContentWindow.xaml">
+        <Page Include="Window\ContentWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </Page>
@@ -74,18 +82,17 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="Windows\ContentWindow.xaml.cs">
+        <Compile Include="Window\ContentWindow.xaml.cs">
             <DependentUpon>ContentWindow.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Page Include="Views\PickDataView.xaml">
+        <Page Include="View\PickDataView.xaml">
             <SubType>Designer</SubType>
             <Generator>MSBuild:Compile</Generator>
         </Page>
     </ItemGroup>
     <ItemGroup>
-        <None Include="App.config"/>
+        <None Include="App.config" />
     </ItemGroup>
-    <ItemGroup/>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

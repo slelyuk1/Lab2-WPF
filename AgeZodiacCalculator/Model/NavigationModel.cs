@@ -1,10 +1,10 @@
 ﻿using System;
-using AgeZodiacCalculator.Views;
-using AgeZodiacCalculator.Windows;
+using AgeZodiacCalculator.View;
+using AgeZodiacCalculator.Window;
 
-namespace AgeZodiacCalculator.Models
+namespace AgeZodiacCalculator.Model
 {
-    internal enum Views
+    internal enum View
     {
         PickData
     }
@@ -21,11 +21,11 @@ namespace AgeZodiacCalculator.Models
             _pickDataView = new PickDataView();
         }
 
-        public void Navigate(Views view)
+        public void Navigate(View view)
         {
             switch (view)
             {
-                case Views.PickData:
+                case View.PickData:
                     // todo move to instance
                     _window.MinWidth = 300;
                     _window.MinHeight = 250;

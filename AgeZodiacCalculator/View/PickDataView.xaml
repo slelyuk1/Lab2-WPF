@@ -1,9 +1,11 @@
-﻿<UserControl x:Class="AgeZodiacCalculator.Views.PickDataView"
+﻿<UserControl x:Class="AgeZodiacCalculator.View.PickDataView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d">
+             xmlns:local="clr-namespace:AgeZodiacCalculator.ViewModel"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance {x:Type local:PickDateViewModel}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
@@ -20,29 +22,33 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center"
                     HorizontalAlignment="Stretch">
             <Label Content="Please, choose date:" />
-            <DatePicker Name="Date" SelectedDateFormat="Short"
+            <DatePicker SelectedDateFormat="Short"
                         SelectedDate="{Binding SelectedDate, Mode=TwoWay}" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label Content="Your age:" VerticalAlignment="Top" Padding="5" />
-            <TextBlock Padding="5" Text="{Binding Age, Mode=TwoWay}">...</TextBlock>
+            <!-- todo normal binding mode -->
+            <!-- todo constant name -->
+            <TextBlock Name="AgeProperty" Padding="5" Text="{Binding AgeProperty, Mode=TwoWay}">...</TextBlock>
         </StackPanel>
 
         <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Zodiac Sign">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Western:" />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding WesternZodiac, Mode=TwoWay}" />
+                    <TextBlock Name="WesternSignProperty" VerticalAlignment="Center"
+                               Text="{Binding WesternSignProperty, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Chinese:" />
-                    <TextBlock VerticalAlignment="Center" Text="{Binding ChineseZodiac, Mode=TwoWay}" />
+                    <TextBlock Name="ChineseSignProperty" VerticalAlignment="Center"
+                               Text="{Binding ChineseSignProperty, Mode=TwoWay}" />
                 </StackPanel>
             </StackPanel>
         </GroupBox>
 
         <Button Grid.Row="3" Grid.Column="0" Content="Start Calculation" Grid.ColumnSpan="2"
-                Command="{Binding CalculateDateCommand}" />
+                Command="{Binding CalculateCommand}" />
     </Grid>
 </UserControl>
