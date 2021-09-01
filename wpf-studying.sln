@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserStorage", "UserStorage\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager", "TaskManager\TaskManager.csproj", "{27AD8376-45BA-441F-B10A-1F1248B2BDBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgeZodiacCalculator", "AgeZodiacCalculator\AgeZodiacCalculator.csproj", "{67891AA8-D61B-4C20-A6AA-E91AFE3F6A1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgeZodiacCalculator", "AgeZodiacCalculator\AgeZodiacCalculator.csproj", "{87B29BD1-26CF-4BC7-9499-2807EB480CF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{27AD8376-45BA-441F-B10A-1F1248B2BDBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27AD8376-45BA-441F-B10A-1F1248B2BDBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27AD8376-45BA-441F-B10A-1F1248B2BDBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67891AA8-D61B-4C20-A6AA-E91AFE3F6A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67891AA8-D61B-4C20-A6AA-E91AFE3F6A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67891AA8-D61B-4C20-A6AA-E91AFE3F6A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67891AA8-D61B-4C20-A6AA-E91AFE3F6A1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87B29BD1-26CF-4BC7-9499-2807EB480CF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B29BD1-26CF-4BC7-9499-2807EB480CF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B29BD1-26CF-4BC7-9499-2807EB480CF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B29BD1-26CF-4BC7-9499-2807EB480CF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,13 +12,12 @@ namespace AgeZodiacCalculator.Model
     internal class NavigationModel
     {
         private readonly ContentWindow _window;
-        private readonly PickDataView _pickDataView;
+        private readonly PickDateView _pickDateView;
 
-        public NavigationModel(ContentWindow window)
+        public NavigationModel(ContentWindow window, PickDateView pickDateView)
         {
             _window = window;
-            // todo maybe DI
-            _pickDataView = new PickDataView();
+            _pickDateView = pickDateView;
         }
 
         public void Navigate(View view)
@@ -29,7 +28,7 @@ namespace AgeZodiacCalculator.Model
                     // todo move to instance
                     _window.MinWidth = 300;
                     _window.MinHeight = 250;
-                    _window.ContentControl.Content = _pickDataView;
+                    _window.ContentControl.Content = _pickDateView;
                     break;
                 default:
                     throw new ArgumentException("Inappropriate argument for method Navigate");
