@@ -1,7 +1,4 @@
-﻿using System;
-using AgeZodiacCalculator.Model;
-using AgeZodiacCalculator.Model.Impl;
-using AgeZodiacCalculator.ViewModel;
+﻿using AgeZodiacCalculator.ViewModel;
 
 namespace AgeZodiacCalculator.Content
 {

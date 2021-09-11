@@ -1,4 +1,5 @@
-﻿using Shared.Window;
+﻿using Shared.View;
+using Shared.View.Visualizer;
 
 namespace AgeZodiacCalculator
 {
@@ -9,7 +10,7 @@ namespace AgeZodiacCalculator
             InitializeComponent();
         }
 
-        public void Visualize(Shared.Navigation.View toVisualize)
+        public void Visualize(View toVisualize)
         {
             MinHeight = toVisualize.MinHeight;
             MinWidth = toVisualize.MinWidth;

@@ -1,6 +1,4 @@
-﻿using Shared.Navigation;
-
-namespace Shared.Window
+﻿namespace Shared.View.Visualizer
 {
     public interface IViewVisualizer
     {

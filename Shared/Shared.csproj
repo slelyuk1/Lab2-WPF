@@ -41,10 +41,12 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="View\IViewVisualizer.cs" />
+        <Compile Include="View\Navigator\IViewNavigator.cs" />
+        <Compile Include="View\Navigator\ViewProviderBasedNavigator.cs" />
+        <Compile Include="View\Provider\ContentTypeBasedViewProvider.cs" />
+        <Compile Include="View\Provider\IViewProvider.cs" />
         <Compile Include="View\View.cs" />
-        <Compile Include="View\ViewContainer.cs" />
-        <Compile Include="View\ViewNavigator.cs" />
+        <Compile Include="View\Visualizer\IViewVisualizer.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

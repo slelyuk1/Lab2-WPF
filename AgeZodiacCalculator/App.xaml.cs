@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using AgeZodiacCalculator.Content;
@@ -6,14 +7,14 @@ using AgeZodiacCalculator.Info;
 using AgeZodiacCalculator.Model;
 using AgeZodiacCalculator.Model.Impl;
 using AgeZodiacCalculator.ViewModel;
-using Shared.Navigation;
+using Shared.View;
+using Shared.View.Navigator;
+using Shared.View.Provider;
 
 namespace AgeZodiacCalculator
 {
     public partial class AgeZodiacCalculatorApp
     {
-        
-        
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -28,10 +29,9 @@ namespace AgeZodiacCalculator
             var pickDateContent = new PickDateContent(pickDateViewModel);
             var pickDateView = new View(pickDateContent, 300, 300);
 
-            var viewContainer = new ViewContainer();
-            viewContainer.RegisterView(pickDateView);
+            IViewProvider<Type> viewProvider = new ContentTypeBasedViewProvider(new ReadOnlyCollection<View>(new[] {pickDateView}));
 
-            var navigator = new ViewNavigator(viewContainer);
+            IViewNavigator<Type> navigator = new ViewProviderBasedNavigator<Type>(viewProvider);
             navigator.Navigate(window, typeof(PickDateContent));
 
             window.Show();

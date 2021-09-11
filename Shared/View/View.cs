@@ -1,4 +1,4 @@
-﻿namespace Shared.Navigation
+﻿namespace Shared.View
 {
     public class View
     {
