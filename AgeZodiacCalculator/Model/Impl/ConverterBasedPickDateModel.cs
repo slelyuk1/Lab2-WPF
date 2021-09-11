@@ -4,13 +4,13 @@ using AgeZodiacCalculator.Info;
 
 namespace AgeZodiacCalculator.Model.Impl
 {
-    internal class ConverterBasedPickDataModel : IPickDataModel
+    internal class ConverterBasedPickDateModel : IPickDateModel
     {
         public DateTime SelectedDate { get; set; }
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
 
-        public ConverterBasedPickDataModel(DateTime selectedTime, TypeConverter chineseSignConverter, TypeConverter westernSignConverter)
+        public ConverterBasedPickDateModel(DateTime selectedTime, TypeConverter chineseSignConverter, TypeConverter westernSignConverter)
         {
             SelectedDate = selectedTime;
             _chineseSignConverter = chineseSignConverter;

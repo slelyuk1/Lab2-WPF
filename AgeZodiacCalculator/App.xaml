@@ -1,6 +1,7 @@
 ﻿<Application x:Class="AgeZodiacCalculator.AgeZodiacCalculatorApp"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:AgeZodiacCalculator">
     <Application.Resources>
 
     </Application.Resources>

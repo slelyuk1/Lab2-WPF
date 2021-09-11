@@ -1,16 +1,19 @@
-﻿using System.ComponentModel;
-using AgeZodiacCalculator.Info;
-using AgeZodiacCalculator.Manager;
-using AgeZodiacCalculator.Model;
-using AgeZodiacCalculator.View;
+﻿using Shared.Window;
 
-namespace AgeZodiacCalculator.Window
+namespace AgeZodiacCalculator
 {
-    public partial class ContentWindow
+    public partial class ContentWindow : IViewVisualizer
     {
         public ContentWindow()
         {
             InitializeComponent();
+        }
+
+        public void Visualize(Shared.Navigation.View toVisualize)
+        {
+            MinHeight = toVisualize.MinHeight;
+            MinWidth = toVisualize.MinWidth;
+            ContentControl.Content = toVisualize.Content;
         }
     }
 }

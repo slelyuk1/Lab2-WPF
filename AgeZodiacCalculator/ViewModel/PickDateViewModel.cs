@@ -10,7 +10,7 @@ namespace AgeZodiacCalculator.ViewModel
     // todo rename properties
     internal class PickDateViewModel : ObservableItem
     {
-        private IPickDataModel Model { get; }
+        private IPickDateModel Model { get; }
         private readonly TypeConverter _ageInfoConverter;
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
@@ -19,7 +19,7 @@ namespace AgeZodiacCalculator.ViewModel
         private string _chineseSignProperty = "";
         private string _westernSignProperty = "";
 
-        public PickDateViewModel(IPickDataModel model,
+        public PickDateViewModel(IPickDateModel model,
             TypeConverter ageInfoConverter,
             TypeConverter chineseSignConverter,
             TypeConverter westernSignConverter)

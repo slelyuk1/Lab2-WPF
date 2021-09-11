@@ -3,7 +3,7 @@ using AgeZodiacCalculator.Info;
 
 namespace AgeZodiacCalculator.Model
 {
-    internal interface IPickDataModel
+    internal interface IPickDateModel
     {
         public DateTime SelectedDate { get; set; }
 
