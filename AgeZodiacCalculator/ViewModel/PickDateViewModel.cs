@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using AgeZodiacCalculator.Info;
 using AgeZodiacCalculator.Model;
-using AgeZodiacCalculator.Tool;
+using Shared.Tool;
 
 namespace AgeZodiacCalculator.ViewModel
 {
@@ -19,6 +19,8 @@ namespace AgeZodiacCalculator.ViewModel
         private string _chineseSignProperty = "";
         private string _westernSignProperty = "";
 
+        public ICommand CalculateCommand { get; }
+
         public PickDateViewModel(IPickDateModel model,
             TypeConverter ageInfoConverter,
             TypeConverter chineseSignConverter,
@@ -28,7 +30,7 @@ namespace AgeZodiacCalculator.ViewModel
             _ageInfoConverter = ageInfoConverter;
             _chineseSignConverter = chineseSignConverter;
             _westernSignConverter = westernSignConverter;
-            CalculateCommand = new RelayCommand(CalculateExecute, CanCalculate);
+            CalculateCommand = new DelegateBasedCommand(CalculateExecute, CanCalculate);
         }
 
         public DateTime SelectedDate
@@ -72,8 +74,6 @@ namespace AgeZodiacCalculator.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        public ICommand CalculateCommand { get; }
 
         private void CalculateExecute(object obj)
         {

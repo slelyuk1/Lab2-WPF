@@ -55,8 +55,6 @@
         <Compile Include="ContentWindow.xaml.cs">
           <DependentUpon>ContentWindow.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Tool\ObservableItem.cs" />
-        <Compile Include="Tool\RelayCommand.cs" />
         <Compile Include="ViewModel\PickDateViewModel.cs" />
         <Page Include="ContentWindow.xaml">
           <Generator>MSBuild:Compile</Generator>
@@ -95,9 +93,6 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Manager" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Shared\Shared.csproj">
