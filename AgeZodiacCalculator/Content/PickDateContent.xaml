@@ -28,21 +28,19 @@
 
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Label Content="Your age:" VerticalAlignment="Top" Padding="5" />
-            <!-- todo normal binding mode -->
-            <!-- todo constant name -->
-            <TextBlock Name="AgeProperty" Padding="5" Text="{Binding AgeProperty, Mode=TwoWay}">...</TextBlock>
+            <TextBlock Padding="5" Text="{Binding AgeProperty, Mode=TwoWay}">...</TextBlock>
         </StackPanel>
 
         <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Header="Zodiac Sign">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Western:" />
-                    <TextBlock Name="WesternSignProperty" VerticalAlignment="Center"
+                    <TextBlock VerticalAlignment="Center"
                                Text="{Binding WesternSignProperty, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Chinese:" />
-                    <TextBlock Name="ChineseSignProperty" VerticalAlignment="Center"
+                    <TextBlock VerticalAlignment="Center"
                                Text="{Binding ChineseSignProperty, Mode=TwoWay}" />
                 </StackPanel>
             </StackPanel>

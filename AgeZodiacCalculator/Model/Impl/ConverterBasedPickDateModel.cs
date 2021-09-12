@@ -1,11 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using AgeZodiacCalculator.Info;
 
 namespace AgeZodiacCalculator.Model.Impl
 {
     internal class ConverterBasedPickDateModel : IPickDateModel
     {
+        private static readonly TraceSource Logger = new TraceSource(nameof(ConverterBasedPickDateModel));
+
         public DateTime SelectedDate { get; set; }
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
@@ -33,7 +36,7 @@ namespace AgeZodiacCalculator.Model.Impl
 
             if (years > 135)
             {
-                // todo think about solution
+                // todo logging
                 return null;
             }
 

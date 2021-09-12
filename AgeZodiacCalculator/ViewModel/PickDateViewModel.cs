@@ -7,7 +7,6 @@ using Shared.Tool;
 
 namespace AgeZodiacCalculator.ViewModel
 {
-    // todo rename properties
     internal class PickDateViewModel : ObservableItem
     {
         private IPickDateModel Model { get; }
@@ -39,7 +38,6 @@ namespace AgeZodiacCalculator.ViewModel
             set
             {
                 Model.SelectedDate = value;
-                // todo use constant
                 OnPropertyChanged();
             }
         }
@@ -50,7 +48,6 @@ namespace AgeZodiacCalculator.ViewModel
             set
             {
                 _ageProperty = value;
-                // todo constant
                 OnPropertyChanged();
             }
         }
