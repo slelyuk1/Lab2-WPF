@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Content\ProcessesInfoView.xaml.cs">
+      <DependentUpon>ProcessesInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\ReadableProcess.cs" />
     <Compile Include="Models\ProcessesInfoModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -66,9 +69,10 @@
     <Compile Include="Tools\ProcessCpuCounter.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModels\ProcessesInfoViewModel.cs" />
-    <Compile Include="Views\ProcessesInfoView.xaml.cs">
-      <DependentUpon>ProcessesInfoView.xaml</DependentUpon>
-    </Compile>
+    <Page Include="Content\ProcessesInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -81,10 +85,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ProcessesInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\NavigationManager.cs" />
@@ -115,6 +115,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{ff56b84c-f98d-4320-a465-95e5fc130c70}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

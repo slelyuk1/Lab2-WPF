@@ -11,7 +11,7 @@ namespace UserStorage.Models
 
         public Storage Data { get; }
 
-        public Person ChosenUser
+        public PersonInfo ChosenUser
         {
             get => Data.ChosenUser;
         }
@@ -25,12 +25,12 @@ namespace UserStorage.Models
 
         public void AddUser(string name, string surname, string email, DateTime birthday)
         {
-            Data.AddUser((new Person(name, surname, email, birthday)));
+            Data.AddUser((new PersonInfo(name, surname, email, birthday)));
         }
 
-        public void EditUser(Person toEdit, string name, string surname, string email, DateTime birthday)
+        public void EditUser(PersonInfo toEdit, string name, string surname, string email, DateTime birthday)
         {
-            Data.EditUser(new Person(name, surname, email, birthday));
+            Data.EditUser(new PersonInfo(name, surname, email, birthday));
         }
     }
 }

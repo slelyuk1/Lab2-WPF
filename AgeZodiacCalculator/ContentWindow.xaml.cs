@@ -12,6 +12,7 @@ namespace AgeZodiacCalculator
 
         public void Visualize(View toVisualize)
         {
+            Title = toVisualize.Title;
             MinHeight = toVisualize.MinHeight;
             MinWidth = toVisualize.MinWidth;
             ContentControl.Content = toVisualize.Content;

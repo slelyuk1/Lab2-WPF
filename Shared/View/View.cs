@@ -2,15 +2,17 @@
 {
     public class View
     {
-        public object Content { get; }
+        public string Title { get; }
         public int MinHeight { get; }
         public int MinWidth { get; }
+        public object Content { get; }
 
-        public View(object content, int minHeight, int minWidth)
+        public View(string title, int minHeight, int minWidth, object content)
         {
-            Content = content;
+            Title = title;
             MinHeight = minHeight;
             MinWidth = minWidth;
+            Content = content;
         }
     }
 }

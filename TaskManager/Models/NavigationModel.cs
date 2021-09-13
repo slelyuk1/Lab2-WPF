@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
-using TaskManager.Views;
+using TaskManager.Content;
 
 namespace TaskManager.Models
 {

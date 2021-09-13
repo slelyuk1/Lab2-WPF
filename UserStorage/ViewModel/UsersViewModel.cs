@@ -1,31 +1,40 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using UserStorage.Managers;
+using Shared.Tool;
+using Shared.View.Navigator;
+using UserStorage.Content;
 using UserStorage.Models;
-using UserStorage.Tools;
 
-namespace UserStorage.ViewModels
+namespace UserStorage.ViewModel
 {
-    class UsersViewModel : ObservableItem
+    public class UsersViewModel : ObservableItem
     {
-        private ObservableCollection<Person> _users;
+        private readonly IViewNavigator<Type> _navigator;
+        private ObservableCollection<PersonInfo> _users;
         private ObservableCollection<string> _properties;
-        private ICommand _addCommand, _deleteCommand, _editCommand, _filterCommand;
+        public ICommand AddCommand { get; }
+        public ICommand DeleteCommand { get; }
+        public ICommand EditCommand { get; }
+        public ICommand FilterCommand { get; }
 
-        public UsersViewModel(Storage data)
+        public UsersViewModel(IViewNavigator<Type> navigator, Storage data)
         {
+            _navigator = navigator;
             Data = data;
             Model = new UsersModel(data);
-            _users = new ObservableCollection<Person>(data.Users);
+            _users = new ObservableCollection<PersonInfo>(data.Users);
             UsersCollectionView = CollectionViewSource.GetDefaultView(_users);
-            FilterProperties = new ObservableCollection<string>()
-                {"All", "Name", "Surname", "Email", "SunSign", "ChineseSign"};
+            FilterProperties = new ObservableCollection<string> {"All", "Name", "Surname", "Email", "SunSign", "ChineseSign"};
 
+            AddCommand = new DelegateBasedCommand(OpenUsersChangerInAddMode);
+            DeleteCommand = new DelegateBasedCommand(ExecuteDelete, UserChosen);
+            EditCommand = new DelegateBasedCommand(OpenUsersChangerInEditMode, UserChosen);
+            FilterCommand = new DelegateBasedCommand(ExecuteFilter);
+            
             data.UserAdded += AddUser;
             data.UserEdited += EditUser;
             data.UserDeleted += DeleteUser;
@@ -34,7 +43,7 @@ namespace UserStorage.ViewModels
         public UsersModel Model { get; set; }
         public Storage Data { get; }
 
-        public ObservableCollection<Person> Users
+        public ObservableCollection<PersonInfo> Users
         {
             get => _users;
             set
@@ -57,9 +66,9 @@ namespace UserStorage.ViewModels
         public string FilterText { get; set; }
         public string SelectedProperty { get; set; }
 
-        public Person SelectedUser
+        public PersonInfo SelectedUser
         {
-            set => Model.ChosenPerson = value;
+            set => Model.ChosenPersonInfo = value;
         }
 
         //property defined for future
@@ -67,59 +76,7 @@ namespace UserStorage.ViewModels
 
         public ICollectionView UsersCollectionView { get; set; }
 
-        public ICommand AddCommand
-        {
-            get
-            {
-                if (_addCommand == null)
-                {
-                    _addCommand = new RelayCommand(OpenUsersChangerInAddMode);
-                }
-
-                return _addCommand;
-            }
-        }
-
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                if (_deleteCommand == null)
-                {
-                    _deleteCommand = new RelayCommand(ExecuteDelete, UserChosen);
-                }
-
-                return _deleteCommand;
-            }
-        }
-
-        public ICommand EditCommand
-        {
-            get
-            {
-                if (_editCommand == null)
-                {
-                    _editCommand = new RelayCommand(OpenUsersChangerInEditMode, UserChosen);
-                }
-
-                return _editCommand;
-            }
-        }
-
-        public ICommand FilterCommand
-        {
-            get
-            {
-                if (_filterCommand == null)
-                {
-                    _filterCommand = new RelayCommand(ExecuteFilter, null);
-                }
-
-                return _filterCommand;
-            }
-        }
-
-        //method for implementing in future
+        // todo method for implementing in future
         public void UsersSorting(object sender, DataGridSortingEventArgs e)
         {
             /* bool ascending = e.Column.SortDirection == ListSortDirection.Ascending;
@@ -131,24 +88,24 @@ namespace UserStorage.ViewModels
         private void OpenUsersChangerInAddMode(object obj)
         {
             UserInputViewModel.EditMode = UserEditMode.Add;
-            NavigationManager.Instance.Navigate(Models.Views.UserInputView);
+            _navigator.Navigate(typeof(UserInputContent));
         }
 
         private void OpenUsersChangerInEditMode(object obj)
         {
             UserInputViewModel.EditMode = UserEditMode.Edit;
-            NavigationManager.Instance.Navigate(Models.Views.UserInputView);
+            _navigator.Navigate(typeof(UserInputContent));
         }
 
         private void ExecuteFilter(object obj)
         {
             UsersCollectionView.Filter = item =>
-                Model.FilterPredicate((Person) item, FilterText, SelectedProperty);
+                Model.FilterPredicate((PersonInfo) item, FilterText, SelectedProperty);
         }
 
         private void ExecuteDelete(object obj)
         {
-            Data.DeleteUser(Model.ChosenPerson);
+            Data.DeleteUser(Model.ChosenPersonInfo);
         }
 
         private bool UserChosen(object obj)
@@ -156,13 +113,13 @@ namespace UserStorage.ViewModels
             return Model.IsUserChosen;
         }
 
-        private void AddUser(Person newUser)
+        private void AddUser(PersonInfo newUser)
         {
             _users.Add(newUser);
             Model.AddUser(newUser);
         }
 
-        private void DeleteUser(Person toDelete)
+        private void DeleteUser(PersonInfo toDelete)
         {
             int index = _users.IndexOf(toDelete);
             if (index == -1)
@@ -171,10 +128,10 @@ namespace UserStorage.ViewModels
             Model.DeleteUser(toDelete);
         }
 
-        private void EditUser(Person edited)
+        private void EditUser(PersonInfo edited)
         {
             Model.EditUser(edited);
-            int index = _users.IndexOf(Model.ChosenPerson);
+            int index = _users.IndexOf(Model.ChosenPersonInfo);
             if (index == -1)
                 throw new NullReferenceException("No such user in observable collection !");
             _users[index] = edited;

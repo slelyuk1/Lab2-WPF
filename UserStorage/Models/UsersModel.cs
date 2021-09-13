@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace UserStorage.Models
 {
-    class UsersModel
+    public class UsersModel
     {
         public UsersModel(Storage data)
         {
@@ -13,7 +13,7 @@ namespace UserStorage.Models
 
         public Storage Data { get; }
 
-        public bool FilterPredicate(Person user, string filter, string property)
+        public bool FilterPredicate(PersonInfo user, string filter, string property)
         {
             filter = filter.ToLower();
             if (property == "All")
@@ -40,18 +40,18 @@ namespace UserStorage.Models
             throw new ArgumentException("Inappropriate property type for filtering");
         }
 
-        public Person ChosenPerson
+        public PersonInfo ChosenPersonInfo
         {
             get => Data.ChosenUser;
             set => Data.ChosenUser = value;
         }
 
-        public void AddUser(Person user)
+        public void AddUser(PersonInfo user)
         {
             Data.Users.AddLast(user);
         }
 
-        public void EditUser(Person edited)
+        public void EditUser(PersonInfo edited)
         {
             var node = Data.Users.Find(Data.ChosenUser);
             if (node == null)
@@ -59,11 +59,11 @@ namespace UserStorage.Models
             node.Value = edited;
         }
 
-        public void DeleteUser(Person user)
+        public void DeleteUser(PersonInfo user)
         {
             Data.Users.Remove(user);
         }
 
-        public bool IsUserChosen => ChosenPerson != null;
+        public bool IsUserChosen => ChosenPersonInfo != null;
     }
 }

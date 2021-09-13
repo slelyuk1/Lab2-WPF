@@ -1,9 +1,9 @@
 ﻿using System.Windows.Controls;
 using TaskManager.ViewModels;
 
-namespace TaskManager.Views
+namespace TaskManager.Content
 {
-    public partial class ProcessesInfoView : UserControl
+    public partial class ProcessesInfoView 
     {
         private ProcessesInfoViewModel Model { get; }
 

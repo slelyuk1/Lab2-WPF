@@ -1,27 +1,30 @@
 ﻿using System;
-using Shared.View.Provider;
+using Shared.View.Container;
 using Shared.View.Visualizer;
 
 namespace Shared.View.Navigator
 {
     public class ViewProviderBasedNavigator<T> : IViewNavigator<T>
     {
-        private readonly IViewProvider<T> _viewProvider;
+        private readonly IViewContainer<T> _viewContainer;
 
-        public ViewProviderBasedNavigator(IViewProvider<T> viewProvider)
+        public IViewVisualizer Visualizer { get; }
+
+        public ViewProviderBasedNavigator(IViewVisualizer visualizer, IViewContainer<T> viewContainer)
         {
-            _viewProvider = viewProvider;
+            Visualizer = visualizer;
+            _viewContainer = viewContainer;
         }
 
-        public void Navigate(IViewVisualizer visualizer, T viewIdentifier)
+        public void Navigate(T viewIdentifier)
         {
-            View? view = _viewProvider.GetView(viewIdentifier);
+            View? view = _viewContainer.GetView(viewIdentifier);
             if (view == null)
             {
                 throw new InvalidOperationException("ViewProvider couldn't find view using search criteria: " + viewIdentifier);
             }
 
-            visualizer.Visualize(view);
+            Visualizer.Visualize(view);
         }
     }
 }

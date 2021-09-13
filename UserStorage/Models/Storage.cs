@@ -1,34 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using UserStorage.Managers;
 
 namespace UserStorage.Models
 {
     public class Storage
     {
-        private static readonly string usersRecoveryPath = "..\\..\\SerializedData\\default_users.bin";
+        private const string UsersRecoveryPath = "..\\..\\SerializedData\\default_users.bin";
 
-        public event Action<Person> UserAdded;
-        public event Action<Person> UserDeleted;
-        public event Action<Person> UserEdited;
-        public event Action<Person> UserChosen;
+        public event Action<PersonInfo>? UserAdded;
+        public event Action<PersonInfo>? UserDeleted;
+        public event Action<PersonInfo>? UserEdited;
+        public event Action<PersonInfo>? UserChosen;
 
-        private Person _currentChosenUser;
-        public LinkedList<Person> Users;
+        private PersonInfo? _currentChosenUser;
+        public LinkedList<PersonInfo> Users { get; }
 
         public Storage(string serializationPath)
         {
-            Users = new LinkedList<Person>();
+            Users = new LinkedList<PersonInfo>();
             if (File.Exists(serializationPath))
             {
                 Users = SerializationManager.DeserializeUsers(serializationPath);
             }
-            else if (File.Exists(usersRecoveryPath))
+            else if (File.Exists(UsersRecoveryPath))
             {
-                Users = SerializationManager.DeserializeUsers(usersRecoveryPath);
+                Users = SerializationManager.DeserializeUsers(UsersRecoveryPath);
             }
             else
             {
@@ -36,7 +34,7 @@ namespace UserStorage.Models
             }
         }
 
-        public Person ChosenUser
+        public PersonInfo? ChosenUser
         {
             get => _currentChosenUser;
             set
@@ -46,17 +44,17 @@ namespace UserStorage.Models
             }
         }
 
-        public void AddUser(Person user)
+        public void AddUser(PersonInfo user)
         {
             UserAdded?.Invoke(user);
         }
 
-        public void EditUser(Person edited)
+        public void EditUser(PersonInfo edited)
         {
             UserEdited?.Invoke(edited);
         }
 
-        public void DeleteUser(Person user)
+        public void DeleteUser(PersonInfo user)
         {
             UserDeleted?.Invoke(user);
         }

@@ -1,20 +1,39 @@
-﻿using System.Windows;
-using UserStorage.Managers;
+﻿using System;
+using System.Windows;
+using Shared.View;
+using Shared.View.Container;
+using Shared.View.Navigator;
+using UserStorage.Content;
 using UserStorage.Models;
+using UserStorage.ViewModel;
 
 namespace UserStorage
 {
-    public partial class App : Application
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             // todo fix serialization/deserialization process
-            Storage data = new Storage("..\\..\\SerializedData\\users.bin");
-            MainWindow mainWindow = new MainWindow(data);
-            NavigationManager.Instance.Initialise(new NavigationModel(mainWindow, data));
-            NavigationManager.Instance.Navigate(Models.Views.UsersView);
-            mainWindow.Show();
+            var data = new Storage("..\\..\\SerializedData\\users.bin");
+            var window = new MainWindow(data);
+
+            IViewMutableContainer<Type> viewContainer = new ContentTypeBasedViewContainer();
+            IViewNavigator<Type> navigator = new ViewProviderBasedNavigator<Type>(window, viewContainer);
+
+            var userInfoView = new View("Info", 300, 271, new UserInfoContent(
+                new UserInfoViewModel(navigator, data))
+            );
+            var userInputView = new View("Input", 300, 271, new UserInputContent(
+                new UserInputViewModel(navigator, data)
+            ));
+            var usersView = new View("Users", 200, 750, new UsersContent(
+                new UsersViewModel(navigator, data))
+            );
+
+            viewContainer.RegisterViews(userInfoView, userInputView, usersView);
+            navigator.Navigate(typeof(UsersContent));
+            window.Show();
         }
     }
 }

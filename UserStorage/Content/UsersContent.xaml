@@ -1,9 +1,11 @@
-﻿<UserControl x:Class="UserStorage.Views.UsersView"
+﻿<UserControl x:Class="UserStorage.Content.UsersContent"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d">
+             xmlns:local="clr-namespace:UserStorage.ViewModel"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance {x:Type local:UsersViewModel}}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.22*" />
@@ -64,12 +66,12 @@
                 </ToggleButton.ToolTip>
             </ToggleButton>
             <ComboBox MinWidth="100" SelectedValue="{Binding Path=SelectedProperty}"
-                      ItemsSource="{Binding Path=FilterProperties}">
-            </ComboBox>
+                      ItemsSource="{Binding Path=FilterProperties}" />
             <TextBox MinWidth="150" MaxLength="30" Text="{Binding Path=FilterText, Mode=OneWayToSource}" />
 
         </ToolBar>
 
+        <!-- todo ColumnWidth="*"-->
         <DataGrid x:Name="UsersGrid" Grid.Row="1" Grid.Column="0" Margin="5 5 5 5" VerticalAlignment="Top"
                   HorizontalAlignment="Center"
                   ItemsSource="{Binding Path=UsersCollectionView}"
@@ -78,7 +80,6 @@
 
                   Sorting="OnUsersSorting"
                   AutoGenerateColumns="False"
-                  ColumnWidth="*"
                   HorizontalScrollBarVisibility="Visible"
                   IsReadOnly="True">
             <DataGrid.Columns>

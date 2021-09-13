@@ -5,6 +5,8 @@ namespace Shared.Tool
 {
     public class DelegateBasedCommand : ICommand
     {
+        private static readonly Func<object, bool> TruePredicate = value => true;
+
         private readonly Action<object> _execute;
         private readonly Func<object, bool> _canExecute;
 
@@ -12,6 +14,10 @@ namespace Shared.Tool
         {
             _execute = execute;
             _canExecute = canExecute;
+        }
+
+        public DelegateBasedCommand(Action<object> execute) : this(execute, TruePredicate)
+        {
         }
 
         public bool CanExecute(object parameter)

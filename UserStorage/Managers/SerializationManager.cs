@@ -9,43 +9,40 @@ namespace UserStorage.Managers
 {
     public static class SerializationManager
     {
-        public static void Serialise(string path, LinkedList<Person> users)
+        public static void Serialise(string path, LinkedList<PersonInfo> users)
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+            using FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
+            foreach (var user in users)
             {
-                foreach (var user in users)
-                {
-                    formatter.Serialize(fs, user);
-                }
+                formatter.Serialize(fs, user);
             }
         }
 
-        public static LinkedList<Person> DeserializeUsers(string path)
+        public static LinkedList<PersonInfo> DeserializeUsers(string path)
         {
-            LinkedList<Person> users = new LinkedList<Person>();
+            LinkedList<PersonInfo> users = new LinkedList<PersonInfo>();
             BinaryFormatter formatter = new BinaryFormatter();
-            using (FileStream fs = new FileStream(path, FileMode.Open))
+            using FileStream fs = new FileStream(path, FileMode.Open);
+
+            while (true)
             {
-                while (true)
+                try
                 {
-                    try
-                    {
-                        users.AddLast((Person) formatter.Deserialize(fs));
-                    } //!!!!
-                    catch (SerializationException)
-                    {
-                        break;
-                    }
+                    users.AddLast((PersonInfo) formatter.Deserialize(fs));
+                } // todo !!!!
+                catch (SerializationException)
+                {
+                    break;
                 }
             }
 
             return users;
         }
 
-        public static LinkedList<Person> ReadUsersFromTxt(string path, int usersCount)
+        public static LinkedList<PersonInfo> ReadUsersFromTxt(string path, int usersCount)
         {
-            LinkedList<Person> users = new LinkedList<Person>();
+            LinkedList<PersonInfo> users = new LinkedList<PersonInfo>();
 
             LinkedList<string> names = new LinkedList<string>();
             LinkedList<string> emails = new LinkedList<string>();
@@ -97,7 +94,7 @@ namespace UserStorage.Managers
                         var email = eE.Current;
                         var birthDate = eB.Current;
 
-                        var user = new Person(args[0], args[1], email, birthDate);
+                        var user = new PersonInfo(args[0], args[1], email, birthDate);
                         users.AddLast(user);
                     }
                 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using AgeZodiacCalculator.Content;
@@ -8,8 +7,8 @@ using AgeZodiacCalculator.Model;
 using AgeZodiacCalculator.Model.Impl;
 using AgeZodiacCalculator.ViewModel;
 using Shared.View;
+using Shared.View.Container;
 using Shared.View.Navigator;
-using Shared.View.Provider;
 
 namespace AgeZodiacCalculator
 {
@@ -27,12 +26,10 @@ namespace AgeZodiacCalculator
             IPickDateModel pickDateModel = new ConverterBasedPickDateModel(DateTime.Now, chineseSignConverter, westernSignConverter);
             var pickDateViewModel = new PickDateViewModel(pickDateModel, ageInfoConverter, chineseSignConverter, westernSignConverter);
             var pickDateContent = new PickDateContent(pickDateViewModel);
-            var pickDateView = new View(pickDateContent, 300, 300);
+            var pickDateView = new View("Age/Zodiac Calculator", 300, 300, pickDateContent);
 
-            IViewProvider<Type> viewProvider = new ContentTypeBasedViewProvider(new ReadOnlyCollection<View>(new[] {pickDateView}));
-
-            IViewNavigator<Type> navigator = new ViewProviderBasedNavigator<Type>(viewProvider);
-            navigator.Navigate(window, typeof(PickDateContent));
+            IViewNavigator<Type> navigator = new ViewProviderBasedNavigator<Type>(window, new ContentTypeBasedViewContainer(pickDateView));
+            navigator.Navigate(typeof(PickDateContent));
 
             window.Show();
         }

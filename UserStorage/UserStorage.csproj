@@ -14,6 +14,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,28 +57,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Managers\NavigationManager.cs" />
+    <Compile Include="Exception\PersonException.cs" />
     <Compile Include="Managers\SerializationManager.cs" />
-    <Compile Include="Models\NavigationModel.cs" />
     <Compile Include="Models\Signs.cs" />
     <Compile Include="Models\Storage.cs" />
     <Compile Include="Models\UserInputModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
-    <Compile Include="Tools\EnumHelper.cs" />
-    <Compile Include="Tools\ObservableItem.cs" />
-    <Compile Include="Tools\PersonException.cs" />
-    <Compile Include="Tools\RelayCommand.cs" />
-    <Compile Include="ViewModels\UserInputViewModel.cs" />
-    <Compile Include="ViewModels\UserInfoViewModel.cs" />
-    <Compile Include="ViewModels\UsersViewModel.cs" />
-    <Compile Include="Views\UserInfoView.xaml.cs">
-      <DependentUpon>UserInfoView.xaml</DependentUpon>
+    <Compile Include="Tool\EnumHelper.cs" />
+    <Compile Include="ViewModel\UserInputViewModel.cs" />
+    <Compile Include="ViewModel\UserInfoViewModel.cs" />
+    <Compile Include="ViewModel\UsersViewModel.cs" />
+    <Compile Include="Content\UserInfoContent.xaml.cs">
+      <DependentUpon>UserInfoContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserInputView.xaml.cs">
-      <DependentUpon>UserInputView.xaml</DependentUpon>
+    <Compile Include="Content\UserInputContent.xaml.cs">
+      <DependentUpon>UserInputContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UsersView.xaml.cs">
-      <DependentUpon>UsersView.xaml</DependentUpon>
+    <Compile Include="Content\UsersContent.xaml.cs">
+      <DependentUpon>UsersContent.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -90,21 +88,21 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\UserInfoView.xaml">
+    <Page Include="Content\UserInfoContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserInputView.xaml">
+    <Page Include="Content\UserInputContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UsersView.xaml">
+    <Page Include="Content\UsersContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\PersonInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -141,6 +139,12 @@
   <ItemGroup>
     <Content Include="SerializedData\default_users.bin" />
     <Content Include="SerializedData\users.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{ff56b84c-f98d-4320-a465-95e5fc130c70}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

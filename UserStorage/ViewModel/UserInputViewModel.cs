@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
-using UserStorage.Managers;
+using Shared.Tool;
+using Shared.View.Navigator;
+using UserStorage.Content;
+using UserStorage.Exception;
 using UserStorage.Models;
-using UserStorage.Tools;
+using ObservableItem = Shared.Tool.ObservableItem;
 
-namespace UserStorage.ViewModels
+namespace UserStorage.ViewModel
 {
     public enum UserEditMode
     {
@@ -16,19 +19,22 @@ namespace UserStorage.ViewModels
     public class UserInputViewModel : ObservableItem
     {
         public static UserEditMode EditMode = UserEditMode.Add;
+
+        private readonly IViewNavigator<Type> _navigator;
         private string _name, _surname, _email;
         private DateTime _selectedDate;
+        public ICommand ProcessCommand { get; }
 
-        private ICommand _processCommand;
-
-        public UserInputViewModel(Storage data)
+        public UserInputViewModel(IViewNavigator<Type> navigator, Storage data)
         {
+            _navigator = navigator;
             _name = "Oleksandr";
             _surname = "Leliuk";
             _email = "slelyuk1@gmail.com";
             _selectedDate = new DateTime(2000, 2, 13);
             Model = new UserInputModel(data);
 
+            ProcessCommand = new DelegateBasedCommand(ExecuteProcess);
             data.UserChosen += UiUserSet;
         }
 
@@ -75,16 +81,6 @@ namespace UserStorage.ViewModels
 
         public UserInputModel Model { get; private set; }
 
-        public ICommand ProcessCommand
-        {
-            get
-            {
-                if (_processCommand == null)
-                    _processCommand = new RelayCommand(ExecuteProcess);
-                return _processCommand;
-            }
-        }
-
         private void ExecuteProcess(object obj)
         {
             try
@@ -103,8 +99,11 @@ namespace UserStorage.ViewModels
 
 
                 if (Model.IsBirthDay())
+                {
                     MessageBox.Show("Wow, it's your birthday today. Congratulations !", "Birthday");
-                NavigationManager.Instance.Navigate(Models.Views.UsersView);
+                }
+
+                _navigator.Navigate(typeof(UsersContent));
             }
             catch (PersonException ex)
             {
@@ -112,7 +111,7 @@ namespace UserStorage.ViewModels
             }
         }
 
-        private void UiUserSet(Person user)
+        private void UiUserSet(PersonInfo user)
         {
             if (user == null)
             {
