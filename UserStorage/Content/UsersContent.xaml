@@ -19,7 +19,7 @@
 
         <ToolBar Grid.Row="0" VerticalAlignment="Top" Height="30">
             <ToggleButton Command="{Binding Path=AddCommand}">
-                <Image Source="../img/add-icon.png" />
+                <Image Source="./../img/add-icon.png" />
                 <ToggleButton.ToolTip>
                     <ToolTip>
                         <StackPanel>

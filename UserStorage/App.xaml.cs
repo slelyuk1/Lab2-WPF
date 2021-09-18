@@ -15,7 +15,7 @@ namespace UserStorage
         {
             base.OnStartup(e);
             // todo fix serialization/deserialization process
-            var data = new Storage("..\\..\\SerializedData\\users.bin");
+            var data = new Storage();
             var window = new MainWindow(data);
 
             IViewMutableContainer<Type> viewContainer = new ContentTypeBasedViewContainer();

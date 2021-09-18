@@ -1,106 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Resources;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UserStorage.Models;
+using UserStorage.Properties;
 
 namespace UserStorage.Managers
 {
+    // todo refactor according to OOP
     public static class SerializationManager
     {
-        public static void Serialise(string path, LinkedList<PersonInfo> users)
+        private const string ResourceFileName = @".\Saved.resx";
+
+        public static void Serialise(List<PersonInfo> users)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            using FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
-            foreach (var user in users)
-            {
-                formatter.Serialize(fs, user);
-            }
+            using var memoryStream = new MemoryStream();
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(memoryStream, users);
+            byte[] bytes = memoryStream.ToArray();
+            using var writer = new ResourceWriter(ResourceFileName);
+            writer.AddResourceData("SavedPeople", nameof(List<PersonInfo>), bytes);
         }
 
-        public static LinkedList<PersonInfo> DeserializeUsers(string path)
+        public static List<PersonInfo>? DeserializeUsers()
         {
-            LinkedList<PersonInfo> users = new LinkedList<PersonInfo>();
-            BinaryFormatter formatter = new BinaryFormatter();
-            using FileStream fs = new FileStream(path, FileMode.Open);
-
-            while (true)
+            if (!File.Exists(ResourceFileName))
             {
-                try
-                {
-                    users.AddLast((PersonInfo) formatter.Deserialize(fs));
-                } // todo !!!!
-                catch (SerializationException)
-                {
-                    break;
-                }
+                return null;
             }
 
-            return users;
-        }
+            using var reader = new ResourceReader(ResourceFileName);
+            reader.GetResourceData("SavedPeople", out string typeName, out byte[] bytes);
 
-        public static LinkedList<PersonInfo> ReadUsersFromTxt(string path, int usersCount)
-        {
-            LinkedList<PersonInfo> users = new LinkedList<PersonInfo>();
-
-            LinkedList<string> names = new LinkedList<string>();
-            LinkedList<string> emails = new LinkedList<string>();
-
-            LinkedList<DateTime> birthdays = new LinkedList<DateTime>();
-            using (StreamReader reader = new StreamReader(new FileStream(path, FileMode.Open)))
+            if (Type.GetType(typeName) != typeof(List<PersonInfo>))
             {
-                for (int fase = 0; fase < 3; fase++)
-                {
-                    int tempCount = usersCount;
-                    switch (fase)
-                    {
-                        case 0:
-                            while (tempCount-- > 0)
-                            {
-                                names.AddLast(reader.ReadLine());
-                            }
-
-                            break;
-                        case 1:
-                            while (tempCount-- > 0)
-                            {
-                                emails.AddLast(reader.ReadLine());
-                            }
-
-                            break;
-                        case 2:
-                            while (tempCount-- > 0)
-                            {
-                                string[] args = reader.ReadLine().Split('/');
-                                DateTime birthday = new DateTime(int.Parse(args[2]), int.Parse(args[1]),
-                                    int.Parse(args[0]));
-                                birthdays.AddLast(birthday);
-                            }
-
-                            break;
-                        default:
-                            throw new ArgumentException("Something went wrong !");
-                    }
-                }
-
-                using (var eN = names.GetEnumerator())
-                using (var eE = emails.GetEnumerator())
-                using (var eB = birthdays.GetEnumerator())
-                {
-                    while (eN.MoveNext() && eE.MoveNext() && eB.MoveNext())
-                    {
-                        var args = eN.Current.Split();
-                        var email = eE.Current;
-                        var birthDate = eB.Current;
-
-                        var user = new PersonInfo(args[0], args[1], email, birthDate);
-                        users.AddLast(user);
-                    }
-                }
+                return null;
             }
 
-            return users;
+            using var byteStream = new MemoryStream(bytes);
+            IFormatter formatter = new BinaryFormatter();
+            return (List<PersonInfo>) formatter.Deserialize(byteStream);
         }
     }
 }

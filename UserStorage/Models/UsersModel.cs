@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.Windows;
 
 namespace UserStorage.Models
 {
@@ -48,15 +46,28 @@ namespace UserStorage.Models
 
         public void AddUser(PersonInfo user)
         {
-            Data.Users.AddLast(user);
+            Data.Users.Add(user);
         }
 
         public void EditUser(PersonInfo edited)
         {
-            var node = Data.Users.Find(Data.ChosenUser);
-            if (node == null)
+            // todo make normal
+            int foundIndex = -1;
+            for (var i = 0; i < Data.Users.Count; ++i)
+            {
+                if (Data.ChosenUser == edited)
+                {
+                    foundIndex = i;
+                    break;
+                }
+            }
+
+            if (foundIndex == -1)
+            {
                 throw new NullReferenceException("No such user in storage to edit !");
-            node.Value = edited;
+            }
+
+            Data.Users[foundIndex] = edited;
         }
 
         public void DeleteUser(PersonInfo user)

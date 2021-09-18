@@ -14,7 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -129,22 +129,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="img\find-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="img\add-icon.png" />
-    <Resource Include="img\delete-icon.png" />
-    <Resource Include="img\edit-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SerializedData\default_users.bin" />
-    <Content Include="SerializedData\users.bin" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.csproj">
       <Project>{ff56b84c-f98d-4320-a465-95e5fc130c70}</Project>
       <Name>Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="img" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

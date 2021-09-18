@@ -25,7 +25,7 @@ namespace UserStorage
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            SerializationManager.Serialise("..\\..\\SerializedData\\users.bin", _data.Users);
+            SerializationManager.Serialise(_data.Users);
             base.OnClosing(e);
         }
     }

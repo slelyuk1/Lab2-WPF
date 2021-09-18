@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using UserStorage.Managers;
 
 namespace UserStorage.Models
@@ -15,23 +14,11 @@ namespace UserStorage.Models
         public event Action<PersonInfo>? UserChosen;
 
         private PersonInfo? _currentChosenUser;
-        public LinkedList<PersonInfo> Users { get; }
+        public List<PersonInfo> Users { get; }
 
-        public Storage(string serializationPath)
+        public Storage()
         {
-            Users = new LinkedList<PersonInfo>();
-            if (File.Exists(serializationPath))
-            {
-                Users = SerializationManager.DeserializeUsers(serializationPath);
-            }
-            else if (File.Exists(UsersRecoveryPath))
-            {
-                Users = SerializationManager.DeserializeUsers(UsersRecoveryPath);
-            }
-            else
-            {
-                throw new FileNotFoundException("Files that contain users were not found !");
-            }
+            Users = SerializationManager.DeserializeUsers() ?? new List<PersonInfo>();
         }
 
         public PersonInfo? ChosenUser
