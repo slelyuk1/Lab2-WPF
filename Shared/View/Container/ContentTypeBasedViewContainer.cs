@@ -1,37 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Shared.View.Container
 {
     public class ContentTypeBasedViewContainer : IViewMutableContainer<Type>
     {
-        private readonly IDictionary<Type, object> _views;
+        private readonly IDictionary<Type, FrameworkElement> _views;
 
         public ContentTypeBasedViewContainer()
         {
-            _views = new Dictionary<Type, object>();
+            _views = new Dictionary<Type, FrameworkElement>();
         }
 
-        public ContentTypeBasedViewContainer(params View[] views) : this()
+        public ContentTypeBasedViewContainer(params FrameworkElement[] views) : this()
         {
             RegisterViews(views);
         }
 
-        public View? GetView(Type contentType)
+        public FrameworkElement? GetView(Type contentType)
         {
-            if (_views.TryGetValue(contentType, out object? view))
+            if (_views.TryGetValue(contentType, out FrameworkElement? view))
             {
-                return (View) view;
+                return view;
             }
 
             return null;
         }
 
-        public void RegisterViews(params View[] views)
+        public void RegisterViews(params FrameworkElement[] views)
         {
             foreach (var view in views)
             {
-                Type contentType = view.Content.GetType();
+                Type contentType = view.GetType();
                 _views.Add(contentType, view);
             }
         }

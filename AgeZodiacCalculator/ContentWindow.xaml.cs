@@ -1,4 +1,4 @@
-﻿using Shared.View;
+﻿using System.Windows;
 using Shared.View.Visualizer;
 
 namespace AgeZodiacCalculator
@@ -10,12 +10,12 @@ namespace AgeZodiacCalculator
             InitializeComponent();
         }
 
-        public void Visualize(View toVisualize)
+        public void Visualize(FrameworkElement toVisualize)
         {
-            Title = toVisualize.Title;
+            Title = toVisualize.Name;
             MinHeight = toVisualize.MinHeight;
             MinWidth = toVisualize.MinWidth;
-            ContentControl.Content = toVisualize.Content;
+            ContentControl.Content = toVisualize;
         }
     }
 }

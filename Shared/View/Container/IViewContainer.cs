@@ -1,7 +1,9 @@
-﻿namespace Shared.View.Container
+﻿using System.Windows;
+
+namespace Shared.View.Container
 {
     public interface IViewContainer<in T>
     {
-        View? GetView(T searchCriteria);
+        FrameworkElement? GetView(T searchCriteria);
     }
 }

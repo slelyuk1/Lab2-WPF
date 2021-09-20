@@ -5,7 +5,6 @@ using System.Resources;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UserStorage.Models;
-using UserStorage.Properties;
 
 namespace UserStorage.Managers
 {
@@ -14,17 +13,17 @@ namespace UserStorage.Managers
     {
         private const string ResourceFileName = @".\Saved.resx";
 
-        public static void Serialise(List<PersonInfo> users)
+        public static void Serialise(IList<PersonInfo> users)
         {
             using var memoryStream = new MemoryStream();
             IFormatter formatter = new BinaryFormatter();
             formatter.Serialize(memoryStream, users);
             byte[] bytes = memoryStream.ToArray();
             using var writer = new ResourceWriter(ResourceFileName);
-            writer.AddResourceData("SavedPeople", nameof(List<PersonInfo>), bytes);
+            writer.AddResourceData("SavedPeople", nameof(IList<PersonInfo>), bytes);
         }
 
-        public static List<PersonInfo>? DeserializeUsers()
+        public static IList<PersonInfo>? DeserializeUsers()
         {
             if (!File.Exists(ResourceFileName))
             {
@@ -34,14 +33,14 @@ namespace UserStorage.Managers
             using var reader = new ResourceReader(ResourceFileName);
             reader.GetResourceData("SavedPeople", out string typeName, out byte[] bytes);
 
-            if (Type.GetType(typeName) != typeof(List<PersonInfo>))
+            if (typeName != nameof(IList<PersonInfo>))
             {
                 return null;
             }
 
             using var byteStream = new MemoryStream(bytes);
             IFormatter formatter = new BinaryFormatter();
-            return (List<PersonInfo>) formatter.Deserialize(byteStream);
+            return (IList<PersonInfo>) formatter.Deserialize(byteStream);
         }
     }
 }

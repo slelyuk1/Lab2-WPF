@@ -5,10 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UserStorage.ViewModel"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance {x:Type local:UsersViewModel}}">
+             d:DataContext="{d:DesignInstance {x:Type local:UsersViewModel}}"
+             MinWidth="700"
+             MinHeight="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/ResourceDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.22*" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="*" />
 
         </Grid.RowDefinitions>
@@ -17,9 +26,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <ToolBar Grid.Row="0" VerticalAlignment="Top" Height="30">
+        <ToolBar Grid.Row="0" VerticalAlignment="Top">
             <ToggleButton Command="{Binding Path=AddCommand}">
-                <Image Source="./../img/add-icon.png" />
+                <Image Source="{StaticResource AddIcon}" />
                 <ToggleButton.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -29,9 +38,11 @@
                     </ToolTip>
                 </ToggleButton.ToolTip>
             </ToggleButton>
+
             <Separator />
+
             <ToggleButton Command="{Binding Path=DeleteCommand}">
-                <Image Source="../img/delete-icon.png" />
+                <Image Source="{StaticResource DeleteIcon}" />
                 <ToggleButton.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -41,9 +52,11 @@
                     </ToolTip>
                 </ToggleButton.ToolTip>
             </ToggleButton>
+
             <Separator />
+
             <ToggleButton Command="{Binding Path=EditCommand}">
-                <Image Source="../img/edit-icon.png" />
+                <Image Source="{StaticResource EditIcon}" />
                 <ToggleButton.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -53,9 +66,11 @@
                     </ToolTip>
                 </ToggleButton.ToolTip>
             </ToggleButton>
+
             <Separator />
+
             <ToggleButton Command="{Binding Path=FilterCommand}">
-                <Image Source="../img/find-icon.png" />
+                <Image Source="{StaticResource FindIcon}" />
                 <ToggleButton.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -65,6 +80,8 @@
                     </ToolTip>
                 </ToggleButton.ToolTip>
             </ToggleButton>
+
+            <!-- todo normal width -->
             <ComboBox MinWidth="100" SelectedValue="{Binding Path=SelectedProperty}"
                       ItemsSource="{Binding Path=FilterProperties}" />
             <TextBox MinWidth="150" MaxLength="30" Text="{Binding Path=FilterText, Mode=OneWayToSource}" />
@@ -72,12 +89,10 @@
         </ToolBar>
 
         <!-- todo ColumnWidth="*"-->
-        <DataGrid x:Name="UsersGrid" Grid.Row="1" Grid.Column="0" Margin="5 5 5 5" VerticalAlignment="Top"
-                  HorizontalAlignment="Center"
+        <DataGrid Grid.Row="1" Grid.Column="0" BorderThickness="0"
                   ItemsSource="{Binding Path=UsersCollectionView}"
                   SelectedItem="{Binding Path=SelectedUser, Mode=OneWayToSource}"
                   SelectedIndex="{Binding Path=SelectedIndex}"
-
                   Sorting="OnUsersSorting"
                   AutoGenerateColumns="False"
                   HorizontalScrollBarVisibility="Visible"

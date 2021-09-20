@@ -1,7 +1,9 @@
-﻿namespace Shared.View.Container
+﻿using System.Windows;
+
+namespace Shared.View.Container
 {
-    public interface IViewMutableContainer<T> : IViewContainer<T>
+    public interface IViewMutableContainer<in T> : IViewContainer<T>
     {
-        void RegisterViews(params View[] toRegister);
+        void RegisterViews(params FrameworkElement[] toRegister);
     }
 }

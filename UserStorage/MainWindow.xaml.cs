@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 using Shared.View;
 using Shared.View.Visualizer;
 using UserStorage.Managers;
@@ -16,11 +17,11 @@ namespace UserStorage
             InitializeComponent();
         }
 
-        public void Visualize(View toVisualize)
+        public void Visualize(FrameworkElement toVisualize)
         {
             MinHeight = toVisualize.MinHeight;
             MinWidth = toVisualize.MinWidth;
-            WindowContents.Content = toVisualize.Content;
+            WindowContents.Content = toVisualize;
         }
 
         protected override void OnClosing(CancelEventArgs e)

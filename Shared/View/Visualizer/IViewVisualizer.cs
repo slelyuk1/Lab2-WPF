@@ -1,7 +1,9 @@
-﻿namespace Shared.View.Visualizer
+﻿using System.Windows;
+
+namespace Shared.View.Visualizer
 {
     public interface IViewVisualizer
     {
-        void Visualize(View toVisualize);
+        void Visualize(FrameworkElement toVisualize);
     }
 }

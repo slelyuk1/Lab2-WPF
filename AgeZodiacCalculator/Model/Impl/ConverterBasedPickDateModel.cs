@@ -1,14 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using AgeZodiacCalculator.Info;
 
 namespace AgeZodiacCalculator.Model.Impl
 {
     internal class ConverterBasedPickDateModel : IPickDateModel
     {
-        private static readonly TraceSource Logger = new TraceSource(nameof(ConverterBasedPickDateModel));
-
         public DateTime SelectedDate { get; set; }
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;

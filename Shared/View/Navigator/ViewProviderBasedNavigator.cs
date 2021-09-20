@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using Shared.View.Container;
 using Shared.View.Visualizer;
 
@@ -18,7 +19,7 @@ namespace Shared.View.Navigator
 
         public void Navigate(T viewIdentifier)
         {
-            View? view = _viewContainer.GetView(viewIdentifier);
+            FrameworkElement? view = _viewContainer.GetView(viewIdentifier);
             if (view == null)
             {
                 throw new InvalidOperationException("ViewProvider couldn't find view using search criteria: " + viewIdentifier);

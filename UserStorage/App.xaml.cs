@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using Shared.View;
 using Shared.View.Container;
 using Shared.View.Navigator;
 using UserStorage.Content;
@@ -21,15 +20,9 @@ namespace UserStorage
             IViewMutableContainer<Type> viewContainer = new ContentTypeBasedViewContainer();
             IViewNavigator<Type> navigator = new ViewProviderBasedNavigator<Type>(window, viewContainer);
 
-            var userInfoView = new View("Info", 300, 271, new UserInfoContent(
-                new UserInfoViewModel(navigator, data))
-            );
-            var userInputView = new View("Input", 300, 271, new UserInputContent(
-                new UserInputViewModel(navigator, data)
-            ));
-            var usersView = new View("Users", 200, 750, new UsersContent(
-                new UsersViewModel(navigator, data))
-            );
+            var userInfoView = new UserInfoContent(new UserInfoViewModel(navigator, data));
+            var userInputView = new UserInputContent(new UserInputViewModel(navigator, data));
+            var usersView = new UsersContent(new UsersViewModel(navigator, data));
 
             viewContainer.RegisterViews(userInfoView, userInputView, usersView);
             navigator.Navigate(typeof(UsersContent));
