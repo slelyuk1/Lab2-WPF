@@ -42,7 +42,7 @@ namespace AgeZodiacCalculator.Converter
                 10 => day < 22 ? WesternSign.Libra : WesternSign.Scorpio,
                 11 => day < 22 ? WesternSign.Scorpio : WesternSign.Sagittarius,
                 12 => day < 22 ? WesternSign.Sagittarius : WesternSign.Capricorn,
-                _ => throw new ArgumentException("Inappropriate format of month !")
+                _ => throw new ArgumentException("Inappropriate format of month")
             };
         }
 

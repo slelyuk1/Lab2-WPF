@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows;
-using Shared.View;
 using Shared.View.Visualizer;
 using UserStorage.Managers;
 using UserStorage.Models;
@@ -9,11 +8,13 @@ namespace UserStorage
 {
     public partial class MainWindow : IViewVisualizer
     {
-        private readonly Storage _data;
+        private readonly Storage _storage;
+        private readonly AbstractSerializationFacade _serializationFacade;
 
-        public MainWindow(Storage data)
+        public MainWindow(Storage storage, AbstractSerializationFacade serializationFacade)
         {
-            _data = data;
+            _storage = storage;
+            _serializationFacade = serializationFacade;
             InitializeComponent();
         }
 
@@ -26,7 +27,7 @@ namespace UserStorage
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            SerializationManager.Serialise(_data.Users);
+            _serializationFacade.Serialize(App.StorageResourceName, _storage);
             base.OnClosing(e);
         }
     }

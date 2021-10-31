@@ -58,7 +58,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Exception\PersonException.cs" />
-    <Compile Include="Managers\SerializationManager.cs" />
+    <Compile Include="Managers\AbstractSerializationFacade.cs" />
+    <Compile Include="Managers\ResourceSerializationFacade.cs" />
     <Compile Include="Models\Signs.cs" />
     <Compile Include="Models\Storage.cs" />
     <Compile Include="Models\UserInputModel.cs" />

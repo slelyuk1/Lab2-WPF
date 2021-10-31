@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using UserStorage.Managers;
 
 namespace UserStorage.Models
 {
+    [Serializable]
     public class Storage
     {
-        public event Action<PersonInfo>? UserAdded;
-        public event Action<PersonInfo>? UserDeleted;
-        public event Action<PersonInfo>? UserEdited;
-        public event Action<PersonInfo>? UserChosen;
+        // todo review NonSerialized usage
+        [field: NonSerialized] public event Action<PersonInfo>? UserAdded;
+        [field: NonSerialized] public event Action<PersonInfo>? UserDeleted;
+        [field: NonSerialized] public event Action<PersonInfo>? UserEdited;
+        [field: NonSerialized] public event Action<PersonInfo>? UserChosen;
 
-        private PersonInfo? _currentChosenUser;
+        [NonSerialized] private PersonInfo? _currentChosenUser;
         public IList<PersonInfo> Users { get; }
 
         public Storage()
         {
-            Users = SerializationManager.DeserializeUsers() ?? new List<PersonInfo>();
+            Users = new List<PersonInfo>();
         }
 
         public PersonInfo? ChosenUser
