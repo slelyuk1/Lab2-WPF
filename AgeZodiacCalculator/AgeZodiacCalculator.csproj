@@ -55,11 +55,11 @@
         <Compile Include="ContentWindow.xaml.cs">
           <DependentUpon>ContentWindow.xaml</DependentUpon>
         </Compile>
-        <Compile Include="Converter\TypeConverter\AgeInfoConverter.cs" />
-        <Compile Include="Converter\TypeConverter\ChineseSignConverter.cs" />
-        <Compile Include="Converter\TypeConverter\WesternSignConverter.cs" />
-        <Compile Include="Converter\ValueConverter\Adapter\TypeToValueConverterAdapter.cs" />
-        <Compile Include="Converter\ValueConverter\Adapter\XamlUsable.cs" />
+        <Compile Include="Converter\CustomTypeConverter\AgeInfoConverter.cs" />
+        <Compile Include="Converter\CustomTypeConverter\ChineseSignConverter.cs" />
+        <Compile Include="Converter\CustomTypeConverter\WesternSignConverter.cs" />
+        <Compile Include="Converter\CustomValueConverter\Adapter\TypeToValueConverterAdapter.cs" />
+        <Compile Include="Converter\CustomValueConverter\Adapter\XamlUsable.cs" />
         <Compile Include="ViewModel\PickDateViewModel.cs" />
         <Page Include="ContentWindow.xaml">
           <Generator>MSBuild:Compile</Generator>

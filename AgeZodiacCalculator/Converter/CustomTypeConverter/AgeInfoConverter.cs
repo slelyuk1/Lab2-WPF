@@ -2,13 +2,12 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Windows.Data;
 using AgeZodiacCalculator.Info;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberCanBeMadeStatic.Global
 
-namespace AgeZodiacCalculator.Converter
+namespace AgeZodiacCalculator.Converter.CustomTypeConverter
 {
     public class AgeInfoConverter : TypeConverter
     {

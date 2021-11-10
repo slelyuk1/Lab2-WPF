@@ -6,7 +6,7 @@ using AgeZodiacCalculator.Info;
 // ReSharper disable MemberCanBeMadeStatic.Global
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace AgeZodiacCalculator.Converter
+namespace AgeZodiacCalculator.Converter.CustomTypeConverter
 {
     internal class ChineseSignConverter : EnumConverter
     {

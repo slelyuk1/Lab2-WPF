@@ -1,7 +1,7 @@
 ﻿using System.Windows.Data;
 using AgeZodiacCalculator.Info;
 
-namespace AgeZodiacCalculator.Converter.ValueConverter.Adapter
+namespace AgeZodiacCalculator.Converter.CustomValueConverter.Adapter
 {
     [ValueConversion(typeof(AgeInfo), typeof(string))]
     public class AgeInfoValueConverterAdapter : TypeToValueConverterAdapter<AgeInfo>

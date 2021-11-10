@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using AgeZodiacCalculator.Converter;
+using AgeZodiacCalculator.Converter.CustomTypeConverter;
 
 namespace AgeZodiacCalculator.Info
 {
