@@ -7,10 +7,10 @@ namespace AgeZodiacCalculator.Model
     {
         public DateTime SelectedDate { get; set; }
 
-        AgeInfo? CalculateAge();
+        public AgeInfo? Age { get; }
 
-        ChineseSign? CalculateChineseSign();
+        public ChineseSign? ChineseSign { get; }
 
-        WesternSign? CalculateWesternSign();
+        public WesternSign? WesternSign { get; }
     }
 }

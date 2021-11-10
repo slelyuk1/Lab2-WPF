@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Windows.Data;
 using AgeZodiacCalculator.Info;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -17,7 +18,7 @@ namespace AgeZodiacCalculator.Converter
         }
 
         [SuppressMessage("ReSharper", "ConvertIfStatementToReturnStatement")]
-        public override object? ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo culture, object value, Type destinationType)
         {
             if (value is not AgeInfo ageValue)
             {
@@ -32,9 +33,9 @@ namespace AgeZodiacCalculator.Converter
             return base.ConvertTo(context, culture, ageValue, destinationType);
         }
 
-        protected string InternalConvertToString(AgeInfo? value)
+        protected string? InternalConvertToString(AgeInfo? value)
         {
-            return value != null ? $"{value.Years} years, {value.Months} months, {value.Days} days" : "";
+            return value != null ? $"{value.Years} years, {value.Months} months, {value.Days} days" : null;
         }
     }
 }

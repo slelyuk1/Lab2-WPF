@@ -1,4 +1,4 @@
-﻿using Shared.View;
+﻿using System.Windows;
 using Shared.View.Visualizer;
 
 namespace TaskManager
@@ -10,11 +10,12 @@ namespace TaskManager
             InitializeComponent();
         }
 
-        public void Visualize(View toVisualize)
+        public void Visualize(FrameworkElement toVisualize)
         {
+            Title = toVisualize.Name;
             MinHeight = toVisualize.MinHeight;
             MinWidth = toVisualize.MinWidth;
-            WindowContent.Content = toVisualize.Content;
+            ContentControl.Content = toVisualize;
         }
     }
 }

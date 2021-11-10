@@ -4,58 +4,31 @@ namespace UserStorage.Models
 {
     public class UsersModel
     {
-        public UsersModel(Storage data)
+        private readonly Storage _storage;
+
+        public UsersModel(Storage storage)
         {
-            Data = data;
+            _storage = storage;
         }
 
-        public Storage Data { get; }
-
-        public bool FilterPredicate(PersonInfo user, string filter, string property)
+        public PersonInfo? ChosenPersonInfo
         {
-            filter = filter.ToLower();
-            if (property == "All")
-            {
-                var name = user.Name.ToLower();
-                var surname = user.Surname.ToLower();
-                var email = user.Email.ToLower();
-                var sunSign = user.SunSign.ToLower();
-                var chineseSign = user.ChineseSign.ToLower();
-                return name.Contains(filter) || surname.Contains(filter) || email.Contains(filter) ||
-                       email.Contains(filter) || sunSign.Contains(filter) || chineseSign.Contains(filter);
-            }
-
-            var userProperty = user.GetType().GetProperty(property);
-            if (userProperty == null)
-                throw new ArgumentException("Inappropriate property for user !");
-            var propertyVal = userProperty.GetValue(user, null);
-
-            if (propertyVal is string s)
-            {
-                return s.ToLower().Contains(filter);
-            }
-
-            throw new ArgumentException("Inappropriate property type for filtering");
-        }
-
-        public PersonInfo ChosenPersonInfo
-        {
-            get => Data.ChosenUser;
-            set => Data.ChosenUser = value;
+            get => _storage.ChosenUser;
+            set => _storage.ChosenUser = value;
         }
 
         public void AddUser(PersonInfo user)
         {
-            Data.Users.Add(user);
+            _storage.Users.Add(user);
         }
 
         public void EditUser(PersonInfo edited)
         {
             // todo make normal
             int foundIndex = -1;
-            for (var i = 0; i < Data.Users.Count; ++i)
+            for (var i = 0; i < _storage.Users.Count; ++i)
             {
-                if (Data.ChosenUser == edited)
+                if (_storage.ChosenUser == edited)
                 {
                     foundIndex = i;
                     break;
@@ -67,12 +40,12 @@ namespace UserStorage.Models
                 throw new NullReferenceException("No such user in storage to edit !");
             }
 
-            Data.Users[foundIndex] = edited;
+            _storage.Users[foundIndex] = edited;
         }
 
         public void DeleteUser(PersonInfo user)
         {
-            Data.Users.Remove(user);
+            _storage.Users.Remove(user);
         }
 
         public bool IsUserChosen => ChosenPersonInfo != null;

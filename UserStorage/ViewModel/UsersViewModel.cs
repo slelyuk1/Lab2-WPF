@@ -14,8 +14,17 @@ namespace UserStorage.ViewModel
     public class UsersViewModel : ObservableItem
     {
         private readonly IViewNavigator<Type> _navigator;
-        private ObservableCollection<PersonInfo> _users;
-        private ObservableCollection<string> _properties;
+        private readonly UsersModel _model;
+        private readonly Storage _data;
+        private readonly ICollectionView _usersView;
+
+        public ObservableCollection<PersonInfo> Users { get; }
+        public ObservableCollection<string> FilterProperties { get; }
+        public string FilterText { get; set; }
+
+        // todo make non null
+        public string? SelectedProperty { get; set; }
+
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand EditCommand { get; }
@@ -24,59 +33,35 @@ namespace UserStorage.ViewModel
         public UsersViewModel(IViewNavigator<Type> navigator, Storage data)
         {
             _navigator = navigator;
-            Data = data;
-            Model = new UsersModel(data);
-            _users = new ObservableCollection<PersonInfo>(data.Users);
-            UsersCollectionView = CollectionViewSource.GetDefaultView(_users);
-            FilterProperties = new ObservableCollection<string> {"All", "Name", "Surname", "Email", "SunSign", "ChineseSign"};
+            _data = data;
+            _model = new UsersModel(data);
 
+            FilterText = "";
+
+            Users = new ObservableCollection<PersonInfo>(data.Users);
             AddCommand = new DelegateBasedCommand(OpenUsersChangerInAddMode);
             DeleteCommand = new DelegateBasedCommand(ExecuteDelete, UserChosen);
             EditCommand = new DelegateBasedCommand(OpenUsersChangerInEditMode, UserChosen);
             FilterCommand = new DelegateBasedCommand(ExecuteFilter);
-            
+
+            // todo maybe remove view usage
+            _usersView = new CollectionView(Users);
+            // todo improve filter properties initialization process
+            FilterProperties = new ObservableCollection<string> {"All", "Name", "Surname", "Email", "SunSign", "ChineseSign"};
+
             data.UserAdded += AddUser;
             data.UserEdited += EditUser;
             data.UserDeleted += DeleteUser;
         }
 
-        public UsersModel Model { get; set; }
-        public Storage Data { get; }
-
-        public ObservableCollection<PersonInfo> Users
-        {
-            get => _users;
-            set
-            {
-                _users = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<string> FilterProperties
-        {
-            get => _properties;
-            set
-            {
-                _properties = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string FilterText { get; set; }
-        public string SelectedProperty { get; set; }
 
         public PersonInfo SelectedUser
         {
-            set => Model.ChosenPersonInfo = value;
+            set => _model.ChosenPersonInfo = value;
         }
 
-        //property defined for future
-        public int SelectedIndex { get; set; }
 
-        public ICollectionView UsersCollectionView { get; set; }
-
-        // todo method for implementing in future
+        // todo implement
         public void UsersSorting(object sender, DataGridSortingEventArgs e)
         {
             /* bool ascending = e.Column.SortDirection == ListSortDirection.Ascending;
@@ -99,42 +84,74 @@ namespace UserStorage.ViewModel
 
         private void ExecuteFilter(object obj)
         {
-            UsersCollectionView.Filter = item =>
-                Model.FilterPredicate((PersonInfo) item, FilterText, SelectedProperty);
+            _usersView.Filter = item => FilterPredicate((PersonInfo) item, FilterText, SelectedProperty);
         }
 
         private void ExecuteDelete(object obj)
         {
-            Data.DeleteUser(Model.ChosenPersonInfo);
+            _data.DeleteUser(_model.ChosenPersonInfo);
         }
 
         private bool UserChosen(object obj)
         {
-            return Model.IsUserChosen;
+            return _model.IsUserChosen;
         }
 
         private void AddUser(PersonInfo newUser)
         {
-            _users.Add(newUser);
-            Model.AddUser(newUser);
+            Users.Add(newUser);
+            _model.AddUser(newUser);
         }
 
         private void DeleteUser(PersonInfo toDelete)
         {
-            int index = _users.IndexOf(toDelete);
+            int index = Users.IndexOf(toDelete);
             if (index == -1)
+            {
                 throw new NullReferenceException("No such user in observable collection !");
-            _users.Remove(_users[index]);
-            Model.DeleteUser(toDelete);
+            }
+
+            Users.Remove(Users[index]);
+            _model.DeleteUser(toDelete);
         }
 
         private void EditUser(PersonInfo edited)
         {
-            Model.EditUser(edited);
-            int index = _users.IndexOf(Model.ChosenPersonInfo);
+            _model.EditUser(edited);
+            int index = Users.IndexOf(_model.ChosenPersonInfo);
             if (index == -1)
+            {
                 throw new NullReferenceException("No such user in observable collection !");
-            _users[index] = edited;
+            }
+
+            Users[index] = edited;
+        }
+
+        private static bool FilterPredicate(PersonInfo user, string filter, string property)
+        {
+            filter = filter.ToLower();
+            if (property == "All")
+            {
+                var name = user.Name.ToLower();
+                var surname = user.Surname.ToLower();
+                var email = user.Email.ToLower();
+                var sunSign = user.SunSign.ToLower();
+                var chineseSign = user.ChineseSign.ToLower();
+                return name.Contains(filter) || surname.Contains(filter) || email.Contains(filter) ||
+                       email.Contains(filter) || sunSign.Contains(filter) || chineseSign.Contains(filter);
+            }
+
+            var userProperty = user.GetType().GetProperty(property);
+            if (userProperty == null)
+                throw new ArgumentException("Inappropriate property for user !");
+            var propertyVal = userProperty.GetValue(user, null);
+
+            if (propertyVal is string s)
+            {
+                return s.ToLower().Contains(filter);
+            }
+
+            throw new ArgumentException("Inappropriate property type for filtering");
         }
     }
 }

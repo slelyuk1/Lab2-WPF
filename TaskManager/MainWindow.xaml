@@ -7,6 +7,6 @@
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight">
     <Grid>
-        <ContentControl Name="WindowContent" />
+        <ContentControl Name="ContentControl" />
     </Grid>
 </Window>

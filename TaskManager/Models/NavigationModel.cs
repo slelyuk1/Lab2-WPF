@@ -34,7 +34,7 @@ namespace TaskManager.Models
                     _window.MaxHeight = 500;
                     _window.MinWidth = 750;
                     _window.MaxWidth = 900;
-                    _window.WindowContent.Content = _processesInfoView;
+                    _window.ContentControl.Content = _processesInfoView;
                     break;
                 default:
                     throw new ArgumentException("Inappropriate parameter for navigation !");

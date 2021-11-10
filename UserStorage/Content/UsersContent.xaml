@@ -92,7 +92,6 @@
         <DataGrid Grid.Row="1" Grid.Column="0" BorderThickness="0"
                   ItemsSource="{Binding Path=Users}"
                   SelectedItem="{Binding Path=SelectedUser, Mode=OneWayToSource}"
-                  SelectedIndex="{Binding Path=SelectedIndex}"
                   Sorting="OnUsersSorting"
                   AutoGenerateColumns="False"
                   HorizontalScrollBarVisibility="Visible"

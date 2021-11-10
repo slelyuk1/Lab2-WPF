@@ -1,7 +1,12 @@
 ﻿<Application x:Class="AgeZodiacCalculator.AgeZodiacCalculatorApp"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Application.Resources>
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:valueConverterAdapter="clr-namespace:AgeZodiacCalculator.Converter.ValueConverter.Adapter"
+             Startup="OnStartup">
 
+    <Application.Resources>
+        <valueConverterAdapter:AgeInfoValueConverterAdapter x:Key="AgeInfoValueConverter" />
+        <valueConverterAdapter:ChineseSignValueConverterAdapter x:Key="ChineseSignValueConverter" />
+        <valueConverterAdapter:WesternSignValueConverterAdapter x:Key="WesternSignValueConverter" />
     </Application.Resources>
 </Application>

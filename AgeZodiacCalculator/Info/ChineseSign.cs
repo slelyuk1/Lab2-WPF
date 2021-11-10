@@ -4,7 +4,7 @@ using AgeZodiacCalculator.Converter;
 namespace AgeZodiacCalculator.Info
 {
     [TypeConverter(typeof(ChineseSignConverter))]
-    internal enum ChineseSign
+    public enum ChineseSign
     {
         Monkey,
         Rooster,

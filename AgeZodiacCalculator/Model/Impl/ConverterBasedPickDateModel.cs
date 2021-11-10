@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using AgeZodiacCalculator.Info;
+using Shared.Tool;
 
 namespace AgeZodiacCalculator.Model.Impl
 {
-    internal class ConverterBasedPickDateModel : IPickDateModel
+    internal class ConverterBasedPickDateModel : ObservableItem, IPickDateModel
     {
-        public DateTime SelectedDate { get; set; }
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
 
@@ -17,39 +17,38 @@ namespace AgeZodiacCalculator.Model.Impl
             _westernSignConverter = westernSignConverter;
         }
 
-        public AgeInfo? CalculateAge()
+        public DateTime SelectedDate { get; set; }
+
+        public AgeInfo? Age
         {
-            TimeSpan timeSpan = DateTime.Now - SelectedDate;
-            int substr = timeSpan.Days;
-            if (substr <= 0)
+            get
             {
-                // todo logging
-                return null;
+                if (IsTimeInFutureDay(SelectedDate))
+                {
+                    // todo logging
+                    return null;
+                }
+
+                TimeSpan span = DateTime.Now - SelectedDate;
+                int daysDifference = span.Days;
+                int years = daysDifference / 365;
+                int months = (12 - SelectedDate.Month + DateTime.Now.Month) % 12;
+                int days = Math.Abs(DateTime.Now.Day - SelectedDate.Day);
+
+                return years <= 135 ? new AgeInfo(days, months, years) : null;
             }
-
-            int years = substr / 365;
-            int months = (12 - SelectedDate.Month + DateTime.Now.Month) % 12;
-            int days = Math.Abs(DateTime.Now.Day - SelectedDate.Day);
-
-            if (years > 135)
-            {
-                // todo logging
-                return null;
-            }
-
-            return new AgeInfo(days, months, years);
         }
 
-        public ChineseSign? CalculateChineseSign()
-        {
-            // todo logging
-            return (ChineseSign) _chineseSignConverter.ConvertFrom(SelectedDate);
-        }
+        // todo logging
+        public ChineseSign? ChineseSign => IsTimeInFutureDay(SelectedDate) ? null : (ChineseSign) _chineseSignConverter.ConvertFrom(SelectedDate);
 
-        public WesternSign? CalculateWesternSign()
+        // todo logging
+        public WesternSign? WesternSign => IsTimeInFutureDay(SelectedDate) ? null : (WesternSign) _westernSignConverter.ConvertFrom(SelectedDate);
+
+        private static bool IsTimeInFutureDay(DateTime time)
         {
-            // todo logging
-            return (WesternSign) _westernSignConverter.ConvertFrom(SelectedDate);
+            TimeSpan span = DateTime.Now - time;
+            return span.Days <= 0;
         }
     }
 }

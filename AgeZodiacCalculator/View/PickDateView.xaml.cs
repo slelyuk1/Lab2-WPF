@@ -1,10 +1,10 @@
 ﻿using AgeZodiacCalculator.ViewModel;
 
-namespace AgeZodiacCalculator.Content
+namespace AgeZodiacCalculator.View
 {
-    public partial class PickDateContent
+    public partial class PickDateView
     {
-        internal PickDateContent(PickDateViewModel viewModel)
+        internal PickDateView(PickDateViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
