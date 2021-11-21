@@ -56,8 +56,6 @@
           <DependentUpon>ContentWindow.xaml</DependentUpon>
         </Compile>
         <Compile Include="Converter\CustomTypeConverter\AgeInfoConverter.cs" />
-        <Compile Include="Converter\CustomTypeConverter\ChineseSignConverter.cs" />
-        <Compile Include="Converter\CustomTypeConverter\WesternSignConverter.cs" />
         <Compile Include="Converter\CustomValueConverter\Adapter\TypeToValueConverterAdapter.cs" />
         <Compile Include="Converter\CustomValueConverter\Adapter\XamlUsable.cs" />
         <Compile Include="ViewModel\PickDateViewModel.cs" />
@@ -74,8 +72,6 @@
         </Compile>
         <Compile Include="View\PickDateView.xaml.cs" />
         <Compile Include="Info\AgeInfo.cs" />
-        <Compile Include="Info\ChineseSign.cs" />
-        <Compile Include="Info\WesternSign.cs" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Model\Impl\ConverterBasedPickDateModel.cs" />

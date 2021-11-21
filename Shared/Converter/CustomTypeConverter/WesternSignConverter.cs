@@ -25,6 +25,32 @@ namespace AgeZodiacCalculator.Converter.CustomTypeConverter
             return base.ConvertFrom(context, culture, value);
         }
 
+
+        // todo maybe better algo
+        // int day = BirthDate.Day;
+        // int month = BirthDate.Month - 1;
+        // var sign = (WesternSigns) month;
+        // bool shift;
+
+        // if (month == 1)
+        // {
+        // shift = day >= 20;
+        // }
+        // else if (month == 0 || (month >= 2 && month <= 5))
+        // {
+        // shift = day >= 21;
+        // }
+        // else if (month >= 6 && month <= 11)
+        // {
+        // shift = day >= 22;
+        // }
+        // else
+        // {
+        // throw new ArgumentException("Inappropriate format of month !");
+        // }
+
+        // return shift ? EnumHelper.GetDescription(sign + 1) : EnumHelper.GetDescription(sign);
+
         public WesternSign ConvertFromDate(DateTime time)
         {
             int day = time.Day;

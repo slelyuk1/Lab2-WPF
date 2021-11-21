@@ -4,33 +4,33 @@ namespace UserStorage.Models
 {
     public class UserInputModel
     {
-        public UserInputModel(Storage data)
+        public UserInputModel()
         {
-            Data = data;
+            Name = "Oleksandr";
+            Surname = "Leliuk";
+            Email = "slelyuk1@gmail.com";
+            BirthDate = new DateTime(2000, 2, 13);
         }
 
-        public Storage Data { get; }
-
-        public PersonInfo ChosenUser
+        public UserInputModel(PersonInfo person)
         {
-            get => Data.ChosenUser;
+            ChosenUser = person;
+            Name = ChosenUser.Name;
+            Surname = ChosenUser.Surname;
+            Email = ChosenUser.Email;
+            BirthDate = ChosenUser.BirthDate;
         }
 
-        public bool IsBirthDay()
-        {
-            if (Data.ChosenUser == null)
-                return false;
-            return Data.ChosenUser.IsBirthday;
-        }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public DateTime BirthDate { get; set; }
 
-        public void AddUser(string name, string surname, string email, DateTime birthday)
-        {
-            Data.AddUser((new PersonInfo(name, surname, email, birthday)));
-        }
+        public PersonInfo? ChosenUser { get; }
 
-        public void EditUser(PersonInfo toEdit, string name, string surname, string email, DateTime birthday)
+        public PersonInfo MakeInfo()
         {
-            Data.EditUser(new PersonInfo(name, surname, email, birthday));
+            return PersonInfo.From(Name, Surname, Email, BirthDate);
         }
     }
 }

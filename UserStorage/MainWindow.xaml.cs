@@ -1,19 +1,24 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
+using Shared.View.Container;
 using Shared.View.Visualizer;
+using UserStorage.Content;
 using UserStorage.Managers;
 using UserStorage.Models;
+using UserStorage.ViewModel;
 
 namespace UserStorage
 {
     public partial class MainWindow : IViewVisualizer
     {
-        private readonly Storage _storage;
+        private readonly IViewContainer<Type> _viewContainer;
         private readonly AbstractSerializationFacade _serializationFacade;
 
-        public MainWindow(Storage storage, AbstractSerializationFacade serializationFacade)
+        public MainWindow(IViewContainer<Type> viewContainer, AbstractSerializationFacade serializationFacade)
         {
-            _storage = storage;
+            _viewContainer = viewContainer;
             _serializationFacade = serializationFacade;
             InitializeComponent();
         }
@@ -27,7 +32,15 @@ namespace UserStorage
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            _serializationFacade.Serialize(App.StorageResourceName, _storage);
+            var usersView = _viewContainer.GetView<UsersView>(typeof(UsersView));
+            if (usersView == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            UsersViewModel viewModel = (UsersViewModel) usersView.DataContext;
+            List<PersonInfo> people = new(viewModel.People);
+            _serializationFacade.Serialize(App.PeopleResourceName, people);
             base.OnClosing(e);
         }
     }

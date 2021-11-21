@@ -1,127 +1,92 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using AgeZodiacCalculator.Info;
 using UserStorage.Exception;
-using UserStorage.Tool;
 
 namespace UserStorage.Models
 {
+    // todo use builder pattern
     [Serializable]
     public class PersonInfo
     {
-        private string _name;
-        private string _surname;
-        private string _email;
-        private DateTime _birthDate;
+        private readonly Guid _id;
 
-        public PersonInfo(string name, string surname, string email, DateTime birthDate)
+        public static PersonInfo From(string name, string surname, string email, DateTime birthDate)
         {
+            ValidateInitializationParameters(name, surname, email, birthDate);
+            return new PersonInfo(name, surname, email, birthDate);
+        }
+
+        public string Name { get; }
+        public string Surname { get; }
+        public string Email { get; }
+        public DateTime BirthDate { get; }
+
+        public bool IsAdult
+        {
+            get
+            {
+                TimeSpan span = DateTime.Now - BirthDate;
+                return span.Days / 365 >= 18;
+            }
+        }
+
+        public ChineseSign ChineseSign => (ChineseSign) TypeDescriptor.GetConverter(typeof(ChineseSign)).ConvertFrom(BirthDate);
+
+        public WesternSign WesternSign => (WesternSign) TypeDescriptor.GetConverter(typeof(WesternSign)).ConvertFrom(BirthDate);
+
+        public bool IsBirthday => DateTime.Now.Date == BirthDate.Date;
+
+        protected bool Equals(PersonInfo other)
+        {
+            return _id.Equals(other._id);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((PersonInfo) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return _id.GetHashCode();
+        }
+
+        private PersonInfo(string name, string surname, string email, DateTime birthDate)
+        {
+            _id = Guid.NewGuid();
             Name = name;
             Surname = surname;
             Email = email;
             BirthDate = birthDate;
         }
 
-        public string Name
+        private static void ValidateInitializationParameters(string name, string surname, string email, DateTime birthDate)
         {
-            get => _name;
-            set
+            if (IsNameValid(name))
             {
-                if (IsNameValid(value))
-                {
-                    throw new NameException(value);
-                }
+                throw new NameException(name);
+            }
 
-                _name = value;
+            if (IsNameValid(surname))
+            {
+                throw new NameException(surname);
+            }
+
+            if (!IsEmailValid(email))
+            {
+                throw new EmailException(email);
+            }
+
+            if (IsBirthDateValid(birthDate))
+            {
+                throw new BirthDateException(birthDate);
             }
         }
-
-        public string Surname
-        {
-            get => _surname;
-            set
-            {
-                if (IsNameValid(value))
-                {
-                    throw new NameException(value);
-                }
-
-                _surname = value;
-            }
-        }
-
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                if (!IsEmailValid(value))
-                {
-                    throw new EmailException(value);
-                }
-
-                _email = value;
-            }
-        }
-
-        public DateTime BirthDate
-        {
-            get => _birthDate;
-            set
-            {
-                if (IsBirthDateValid(value))
-                {
-                    throw new BirthDateException(value);
-                }
-
-                _birthDate = value;
-            }
-        }
-
-        public bool IsAdult
-        {
-            get
-            {
-                TimeSpan span = DateTime.Now - _birthDate;
-                return span.Days / 365 >= 18;
-            }
-        }
-
-        // todo make normal
-        public string SunSign => EnumHelper.GetDescription((ChineseSigns) (_birthDate.Year % 12));
-
-        public string ChineseSign
-        {
-            get
-            {
-                int day = _birthDate.Day;
-                int month = _birthDate.Month - 1;
-                // todo redo
-                var sign = (WesternSigns) month;
-                bool shift;
-
-                if (month == 1)
-                {
-                    shift = day >= 20;
-                }
-                else if (month == 0 || (month >= 2 && month <= 5))
-                {
-                    shift = day >= 21;
-                }
-                else if (month >= 6 && month <= 11)
-                {
-                    shift = day >= 22;
-                }
-                else
-                {
-                    throw new ArgumentException("Inappropriate format of month !");
-                }
-
-                return shift ? EnumHelper.GetDescription(sign + 1) : EnumHelper.GetDescription(sign);
-            }
-        }
-
-        public bool IsBirthday => _birthDate.Day == DateTime.Now.Day && _birthDate.Month == DateTime.Now.Month;
 
         private static bool IsNameValid(string name)
         {

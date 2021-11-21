@@ -24,7 +24,7 @@ namespace AgeZodiacCalculator
             var pickDateViewModel = new PickDateViewModel(pickDateModel);
             var pickDateContent = new PickDateView(pickDateViewModel);
 
-            IViewNavigator<Type> navigator = new ViewProviderBasedNavigator<Type>(window, new ContentTypeBasedViewContainer(pickDateContent));
+            IViewNavigator<Type> navigator = new ViewContainerBasedNavigator<Type>(window, new ContentTypeBasedViewContainer(pickDateContent));
             navigator.Navigate(typeof(PickDateView));
 
             window.Show();

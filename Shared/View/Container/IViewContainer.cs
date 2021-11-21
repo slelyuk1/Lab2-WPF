@@ -2,8 +2,8 @@
 
 namespace Shared.View.Container
 {
-    public interface IViewContainer<in T>
+    public interface IViewContainer<in TT>
     {
-        FrameworkElement? GetView(T searchCriteria);
+        TU? GetView<TU>(TT searchCriteria) where TU : FrameworkElement;
     }
 }

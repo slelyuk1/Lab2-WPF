@@ -1,53 +1,52 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace UserStorage.Models
 {
     public class UsersModel
     {
-        private readonly Storage _storage;
-
-        public UsersModel(Storage storage)
+        public UsersModel(IEnumerable<PersonInfo> people)
         {
-            _storage = storage;
+            People = new ObservableCollection<PersonInfo>(people);
         }
 
-        public PersonInfo? ChosenPersonInfo
+        public ObservableCollection<PersonInfo> People { get; }
+
+        public PersonInfo? ChosenPerson { get; set; }
+
+        public void AddPerson(PersonInfo toAdd)
         {
-            get => _storage.ChosenUser;
-            set => _storage.ChosenUser = value;
+            People.Add(toAdd);
         }
 
-        public void AddUser(PersonInfo user)
+        public void EditPerson(PersonInfo edited)
         {
-            _storage.Users.Add(user);
-        }
-
-        public void EditUser(PersonInfo edited)
-        {
-            // todo make normal
-            int foundIndex = -1;
-            for (var i = 0; i < _storage.Users.Count; ++i)
+            if (ChosenPerson == null)
             {
-                if (_storage.ChosenUser == edited)
-                {
-                    foundIndex = i;
-                    break;
-                }
+                return;
             }
 
+            // todo make normal
+            int foundIndex = People.IndexOf(ChosenPerson);
             if (foundIndex == -1)
             {
                 throw new NullReferenceException("No such user in storage to edit !");
             }
 
-            _storage.Users[foundIndex] = edited;
+            People[foundIndex] = edited;
         }
 
-        public void DeleteUser(PersonInfo user)
+        public void DeleteSelectedUser()
         {
-            _storage.Users.Remove(user);
+            if (ChosenPerson == null)
+            {
+                return;
+            }
+
+            People.Remove(ChosenPerson);
         }
 
-        public bool IsUserChosen => ChosenPersonInfo != null;
+        public bool IsUserChosen => ChosenPerson != null;
     }
 }

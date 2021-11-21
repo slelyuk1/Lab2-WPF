@@ -6,126 +6,127 @@ using Shared.View.Navigator;
 using UserStorage.Content;
 using UserStorage.Exception;
 using UserStorage.Models;
-using ObservableItem = Shared.Tool.ObservableItem;
 
 namespace UserStorage.ViewModel
 {
-    public enum UserEditMode
+    public enum ProcessingMode
     {
         Add,
-        Edit
+        Edit,
+        View
     }
 
     public class UserInputViewModel : ObservableItem
     {
-        public static UserEditMode EditMode = UserEditMode.Add;
+        private static readonly UserInputModel DummyModel = new();
 
+        private ProcessingMode _processingMode;
         private readonly IViewNavigator<Type> _navigator;
-        private string _name, _surname, _email;
-        private DateTime _selectedDate;
-        public ICommand ProcessCommand { get; }
+        private UserInputModel? _model;
 
-        public UserInputViewModel(IViewNavigator<Type> navigator, Storage data)
+        public UserInputViewModel(IViewNavigator<Type> navigator)
         {
             _navigator = navigator;
-            _name = "Oleksandr";
-            _surname = "Leliuk";
-            _email = "slelyuk1@gmail.com";
-            _selectedDate = new DateTime(2000, 2, 13);
-            Model = new UserInputModel(data);
-
+            _processingMode = ProcessingMode.Add;
             ProcessCommand = new DelegateBasedCommand(ExecuteProcess);
-            data.UserChosen += UiUserSet;
         }
 
+        private UserInputModel Model
+        {
+            get => _model ?? DummyModel;
+            set
+            {
+                _model = value;
+                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged(nameof(Surname));
+                OnPropertyChanged(nameof(Email));
+                OnPropertyChanged(nameof(BirthDate));
+            }
+        }
+
+        public ICommand ProcessCommand { get; }
+
+        public void PrepareForEdit(PersonInfo toEdit)
+        {
+            Model = new UserInputModel(toEdit);
+            _processingMode = ProcessingMode.Edit;
+        }
+
+        public void PrepareForInput()
+        {
+            Model = new UserInputModel();
+            _processingMode = ProcessingMode.Add;
+        }
 
         public string Name
         {
-            get => _name;
+            get => Model.Name;
             set
             {
-                _name = value;
+                Model.Name = value;
                 OnPropertyChanged();
             }
         }
 
         public string Surname
         {
-            get => _surname;
+            get => Model.Surname;
             set
             {
-                _surname = value;
+                Model.Surname = value;
                 OnPropertyChanged();
             }
         }
 
         public string Email
         {
-            get => _email;
+            get => Model.Email;
             set
             {
-                _email = value;
+                Model.Email = value;
                 OnPropertyChanged();
             }
         }
 
-        public DateTime SelectedDate
+        public DateTime BirthDate
         {
-            get => _selectedDate;
+            get => Model.BirthDate;
             set
             {
-                _selectedDate = value;
+                Model.BirthDate = value;
                 OnPropertyChanged();
             }
         }
-
-        public UserInputModel Model { get; private set; }
 
         private void ExecuteProcess(object obj)
         {
             try
             {
-                switch (EditMode)
+                PersonInfo newPersonInfo = Model.MakeInfo();
+                switch (_processingMode)
                 {
-                    case UserEditMode.Add:
-                        Model.AddUser(Name, Surname, Email, SelectedDate);
+                    case ProcessingMode.Add:
+                        _navigator.ExecuteAndNavigate<UsersViewModel>(typeof(UsersView), viewModel =>
+                            viewModel.AddPerson(newPersonInfo)
+                        );
                         break;
-                    case UserEditMode.Edit:
-                        Model.EditUser(Model.ChosenUser, Name, Surname, Email, SelectedDate);
+                    case ProcessingMode.Edit:
+                        _navigator.ExecuteAndNavigate<UsersViewModel>(typeof(UsersView), viewModel =>
+                            viewModel.EditPerson(newPersonInfo)
+                        );
                         break;
                     default:
-                        throw new NotImplementedException("This UserEditMode is still not implemented !");
+                        throw new NotImplementedException("This UserEditMode is still not implemented!");
                 }
 
-
-                if (Model.IsBirthDay())
+                if (newPersonInfo.IsBirthday)
                 {
-                    MessageBox.Show("Wow, it's your birthday today. Congratulations !", "Birthday");
+                    MessageBox.Show("Wow, it's your birthday today. Congratulations!", "Birthday");
                 }
-
-                _navigator.Navigate(typeof(UsersContent));
             }
             catch (PersonException ex)
             {
-                MessageBox.Show(ex.Message, "Error !");
-            }
-        }
-
-        private void UiUserSet(PersonInfo user)
-        {
-            if (user == null)
-            {
-                Name = "";
-                Surname = "";
-                Email = "";
-                SelectedDate = DateTime.Now;
-            }
-            else
-            {
-                Name = user.Name;
-                Surname = user.Surname;
-                Email = user.Email;
-                SelectedDate = user.BirthDate;
+                MessageBox.Show(ex.Message, "Error!");
             }
         }
     }

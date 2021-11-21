@@ -18,11 +18,12 @@ namespace Shared.View.Container
             RegisterViews(views);
         }
 
-        public FrameworkElement? GetView(Type contentType)
+        public TU? GetView<TU>(Type contentType) where TU : FrameworkElement
         {
-            if (_views.TryGetValue(contentType, out FrameworkElement? view))
+            if (_views.TryGetValue(contentType, out FrameworkElement view))
             {
-                return view;
+                // todo review
+                return view is TU tuView ? tuView : null;
             }
 
             return null;

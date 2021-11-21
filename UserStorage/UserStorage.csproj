@@ -60,22 +60,16 @@
     <Compile Include="Exception\PersonException.cs" />
     <Compile Include="Managers\AbstractSerializationFacade.cs" />
     <Compile Include="Managers\ResourceSerializationFacade.cs" />
-    <Compile Include="Models\Signs.cs" />
-    <Compile Include="Models\Storage.cs" />
     <Compile Include="Models\UserInputModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
     <Compile Include="Tool\EnumHelper.cs" />
     <Compile Include="ViewModel\UserInputViewModel.cs" />
-    <Compile Include="ViewModel\UserInfoViewModel.cs" />
     <Compile Include="ViewModel\UsersViewModel.cs" />
-    <Compile Include="Content\UserInfoContent.xaml.cs">
-      <DependentUpon>UserInfoContent.xaml</DependentUpon>
+    <Compile Include="View\UserInputView.xaml.cs">
+      <DependentUpon>UserInputView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Content\UserInputContent.xaml.cs">
-      <DependentUpon>UserInputContent.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Content\UsersContent.xaml.cs">
-      <DependentUpon>UsersContent.xaml</DependentUpon>
+    <Compile Include="View\UsersView.xaml.cs">
+      <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -89,15 +83,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Content\UserInfoContent.xaml">
+    <Page Include="View\UserInputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Content\UserInputContent.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Content\UsersContent.xaml">
+    <Page Include="View\UsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

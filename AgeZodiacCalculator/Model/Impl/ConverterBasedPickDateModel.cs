@@ -39,6 +39,7 @@ namespace AgeZodiacCalculator.Model.Impl
             }
         }
 
+        // todo conversion with normal error
         // todo logging
         public ChineseSign? ChineseSign => IsTimeInFutureDay(SelectedDate) ? null : (ChineseSign) _chineseSignConverter.ConvertFrom(SelectedDate);
 

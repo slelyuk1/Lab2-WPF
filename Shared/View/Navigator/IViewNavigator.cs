@@ -1,10 +1,11 @@
-﻿using Shared.View.Visualizer;
+﻿using System;
 
 namespace Shared.View.Navigator
 {
     public interface IViewNavigator<in T>
     {
-        public IViewVisualizer Visualizer { get; }
-        public void Navigate(T viewIdentifier);
+        void ExecuteAndNavigate<TU>(T viewIdentifier, Action<TU> beforeNavigation);
+
+        void Navigate(T viewIdentifier);
     }
 }

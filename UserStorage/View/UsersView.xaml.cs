@@ -3,11 +3,11 @@ using UserStorage.ViewModel;
 
 namespace UserStorage.Content
 {
-    public partial class UsersContent
+    public partial class UsersView
     {
         private readonly UsersViewModel _viewModel;
 
-        public UsersContent(UsersViewModel viewModel)
+        public UsersView(UsersViewModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;

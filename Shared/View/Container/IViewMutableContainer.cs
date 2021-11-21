@@ -2,7 +2,7 @@
 
 namespace Shared.View.Container
 {
-    public interface IViewMutableContainer<in T> : IViewContainer<T>
+    public interface IViewMutableContainer<in TT> : IViewContainer<TT>
     {
         void RegisterViews(params FrameworkElement[] toRegister);
     }
