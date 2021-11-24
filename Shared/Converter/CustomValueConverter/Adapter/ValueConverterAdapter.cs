@@ -5,11 +5,11 @@ using System.Windows.Data;
 
 namespace AgeZodiacCalculator.Converter.CustomValueConverter.Adapter
 {
-    public class TypeToValueConverterAdapter<T> : IValueConverter
+    public class ValueConverterAdapter<T> : IValueConverter
     {
         private readonly TypeConverter _typeConverter;
 
-        public TypeToValueConverterAdapter()
+        public ValueConverterAdapter()
         {
             _typeConverter = TypeDescriptor.GetConverter(typeof(T));
         }

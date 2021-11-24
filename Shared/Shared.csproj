@@ -45,6 +45,8 @@
     <ItemGroup>
         <Compile Include="Converter\CustomTypeConverter\ChineseSignConverter.cs" />
         <Compile Include="Converter\CustomTypeConverter\WesternSignConverter.cs" />
+        <Compile Include="Converter\CustomValueConverter\Adapter\ValueConverterAdapter.cs" />
+        <Compile Include="Converter\CustomValueConverter\Adapter\ZodiacSignValueConverterAdapter.cs" />
         <Compile Include="Model\CollectionView\GenericCollectionViewAdapter.cs" />
         <Compile Include="Model\Data\ChineseSign.cs" />
         <Compile Include="Model\Data\WesternSign.cs" />

@@ -56,7 +56,6 @@
           <DependentUpon>ContentWindow.xaml</DependentUpon>
         </Compile>
         <Compile Include="Converter\CustomTypeConverter\AgeInfoConverter.cs" />
-        <Compile Include="Converter\CustomValueConverter\Adapter\TypeToValueConverterAdapter.cs" />
         <Compile Include="Converter\CustomValueConverter\Adapter\XamlUsable.cs" />
         <Compile Include="Model\Data\AgeInfo.cs" />
         <Compile Include="ViewModel\PickDateViewModel.cs" />

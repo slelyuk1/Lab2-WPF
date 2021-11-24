@@ -34,6 +34,8 @@ namespace UserStorage.ViewModel
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
 
+        private string _filterText;
+
         public UsersViewModel(
             IViewNavigator<Type> navigator,
             UsersModel model,
@@ -46,28 +48,37 @@ namespace UserStorage.ViewModel
             _chineseSignConverter = chineseSignConverter;
             _westernSignConverter = westernSignConverter;
 
+            _filterText = "";
+
             People = _model.People;
             PeopleView = new GenericCollectionViewAdapter<PersonInfo>(CollectionViewSource.GetDefaultView(People));
             FilterProperties = new List<string>(DefaultFilterProperties);
             SelectedProperty = FilterProperties[0];
-            FilterText = "";
 
             AddCommand = new DelegateBasedCommand(OpenUserInputForAdd);
             DeleteCommand = new DelegateBasedCommand(DeleteSelectedPerson, _ => _model.IsUserChosen);
             EditCommand = new DelegateBasedCommand(OpenUserInputForEdit, _ => _model.IsUserChosen);
-            FilterCommand = new DelegateBasedCommand(RunFilter);
         }
 
         public ObservableCollection<PersonInfo> People { get; }
         public GenericCollectionViewAdapter<PersonInfo> PeopleView { get; }
         public IList<string> FilterProperties { get; }
-        public string FilterText { get; set; }
+
+        public string FilterText
+        {
+            get => _filterText;
+            set
+            {
+                _filterText = value;
+                RunFilter(_filterText);
+            }
+        }
+
         public string SelectedProperty { get; set; }
 
         public ICommand AddCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand EditCommand { get; }
-        public ICommand FilterCommand { get; }
 
         public PersonInfo? SelectedUser
         {
@@ -115,11 +126,11 @@ namespace UserStorage.ViewModel
             _navigator.ExecuteAndNavigate<UserInputViewModel>(typeof(UserInputView), viewModel => viewModel.PrepareForEdit(SelectedUser));
         }
 
-        private void RunFilter(object obj)
+        private void RunFilter(string filterText)
         {
+            filterText = filterText.ToLower();
             PeopleView.Filter = item =>
             {
-                string filter = FilterText.ToLower();
                 Type filteredType = typeof(PersonInfo);
 
                 PropertyInfo[] filteredProperties = SelectedProperty == AllFilterProperty
@@ -135,7 +146,7 @@ namespace UserStorage.ViewModel
                         WesternSign westernSign => _westernSignConverter.ConvertToString(westernSign),
                         _ => value?.ToString()
                     };
-                    if (stringValue != null && stringValue.ToLower().Contains(filter))
+                    if (stringValue != null && stringValue.ToLower().Contains(filterText))
                     {
                         return true;
                     }
