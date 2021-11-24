@@ -14,19 +14,16 @@ namespace UserStorage.Models
 
         public UserInputModel(PersonInfo person)
         {
-            ChosenUser = person;
-            Name = ChosenUser.Name;
-            Surname = ChosenUser.Surname;
-            Email = ChosenUser.Email;
-            BirthDate = ChosenUser.BirthDate;
+            Name = person.Name;
+            Surname = person.Surname;
+            Email = person.Email;
+            BirthDate = person.BirthDate;
         }
 
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
-
-        public PersonInfo? ChosenUser { get; }
 
         public PersonInfo MakeInfo()
         {

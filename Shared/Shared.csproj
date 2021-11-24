@@ -45,6 +45,7 @@
     <ItemGroup>
         <Compile Include="Converter\CustomTypeConverter\ChineseSignConverter.cs" />
         <Compile Include="Converter\CustomTypeConverter\WesternSignConverter.cs" />
+        <Compile Include="Model\CollectionView\GenericCollectionViewAdapter.cs" />
         <Compile Include="Model\Data\ChineseSign.cs" />
         <Compile Include="Model\Data\WesternSign.cs" />
         <Compile Include="Properties\Annotations.cs" />

@@ -112,7 +112,7 @@ namespace UserStorage.ViewModel
                         break;
                     case ProcessingMode.Edit:
                         _navigator.ExecuteAndNavigate<UsersViewModel>(typeof(UsersView), viewModel =>
-                            viewModel.EditPerson(newPersonInfo)
+                            viewModel.ReplaceSelectedPerson(newPersonInfo)
                         );
                         break;
                     default:

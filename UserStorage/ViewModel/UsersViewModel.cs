@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using AgeZodiacCalculator.Info;
+using Shared.Model.CollectionView;
 using Shared.Tool;
 using Shared.View.Navigator;
 using UserStorage.Models;
@@ -27,27 +29,37 @@ namespace UserStorage.ViewModel
             nameof(PersonInfo.ChineseSign)
         };
 
-        private readonly IViewNavigator<Type> _navigator;
         private readonly UsersModel _model;
-        private readonly CollectionView _peopleView;
+        private readonly IViewNavigator<Type> _navigator;
+        private readonly TypeConverter _chineseSignConverter;
+        private readonly TypeConverter _westernSignConverter;
 
-        public UsersViewModel(IViewNavigator<Type> navigator, UsersModel model)
+        public UsersViewModel(
+            IViewNavigator<Type> navigator,
+            UsersModel model,
+            TypeConverter chineseSignConverter,
+            TypeConverter westernSignConverter
+        )
         {
             _navigator = navigator;
             _model = model;
-            _peopleView = new CollectionView(model.People);
+            _chineseSignConverter = chineseSignConverter;
+            _westernSignConverter = westernSignConverter;
 
+            People = _model.People;
+            PeopleView = new GenericCollectionViewAdapter<PersonInfo>(CollectionViewSource.GetDefaultView(People));
             FilterProperties = new List<string>(DefaultFilterProperties);
             SelectedProperty = FilterProperties[0];
             FilterText = "";
 
             AddCommand = new DelegateBasedCommand(OpenUserInputForAdd);
-            DeleteCommand = new DelegateBasedCommand(ExecuteDelete, _ => _model.IsUserChosen);
+            DeleteCommand = new DelegateBasedCommand(DeleteSelectedPerson, _ => _model.IsUserChosen);
             EditCommand = new DelegateBasedCommand(OpenUserInputForEdit, _ => _model.IsUserChosen);
-            FilterCommand = new DelegateBasedCommand(ExecuteFilter);
+            FilterCommand = new DelegateBasedCommand(RunFilter);
         }
 
-        public ObservableCollection<PersonInfo> People => _model.People;
+        public ObservableCollection<PersonInfo> People { get; }
+        public GenericCollectionViewAdapter<PersonInfo> PeopleView { get; }
         public IList<string> FilterProperties { get; }
         public string FilterText { get; set; }
         public string SelectedProperty { get; set; }
@@ -77,9 +89,14 @@ namespace UserStorage.ViewModel
             _model.AddPerson(info);
         }
 
-        public void EditPerson(PersonInfo toReplaceWith)
+        public void ReplaceSelectedPerson(PersonInfo with)
         {
-            _model.EditPerson(toReplaceWith);
+            _model.EditPerson(with);
+        }
+
+        private void DeleteSelectedPerson(object obj)
+        {
+            _model.DeleteSelectedUser();
         }
 
         private void OpenUserInputForAdd(object obj)
@@ -98,44 +115,34 @@ namespace UserStorage.ViewModel
             _navigator.ExecuteAndNavigate<UserInputViewModel>(typeof(UserInputView), viewModel => viewModel.PrepareForEdit(SelectedUser));
         }
 
-        private void ExecuteFilter(object obj)
+        private void RunFilter(object obj)
         {
-            _peopleView.Filter = item =>
+            PeopleView.Filter = item =>
             {
                 string filter = FilterText.ToLower();
-                var user = (PersonInfo) item;
-                if (SelectedProperty == AllFilterProperty)
+                Type filteredType = typeof(PersonInfo);
+
+                PropertyInfo[] filteredProperties = SelectedProperty == AllFilterProperty
+                    ? filteredType.GetProperties()
+                    : new[] {filteredType.GetProperty(SelectedProperty)};
+
+                foreach (var property in filteredProperties)
                 {
-                    string name = user.Name.ToLower();
-                    string surname = user.Surname.ToLower();
-                    string email = user.Email.ToLower();
-                    ChineseSign chineseSign = user.ChineseSign;
-                    WesternSign westernSign = user.WesternSign;
-                    // todo make better logic for signs
-                    return name.Contains(filter) || surname.Contains(filter) || email.Contains(filter) ||
-                           email.Contains(filter) || chineseSign.ToString().Contains(filter) || westernSign.ToString().Contains(filter);
+                    object value = property.GetValue(item, null);
+                    string? stringValue = value switch
+                    {
+                        ChineseSign chineseSign => _chineseSignConverter.ConvertToString(chineseSign),
+                        WesternSign westernSign => _westernSignConverter.ConvertToString(westernSign),
+                        _ => value?.ToString()
+                    };
+                    if (stringValue != null && stringValue.ToLower().Contains(filter))
+                    {
+                        return true;
+                    }
                 }
 
-                PropertyInfo? userProperty = user.GetType().GetProperty(SelectedProperty);
-                if (userProperty == null)
-                {
-                    throw new ArgumentException("Inappropriate property for user !");
-                }
-
-                object propertyVal = userProperty.GetValue(user, null);
-                if (propertyVal is not string stringRepresentation)
-                {
-                    // todo normal conversion
-                    stringRepresentation = propertyVal.ToString();
-                }
-
-                return stringRepresentation.ToLower().Contains(filter);
+                return false;
             };
-        }
-
-        private void ExecuteDelete(object obj)
-        {
-            _model.DeleteSelectedUser();
         }
     }
 }

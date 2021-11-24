@@ -58,6 +58,7 @@
         <Compile Include="Converter\CustomTypeConverter\AgeInfoConverter.cs" />
         <Compile Include="Converter\CustomValueConverter\Adapter\TypeToValueConverterAdapter.cs" />
         <Compile Include="Converter\CustomValueConverter\Adapter\XamlUsable.cs" />
+        <Compile Include="Model\Data\AgeInfo.cs" />
         <Compile Include="ViewModel\PickDateViewModel.cs" />
         <Page Include="ContentWindow.xaml">
           <Generator>MSBuild:Compile</Generator>
@@ -71,7 +72,6 @@
             <SubType>Code</SubType>
         </Compile>
         <Compile Include="View\PickDateView.xaml.cs" />
-        <Compile Include="Info\AgeInfo.cs" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Model\Impl\ConverterBasedPickDateModel.cs" />

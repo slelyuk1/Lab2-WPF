@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 using Shared.View.Container;
@@ -27,8 +28,13 @@ namespace UserStorage
             var window = new MainWindow(viewContainer, serializationFacade);
             IViewNavigator<Type> navigator = new ViewContainerBasedNavigator<Type>(window, viewContainer);
 
+            TypeConverter chineseSignConverter = PersonInfo.ChineseSignConverter;
+            TypeConverter westernSignConverter = PersonInfo.ChineseSignConverter;
+
             var userInputView = new UserInputView(new UserInputViewModel(navigator));
-            var usersView = new UsersView(new UsersViewModel(navigator, new UsersModel(people)));
+            var usersView = new UsersView(
+                new UsersViewModel(navigator, new UsersModel(people), chineseSignConverter, westernSignConverter)
+            );
 
             viewContainer.RegisterViews(userInputView, usersView);
             navigator.Navigate(typeof(UsersView));

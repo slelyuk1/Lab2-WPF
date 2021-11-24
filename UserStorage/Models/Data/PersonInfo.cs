@@ -11,6 +11,9 @@ namespace UserStorage.Models
     [Serializable]
     public class PersonInfo
     {
+        public static readonly TypeConverter ChineseSignConverter = TypeDescriptor.GetConverter(typeof(ChineseSign));
+        public static readonly TypeConverter WesternSignConverter = TypeDescriptor.GetConverter(typeof(WesternSign));
+
         private readonly Guid _id;
 
         public static PersonInfo From(string name, string surname, string email, DateTime birthDate)
@@ -24,6 +27,12 @@ namespace UserStorage.Models
         public string Email { get; }
         public DateTime BirthDate { get; }
 
+        public ChineseSign ChineseSign => (ChineseSign) ChineseSignConverter.ConvertFrom(BirthDate);
+
+        public WesternSign WesternSign => (WesternSign) WesternSignConverter.ConvertFrom(BirthDate);
+
+        public bool IsBirthday => DateTime.Now.Date == BirthDate.Date;
+
         public bool IsAdult
         {
             get
@@ -32,12 +41,6 @@ namespace UserStorage.Models
                 return span.Days / 365 >= 18;
             }
         }
-
-        public ChineseSign ChineseSign => (ChineseSign) TypeDescriptor.GetConverter(typeof(ChineseSign)).ConvertFrom(BirthDate);
-
-        public WesternSign WesternSign => (WesternSign) TypeDescriptor.GetConverter(typeof(WesternSign)).ConvertFrom(BirthDate);
-
-        public bool IsBirthday => DateTime.Now.Date == BirthDate.Date;
 
         protected bool Equals(PersonInfo other)
         {
@@ -100,8 +103,7 @@ namespace UserStorage.Models
 
         private static bool IsBirthDateValid(DateTime birthDate)
         {
-            // todo maybe improve logic
-            int days = (DateTime.Now - birthDate).Days;
+            int days = (birthDate - DateTime.Now).Days;
             return days > 0 && days / 365 <= 135;
         }
     }

@@ -60,9 +60,9 @@
     <Compile Include="Exception\PersonException.cs" />
     <Compile Include="Managers\AbstractSerializationFacade.cs" />
     <Compile Include="Managers\ResourceSerializationFacade.cs" />
+    <Compile Include="Models\Data\PersonInfo.cs" />
     <Compile Include="Models\UserInputModel.cs" />
     <Compile Include="Models\UsersModel.cs" />
-    <Compile Include="Tool\EnumHelper.cs" />
     <Compile Include="ViewModel\UserInputViewModel.cs" />
     <Compile Include="ViewModel\UsersViewModel.cs" />
     <Compile Include="View\UserInputView.xaml.cs">
@@ -94,7 +94,6 @@
     <Page Include="Resources\ResourceDictionary.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\PersonInfo.cs" />
     <Compile Include="Resources\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

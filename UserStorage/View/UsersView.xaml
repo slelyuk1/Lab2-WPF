@@ -95,7 +95,7 @@
 
         <!-- todo ColumnWidth="*"-->
         <DataGrid Grid.Row="1" Grid.Column="0" BorderThickness="0"
-                  ItemsSource="{Binding Path=People}"
+                  ItemsSource="{Binding Path=PeopleView}"
                   SelectedItem="{Binding Path=SelectedUser, Mode=OneWayToSource}"
                   Sorting="OnUsersSorting"
                   AutoGenerateColumns="False"
