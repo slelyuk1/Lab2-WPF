@@ -2,11 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sharedValueConverter="clr-namespace:Shared.Converter.CustomValueConverter.Adapter;assembly=Shared"
-             xmlns:projectValueConverter="clr-namespace:AgeZodiacCalculator.Converter.CustomValueConverter.Adapter"
+             xmlns:customValueConverter="clr-namespace:AgeZodiacCalculator.Converter.CustomValueConverter"
              Startup="OnStartup">
 
     <Application.Resources>
-        <projectValueConverter:AgeInfoValueConverterAdapter x:Key="AgeInfoValueConverter" />
+        <customValueConverter:AgeInfoValueConverterAdapter x:Key="AgeInfoValueConverter" />
         <sharedValueConverter:ChineseSignValueConverterAdapter x:Key="ChineseSignValueConverter" />
         <sharedValueConverter:WesternSignValueConverterAdapter x:Key="WesternSignValueConverter" />
     </Application.Resources>

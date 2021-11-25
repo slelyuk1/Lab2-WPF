@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
-using AgeZodiacCalculator.Converter.CustomTypeConverter;
 using Shared.Converter.CustomTypeConverter;
 
-namespace AgeZodiacCalculator.Info
+namespace Shared.Model.Data
 {
     [TypeConverter(typeof(ChineseSignConverter))]
     public enum ChineseSign

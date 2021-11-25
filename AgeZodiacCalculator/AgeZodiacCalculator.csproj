@@ -56,8 +56,10 @@
           <DependentUpon>ContentWindow.xaml</DependentUpon>
         </Compile>
         <Compile Include="Converter\CustomTypeConverter\AgeInfoConverter.cs" />
-        <Compile Include="Converter\CustomValueConverter\Adapter\XamlUsable.cs" />
+        <Compile Include="Converter\CustomValueConverter\XamlUsableValueConverters.cs" />
         <Compile Include="Model\Data\AgeInfo.cs" />
+        <Compile Include="Model\UI\Impl\ConverterBasedPickDateModel.cs" />
+        <Compile Include="Model\UI\IPickDateModel.cs" />
         <Compile Include="ViewModel\PickDateViewModel.cs" />
         <Page Include="ContentWindow.xaml">
           <Generator>MSBuild:Compile</Generator>
@@ -71,22 +73,6 @@
             <SubType>Code</SubType>
         </Compile>
         <Compile Include="View\PickDateView.xaml.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Model\Impl\ConverterBasedPickDateModel.cs" />
-        <Compile Include="Model\IPickDateModel.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs">
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Properties\Resources.Designer.cs">
-            <AutoGen>True</AutoGen>
-            <DesignTime>True</DesignTime>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Include="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />

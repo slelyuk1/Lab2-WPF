@@ -1,6 +1,5 @@
 ﻿using System.Windows.Data;
-using AgeZodiacCalculator.Converter.CustomValueConverter.Adapter;
-using AgeZodiacCalculator.Info;
+using Shared.Model.Data;
 
 namespace Shared.Converter.CustomValueConverter.Adapter
 {

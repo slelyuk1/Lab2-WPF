@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserStorage", "UserStorage\UserStorage.csproj", "{91BF24BF-FF7A-4BE9-B7BE-8F6D2C59BC03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeopleInfoStorage", "PeopleInfoStorage\PeopleInfoStorage.csproj", "{91BF24BF-FF7A-4BE9-B7BE-8F6D2C59BC03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager", "TaskManager\TaskManager.csproj", "{27AD8376-45BA-441F-B10A-1F1248B2BDBD}"
 EndProject

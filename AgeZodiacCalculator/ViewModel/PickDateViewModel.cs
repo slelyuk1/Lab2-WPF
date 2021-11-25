@@ -1,7 +1,8 @@
 ﻿using System;
-using AgeZodiacCalculator.Info;
-using AgeZodiacCalculator.Model;
-using Shared.Tool;
+using AgeZodiacCalculator.Model.Data;
+using AgeZodiacCalculator.Model.UI;
+using Shared.Model.Data;
+using Shared.Tool.ViewModel;
 
 namespace AgeZodiacCalculator.ViewModel
 {

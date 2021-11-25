@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using AgeZodiacCalculator.Info;
+using Shared.Model.Data;
 
 // ReSharper disable MemberCanBeMadeStatic.Global
 // ReSharper disable MemberCanBePrivate.Global

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using AgeZodiacCalculator.Info;
-using AgeZodiacCalculator.Model;
-using AgeZodiacCalculator.Model.Impl;
+using AgeZodiacCalculator.Model.UI;
+using AgeZodiacCalculator.Model.UI.Impl;
 using AgeZodiacCalculator.View;
 using AgeZodiacCalculator.ViewModel;
+using Shared.Model.Data;
 using Shared.View.Container;
 using Shared.View.Navigator;
 

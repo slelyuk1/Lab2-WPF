@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using AgeZodiacCalculator.Info;
+using Shared.Model.Data;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberCanBeMadeStatic.Global
 
-namespace AgeZodiacCalculator.Converter.CustomTypeConverter
+namespace Shared.Converter.CustomTypeConverter
 {
     public class WesternSignConverter : EnumConverter
     {

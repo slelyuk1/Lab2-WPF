@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using AgeZodiacCalculator.Converter.CustomTypeConverter;
 
-namespace AgeZodiacCalculator.Info
+namespace AgeZodiacCalculator.Model.Data
 {
     [TypeConverter(typeof(AgeInfoConverter))]
     public class AgeInfo

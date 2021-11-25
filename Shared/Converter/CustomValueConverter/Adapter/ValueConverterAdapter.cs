@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace AgeZodiacCalculator.Converter.CustomValueConverter.Adapter
+namespace Shared.Converter.CustomValueConverter.Adapter
 {
     public class ValueConverterAdapter<T> : IValueConverter
     {
