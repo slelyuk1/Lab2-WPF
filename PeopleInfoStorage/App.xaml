@@ -1,7 +1,8 @@
 ﻿<Application x:Class="PeopleInfoStorage.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:sharedValueConverter="clr-namespace:Shared.Converter.CustomValueConverter.Adapter;assembly=Shared">
+             xmlns:sharedValueConverter="clr-namespace:Shared.Converter.CustomValueConverter.Adapter;assembly=Shared"
+             Startup="OnStartup">
     <Application.Resources>
         <sharedValueConverter:ChineseSignValueConverterAdapter x:Key="ChineseSignValueConverter" />
         <sharedValueConverter:WesternSignValueConverterAdapter x:Key="WesternSignValueConverter" />

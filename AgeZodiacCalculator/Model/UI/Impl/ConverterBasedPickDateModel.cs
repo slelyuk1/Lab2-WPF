@@ -26,7 +26,6 @@ namespace AgeZodiacCalculator.Model.UI.Impl
             {
                 if (IsTimeInFutureDay(SelectedDate))
                 {
-                    // todo logging
                     return null;
                 }
 
@@ -41,10 +40,8 @@ namespace AgeZodiacCalculator.Model.UI.Impl
         }
 
         // todo conversion with normal error
-        // todo logging
         public ChineseSign? ChineseSign => IsTimeInFutureDay(SelectedDate) ? null : (ChineseSign) _chineseSignConverter.ConvertFrom(SelectedDate);
 
-        // todo logging
         public WesternSign? WesternSign => IsTimeInFutureDay(SelectedDate) ? null : (WesternSign) _westernSignConverter.ConvertFrom(SelectedDate);
 
         private static bool IsTimeInFutureDay(DateTime time)

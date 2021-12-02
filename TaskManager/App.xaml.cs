@@ -8,11 +8,15 @@ namespace TaskManager
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            // todo logging
+            // todo make safe type conversions
+            // todo use LINQ
+
             // todo fix exit code 500 (admin rights)
             base.OnStartup(e);
             MainWindow window = new MainWindow();
             NavigationManager.Instance.Initialise(new NavigationModel(window));
-            NavigationManager.Instance.Navigate(Models.Views.ProcessesView);
+            NavigationManager.Instance.Navigate(Views.ProcessesView);
             window.Show();
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using PeopleInfoStorage.Model.Data;
@@ -13,10 +12,10 @@ namespace PeopleInfoStorage
 {
     public partial class MainWindow : IViewVisualizer
     {
-        private readonly IViewContainer<Type> _viewContainer;
+        private readonly IViewContainer _viewContainer;
         private readonly AbstractSerializationFacade _serializationFacade;
 
-        public MainWindow(IViewContainer<Type> viewContainer, AbstractSerializationFacade serializationFacade)
+        public MainWindow(IViewContainer viewContainer, AbstractSerializationFacade serializationFacade)
         {
             _viewContainer = viewContainer;
             _serializationFacade = serializationFacade;
@@ -32,13 +31,7 @@ namespace PeopleInfoStorage
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            var peopleView = _viewContainer.GetView<PeopleView>(typeof(PeopleView));
-            if (peopleView == null)
-            {
-                throw new InvalidOperationException();
-            }
-
-            PeopleViewModel viewModel = (PeopleViewModel) peopleView.DataContext;
+            PeopleViewModel viewModel = _viewContainer.GetRequiredViewModelAware<PeopleView, PeopleViewModel>().GetViewModel();
             List<PersonInfo> people = new(viewModel.People);
             _serializationFacade.Serialize(App.PeopleResourceName, people);
             base.OnClosing(e);

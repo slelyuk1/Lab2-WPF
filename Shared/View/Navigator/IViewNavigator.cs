@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Windows;
 
 namespace Shared.View.Navigator
 {
-    public interface IViewNavigator<in T>
+    public interface IViewNavigator
     {
-        void ExecuteAndNavigate<TU>(T viewIdentifier, Action<TU> beforeNavigation);
+        void ExecuteAndNavigate<TView, TViewModel>(Action<TView, TViewModel> beforeNavigation) where TView : FrameworkElement;
 
-        void Navigate(T viewIdentifier);
+        void Navigate<TView>() where TView : FrameworkElement;
     }
 }

@@ -22,10 +22,10 @@ namespace PeopleInfoStorage.ViewModel
         private static readonly PeopleInputModel DummyModel = new();
 
         private ProcessingMode _processingMode;
-        private readonly IViewNavigator<Type> _navigator;
+        private readonly IViewNavigator _navigator;
         private PeopleInputModel? _model;
 
-        public PersonInputViewModel(IViewNavigator<Type> navigator)
+        public PersonInputViewModel(IViewNavigator navigator)
         {
             _navigator = navigator;
             _processingMode = ProcessingMode.Add;
@@ -107,12 +107,12 @@ namespace PeopleInfoStorage.ViewModel
                 switch (_processingMode)
                 {
                     case ProcessingMode.Add:
-                        _navigator.ExecuteAndNavigate<PeopleViewModel>(typeof(PeopleView), viewModel =>
+                        _navigator.ExecuteAndNavigate<PeopleView, PeopleViewModel>((_, viewModel) =>
                             viewModel.AddPerson(newPersonInfo)
                         );
                         break;
                     case ProcessingMode.Edit:
-                        _navigator.ExecuteAndNavigate<PeopleViewModel>(typeof(PeopleView), viewModel =>
+                        _navigator.ExecuteAndNavigate<PeopleView, PeopleViewModel>((_, viewModel) =>
                             viewModel.ReplaceSelectedPerson(newPersonInfo)
                         );
                         break;

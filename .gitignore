@@ -1,6 +1,7 @@
 ﻿/.idea/
-/UserStorage/bin/
-/UserStorage/obj/
+/packages/
+/PeopleInfoStorage/bin/
+/PeopleInfoStorage/obj/
 /AgeZodiacCalculator/bin/
 /AgeZodiacCalculator/obj/
 /TaskManager/bin/

@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using Shared.Tool.View;
 
 namespace Shared.View.Container
 {
-    public interface IViewContainer<in TT>
+    public interface IViewContainer
     {
-        TU? GetView<TU>(TT searchCriteria) where TU : FrameworkElement;
+        IViewModelAware<TView, TViewModel> GetRequiredViewModelAware<TView, TViewModel>();
+        IViewModelAware<TView, TViewModel>? GetViewModelAware<TView, TViewModel>();
     }
 }

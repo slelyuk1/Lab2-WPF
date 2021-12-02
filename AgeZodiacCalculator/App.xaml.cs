@@ -6,6 +6,7 @@ using AgeZodiacCalculator.Model.UI.Impl;
 using AgeZodiacCalculator.View;
 using AgeZodiacCalculator.ViewModel;
 using Shared.Model.Data;
+using Shared.Tool.View;
 using Shared.View.Container;
 using Shared.View.Navigator;
 
@@ -15,17 +16,20 @@ namespace AgeZodiacCalculator
     {
         private void OnStartup(object sender, StartupEventArgs e)
         {
+            // todo logging
+            // todo make safe type conversions
+            // todo use LINQ
             var window = new ContentWindow();
 
             TypeConverter chineseSignConverter = TypeDescriptor.GetConverter(typeof(ChineseSign));
             TypeConverter westernSignConverter = TypeDescriptor.GetConverter(typeof(WesternSign));
-            
-            IPickDateModel pickDateModel = new ConverterBasedPickDateModel(DateTime.Now, chineseSignConverter, westernSignConverter);
-            var pickDateViewModel = new PickDateViewModel(pickDateModel);
-            var pickDateContent = new PickDateView(pickDateViewModel);
 
-            IViewNavigator<Type> navigator = new ViewContainerBasedNavigator<Type>(window, new ContentTypeBasedViewContainer(pickDateContent));
-            navigator.Navigate(typeof(PickDateView));
+            IPickDateModel pickDateModel = new ConverterBasedPickDateModel(DateTime.Now, chineseSignConverter, westernSignConverter);
+            var pickDateContent = new PickDateView(new PickDateViewModel(pickDateModel));
+            var container = new DefaultViewContainer();
+            container.AddViewModelAware(new DefaultViewModelAware<PickDateView, PickDateViewModel>(pickDateContent));
+            IViewNavigator navigator = new ViewContainerBasedNavigator(window, container);
+            navigator.Navigate<PickDateView>();
 
             window.Show();
         }

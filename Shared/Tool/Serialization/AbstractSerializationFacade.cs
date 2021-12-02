@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 
@@ -35,23 +36,22 @@ namespace Shared.Tool.Serialization
 
         public T? Deserialize<T>(string name) where T : class
         {
-            IDictionary<string, byte[]>? nameToData = ReadSerializedData();
+            IDictionary<string, Tuple<Type, byte[]>>? nameToData = ReadSerializedData();
             if (nameToData == null)
             {
                 return null;
             }
 
-            if (!nameToData.TryGetValue(name, out byte[] data))
+            if (!nameToData.TryGetValue(name, out Tuple<Type, byte[]> data))
             {
                 return null;
             }
 
-            using var byteStream = new MemoryStream(data);
-            // todo null instead of throw during type conversion
+            using var byteStream = new MemoryStream(data.Item2);
             return (T) _dataFormatter.Deserialize(byteStream);
         }
 
-        protected abstract IDictionary<string, byte[]>? ReadSerializedData();
+        protected abstract IDictionary<string, Tuple<Type, byte[]>>? ReadSerializedData();
         protected abstract void WriteSerializedData(IDictionary<string, byte[]> nameToData);
     }
 }

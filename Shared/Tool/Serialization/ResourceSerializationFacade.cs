@@ -11,12 +11,13 @@ namespace Shared.Tool.Serialization
     {
         private readonly string _fileName;
 
+        // todo make for many files
         public ResourceSerializationFacade(IFormatter dataFormatter, string fileName) : base(dataFormatter)
         {
             _fileName = fileName;
         }
 
-        protected override IDictionary<string, byte[]>? ReadSerializedData()
+        protected override IDictionary<string, Tuple<Type, byte[]>>? ReadSerializedData()
         {
             if (!File.Exists(_fileName))
             {
@@ -25,13 +26,19 @@ namespace Shared.Tool.Serialization
 
             using var reader = new ResourceReader(_fileName);
             IDictionaryEnumerator enumerator = reader.GetEnumerator();
-            var nameToData = new Dictionary<string, byte[]>();
+            var nameToData = new Dictionary<string, Tuple<Type, byte[]>>();
             while (enumerator.MoveNext())
             {
-                string name = (string?) enumerator.Key ?? throw new InvalidOperationException("Key cannot be null");
-                reader.GetResourceData(name, out string typeName, out byte[] data);
-                // todo use typeName
-                nameToData.Add(name, data);
+                try
+                {
+                    string name = (string?) enumerator.Key ?? throw new InvalidOperationException("Key cannot be null");
+                    reader.GetResourceData(name, out string typeName, out byte[] data);
+                    nameToData.Add(name, Tuple.Create(Type.GetType(typeName), data));
+                }
+                catch (Exception e)
+                {
+                    throw new NotImplementedException("Handling such cases is not implemented", e);
+                }
             }
 
             return nameToData;

@@ -31,23 +31,21 @@ namespace PeopleInfoStorage.ViewModel
         };
 
         private readonly PeopleModel _model;
-        private readonly IViewNavigator<Type> _navigator;
+        private readonly IViewNavigator _navigator;
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
 
         private string _filterText;
 
         public PeopleViewModel(
-            IViewNavigator<Type> navigator,
-            PeopleModel model,
-            TypeConverter chineseSignConverter,
-            TypeConverter westernSignConverter
+            IViewNavigator navigator,
+            PeopleModel model
         )
         {
             _navigator = navigator;
             _model = model;
-            _chineseSignConverter = chineseSignConverter;
-            _westernSignConverter = westernSignConverter;
+            _chineseSignConverter = TypeDescriptor.GetConverter(typeof(ChineseSign));
+            _westernSignConverter = TypeDescriptor.GetConverter(typeof(WesternSign));
 
             _filterText = "";
 
@@ -113,7 +111,9 @@ namespace PeopleInfoStorage.ViewModel
 
         private void OpenInputForAdd(object obj)
         {
-            _navigator.ExecuteAndNavigate<PersonInputViewModel>(typeof(PersonInputView), viewModel => viewModel.PrepareForInput());
+            _navigator.ExecuteAndNavigate<PersonInputView, PersonInputViewModel>((_, viewModel) =>
+                viewModel.PrepareForInput()
+            );
         }
 
         private void OpenInputForEdit(object obj)
@@ -124,7 +124,9 @@ namespace PeopleInfoStorage.ViewModel
                 throw new InvalidOperationException();
             }
 
-            _navigator.ExecuteAndNavigate<PersonInputViewModel>(typeof(PersonInputView), viewModel => viewModel.PrepareForEdit(SelectedPerson));
+            _navigator.ExecuteAndNavigate<PersonInputView, PersonInputViewModel>((_, viewModel) =>
+                viewModel.PrepareForEdit(SelectedPerson)
+            );
         }
 
         private void RunFilter(string filterText)
