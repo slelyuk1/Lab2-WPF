@@ -24,8 +24,9 @@ namespace AgeZodiacCalculator
             IHost host = Host.CreateDefaultBuilder()
                 .ConfigureLogging(loggingBuilder =>
                 {
-                    loggingBuilder.ClearProviders();
-                    loggingBuilder.AddConsole();
+                    loggingBuilder
+                        .ClearProviders()
+                        .AddConsole(options => { options.LogToStandardErrorThreshold = LogLevel.Information; });
                 })
                 .ConfigureServices(serviceCollection =>
                 {
