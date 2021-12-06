@@ -4,7 +4,7 @@ namespace AgeZodiacCalculator.View
 {
     public partial class PickDateView
     {
-        internal PickDateView(PickDateViewModel viewModel)
+        public PickDateView(PickDateViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

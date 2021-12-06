@@ -4,7 +4,7 @@ using Shared.Model.Data;
 
 namespace AgeZodiacCalculator.Model.UI
 {
-    internal interface IPickDateModel
+    public interface IPickDateModel
     {
         public DateTime SelectedDate { get; set; }
 

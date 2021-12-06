@@ -11,11 +11,12 @@ namespace AgeZodiacCalculator.Model.UI.Impl
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
 
-        public ConverterBasedPickDateModel(DateTime selectedTime, TypeConverter chineseSignConverter, TypeConverter westernSignConverter)
+
+        public ConverterBasedPickDateModel(DateTime? selectedTime = null)
         {
-            SelectedDate = selectedTime;
-            _chineseSignConverter = chineseSignConverter;
-            _westernSignConverter = westernSignConverter;
+            SelectedDate = selectedTime ?? DateTime.Now;
+            _chineseSignConverter = TypeDescriptor.GetConverter(typeof(ChineseSign));
+            _westernSignConverter = TypeDescriptor.GetConverter(typeof(WesternSign));
         }
 
         public DateTime SelectedDate { get; set; }

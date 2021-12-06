@@ -6,7 +6,7 @@ using Shared.Tool.ViewModel;
 
 namespace AgeZodiacCalculator.ViewModel
 {
-    internal class PickDateViewModel : ObservableItem
+    public class PickDateViewModel : ObservableItem
     {
         private readonly IPickDateModel _model;
 
