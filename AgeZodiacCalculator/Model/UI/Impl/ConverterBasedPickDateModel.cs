@@ -11,17 +11,12 @@ namespace AgeZodiacCalculator.Model.UI.Impl
     {
         private readonly ILogger<ConverterBasedPickDateModel> _logger;
 
-        private readonly TypeConverter _chineseSignConverter;
-        private readonly TypeConverter _westernSignConverter;
-
         private DateTime _selectedDate;
 
         public ConverterBasedPickDateModel(ILogger<ConverterBasedPickDateModel> logger, DateTime? selectedTime = null)
         {
             _logger = logger;
             SelectedDate = selectedTime ?? DateTime.Now;
-            _chineseSignConverter = TypeDescriptor.GetConverter(typeof(ChineseSign));
-            _westernSignConverter = TypeDescriptor.GetConverter(typeof(WesternSign));
         }
 
         public DateTime SelectedDate
@@ -57,9 +52,35 @@ namespace AgeZodiacCalculator.Model.UI.Impl
             }
         }
 
-        public ChineseSign? ChineseSign => IsTimeValid(SelectedDate) ? (ChineseSign) _chineseSignConverter.ConvertFrom(SelectedDate) : null;
+        public ChineseSign? ChineseSign => ConvertDateToEnum<ChineseSign>();
 
-        public WesternSign? WesternSign => IsTimeValid(SelectedDate) ? (WesternSign) _westernSignConverter.ConvertFrom(SelectedDate) : null;
+        public WesternSign? WesternSign => ConvertDateToEnum<WesternSign>();
+
+        private T? ConvertDateToEnum<T>()
+        {
+            if (!IsTimeValid(SelectedDate))
+            {
+                return default;
+            }
+
+            Type expectedType = typeof(T);
+            TypeConverter converter = TypeDescriptor.GetConverter(expectedType);
+            Type fromType = SelectedDate.GetType();
+            if (!converter.CanConvertFrom(fromType))
+            {
+                _logger.LogWarning("Converter {Converter} cannot convert from {FromType}", converter, fromType);
+                return default;
+            }
+
+            object? converted = converter.ConvertFrom(SelectedDate);
+            if (converted is not T sign)
+            {
+                _logger.LogWarning("Converted result is not of expected type {ExpectedType}: {Converted}", expectedType, fromType);
+                return default;
+            }
+
+            return sign;
+        }
 
         private static bool IsTimeValid(DateTime date)
         {

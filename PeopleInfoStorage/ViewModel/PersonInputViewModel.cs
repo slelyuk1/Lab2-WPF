@@ -116,6 +116,8 @@ namespace PeopleInfoStorage.ViewModel
                             viewModel.ReplaceSelectedPerson(newPersonInfo)
                         );
                         break;
+                    case ProcessingMode.View:
+                        throw new NotImplementedException("View mode is still not implemented!");
                     default:
                         throw new NotImplementedException("This EditMode is still not implemented!");
                 }

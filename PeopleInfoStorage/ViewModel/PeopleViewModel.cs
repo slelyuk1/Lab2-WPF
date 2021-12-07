@@ -120,8 +120,8 @@ namespace PeopleInfoStorage.ViewModel
         {
             if (SelectedPerson == null)
             {
-                // todo
-                throw new InvalidOperationException();
+                // todo warn message
+                return;
             }
 
             _navigator.ExecuteAndNavigate<PersonInputView, PersonInputViewModel>((_, viewModel) =>

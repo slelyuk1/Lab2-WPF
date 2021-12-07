@@ -18,9 +18,6 @@ namespace AgeZodiacCalculator
     {
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            // todo logging
-            // todo make safe type conversions
-            // todo use LINQ
             IHost host = Host.CreateDefaultBuilder()
                 .ConfigureLogging(loggingBuilder =>
                 {

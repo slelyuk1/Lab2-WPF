@@ -30,7 +30,6 @@ namespace Shared.Tool.ViewModel
             _execute(parameter);
         }
 
-        // todo try to move
         public event EventHandler CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
