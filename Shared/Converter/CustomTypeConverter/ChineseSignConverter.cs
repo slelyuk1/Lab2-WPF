@@ -13,9 +13,10 @@ namespace Shared.Converter.CustomTypeConverter
     {
         private static readonly ChineseSign[] ChineseSignsInChronology =
         {
-            ChineseSign.Monkey, ChineseSign.Rooster, ChineseSign.Dog, ChineseSign.Pig, ChineseSign.Rat, ChineseSign.Ox,
-            ChineseSign.Tiger, ChineseSign.Rabbit, ChineseSign.Dragon, ChineseSign.Snake, ChineseSign.Horse,
-            ChineseSign.Sheep
+            ChineseSign.Monkey, ChineseSign.Rooster, ChineseSign.Dog,
+            ChineseSign.Pig, ChineseSign.Rat, ChineseSign.Ox,
+            ChineseSign.Tiger, ChineseSign.Rabbit, ChineseSign.Dragon,
+            ChineseSign.Snake, ChineseSign.Horse, ChineseSign.Sheep
         };
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
