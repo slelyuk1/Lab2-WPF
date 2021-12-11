@@ -36,9 +36,7 @@ namespace PeopleInfoStorage
                 })
                 .ConfigureServices(serviceCollection =>
                 {
-                    serviceCollection.AddSingleton<AbstractSerializationFacade>(
-                        new ResourceSerializationFacade(new BinaryFormatter(), SerializationFile)
-                    );
+                    serviceCollection.AddSingleton(new SerializationFacade(new BinaryFormatter()));
                     serviceCollection.AddSingleton<MainWindow, MainWindow>();
                     serviceCollection.AddSingleton<IViewVisualizer, MainWindow>(serviceProvider => serviceProvider.GetRequiredService<MainWindow>());
 
@@ -50,24 +48,49 @@ namespace PeopleInfoStorage
                 .Build();
 
             IServiceProvider serviceProvider = host.Services;
+            ILogger<App> logger = serviceProvider.GetRequiredService<ILogger<App>>();
             var container = serviceProvider.GetRequiredService<IMutableViewContainer>();
             var navigator = serviceProvider.GetRequiredService<IViewNavigator>();
-            var serializationFacade = serviceProvider.GetRequiredService<AbstractSerializationFacade>();
 
-            var personInput = new DefaultViewModelAware<PersonInputView, PersonInputViewModel>(
+            container.AddViewModelAware(new DefaultViewModelAware<PersonInputView, PersonInputViewModel>(
                 new PersonInputView(new PersonInputViewModel(navigator))
-            );
+            ));
 
-            IList<PersonInfo> people = serializationFacade.Deserialize<List<PersonInfo>>(PeopleResourceName) ?? new List<PersonInfo>();
-            var peopleView = new DefaultViewModelAware<PeopleView, PeopleViewModel>(
-                new PeopleView(new PeopleViewModel(navigator, new PeopleModel(people)))
-            );
+            var serializationFacade = serviceProvider.GetRequiredService<SerializationFacade>();
+            IList<PersonInfo> people = GetSavedPeopleInfo(serializationFacade, new FileSerializer(SerializationFile), logger);
 
-            container.AddViewModelAware(personInput);
-            container.AddViewModelAware(peopleView);
+            container.AddViewModelAware(new DefaultViewModelAware<PeopleView, PeopleViewModel>(
+                new PeopleView(
+                    new PeopleViewModel(navigator, new PeopleModel(people))
+                )
+            ));
 
             navigator.Navigate<PeopleView>();
             serviceProvider.GetRequiredService<MainWindow>().Show();
+        }
+
+        private static IList<PersonInfo> GetSavedPeopleInfo(SerializationFacade serializationFacade, ISerializer serializer, ILogger<App> logger)
+        {
+            IDictionary<string, object>? deserializedEntries = serializationFacade.Deserialize(serializer);
+            if (deserializedEntries == null)
+            {
+                logger.LogWarning("Couldn't deserialize using serializer: {Serializer}", serializer);
+                return new List<PersonInfo>();
+            }
+
+            if (!deserializedEntries.TryGetValue(PeopleResourceName, out object peopleObject))
+            {
+                logger.LogWarning("Couldn't find resource by resource name: {ResourceName}", PeopleResourceName);
+                return new List<PersonInfo>();
+            }
+
+            if (peopleObject is not IList<PersonInfo> people)
+            {
+                logger.LogWarning("Found resource is not of expected type: {Resource}", peopleObject);
+                return new List<PersonInfo>();
+            }
+
+            return people;
         }
     }
 }

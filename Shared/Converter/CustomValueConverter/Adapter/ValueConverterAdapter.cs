@@ -7,26 +7,39 @@ namespace Shared.Converter.CustomValueConverter.Adapter
 {
     public class ValueConverterAdapter<T> : IValueConverter
     {
-        private readonly TypeConverter _typeConverter;
+        private const string UnknownStringValue = "Unknown";
+        private readonly Type _converterType;
 
         public ValueConverterAdapter()
         {
-            _typeConverter = TypeDescriptor.GetConverter(typeof(T));
+            _converterType = typeof(T);
         }
 
         public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
+            TypeConverter converter = TypeDescriptor.GetConverter(_converterType);
+            if (!converter.CanConvertTo(targetType))
             {
-                return _typeConverter.ConvertTo(null, culture, value, targetType) ?? "Unknown";
+                throw new InvalidOperationException("Converter from type " + _converterType + " cannot convert to type: " + targetType);
             }
 
-            return "Unknown";
+            if (value != null)
+            {
+                return converter.ConvertTo(null, culture, value, targetType) ?? UnknownStringValue;
+            }
+
+            return UnknownStringValue;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException("ConvertBack functionality is not implemented for TypeToValueConverterAdapter");
+            TypeConverter converter = TypeDescriptor.GetConverter(_converterType);
+            if (!converter.CanConvertFrom(value.GetType()))
+            {
+                throw new InvalidOperationException("Converter from type " + _converterType + " cannot convert from type: " + targetType);
+            }
+
+            return converter.ConvertFrom(value);
         }
     }
 }

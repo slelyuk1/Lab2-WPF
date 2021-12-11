@@ -8,7 +8,6 @@ using Shared.Model.Data;
 
 namespace Shared.Converter.CustomTypeConverter
 {
-    // todo verify direct casts in this project
     internal class ChineseSignConverter : EnumConverter
     {
         private static readonly ChineseSign[] ChineseSignsInChronology =

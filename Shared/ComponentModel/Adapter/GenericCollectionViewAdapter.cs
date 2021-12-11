@@ -8,36 +8,8 @@ using System.Globalization;
 
 #pragma warning disable 8766
 
-namespace Shared.ComponentModel
+namespace Shared.ComponentModel.Adapter
 {
-    public class GenericEnumeratorAdapter<T> : IEnumerator<T>
-    {
-        private readonly IEnumerator _implementation;
-
-        public GenericEnumeratorAdapter(IEnumerator implementation)
-        {
-            _implementation = implementation;
-        }
-
-        public void Dispose()
-        {
-        }
-
-        public bool MoveNext()
-        {
-            return _implementation.MoveNext();
-        }
-
-        public void Reset()
-        {
-            _implementation.Reset();
-        }
-
-        public T Current => ((T) _implementation.Current)!;
-
-        object? IEnumerator.Current => Current;
-    }
-
     public class GenericCollectionViewAdapter<T> : ICollectionView, IEnumerable<T>
     {
         private readonly ICollectionView _implementation;
@@ -126,13 +98,18 @@ namespace Shared.ComponentModel
 
         public IEnumerable SourceCollection => _implementation.SourceCollection;
 
-        // todo generic
-        public Predicate<object> Filter
+        Predicate<object?> ICollectionView.Filter
         {
-            get => _implementation.Filter;
-            set => _implementation.Filter = value;
+            get => obj => Filter((T?) obj);
+            set => Filter = typedObj => value(typedObj);
         }
-        
+
+        public Predicate<T?> Filter
+        {
+            get => typedObj => _implementation.Filter(typedObj);
+            set => _implementation.Filter = obj => value((T) obj);
+        }
+
         public bool CanFilter => _implementation.CanFilter;
 
         public SortDescriptionCollection SortDescriptions => _implementation.SortDescriptions;
@@ -143,11 +120,15 @@ namespace Shared.ComponentModel
 
         public ObservableCollection<GroupDescription> GroupDescriptions => _implementation.GroupDescriptions;
 
+        // todo make generic
         public ReadOnlyObservableCollection<object> Groups => _implementation.Groups;
 
         public bool IsEmpty => _implementation.IsEmpty;
 
-        public object CurrentItem => _implementation.CurrentItem;
+        // todo understand what it means
+        object? ICollectionView.CurrentItem => CurrentItem;
+
+        public T? CurrentItem => (T?) _implementation.CurrentItem;
 
         public int CurrentPosition => _implementation.CurrentPosition;
 

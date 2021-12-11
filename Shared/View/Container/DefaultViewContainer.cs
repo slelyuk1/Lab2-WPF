@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 using Shared.Tool.View;
 
 namespace Shared.View.Container
@@ -78,28 +77,27 @@ namespace Shared.View.Container
                 return InitializeForReturn(found);
             }
 
-            // todo add subclasses usage
-            // foreach (KeyValuePair<Type, ISet<object>> entry in typeToValue)
-            // {
-            //     
-            //     if (toFindBy != object && entry.Key.IsSubclassOf(toFindBy))
-            //     {
-            //         return InitializeForReturn(entry.Value);
-            //     }
-            // }
+            ISet<object> result = InitializeForReturn();
+            foreach (KeyValuePair<Type, ISet<object>> entry in typeToValue)
+            {
+                Type foundType = entry.Key;
+                if (foundType == toFindBy || foundType.IsSubclassOf(toFindBy))
+                {
+                    result.UnionWith(entry.Value);
+                }
+            }
 
-            return InitializeForReturn();
+            return result;
         }
 
-        protected virtual ISet<object> IntersectionOfSets<TView, TViewModel>(ISet<object> foundByView,
-            ISet<object> foundByViewModel)
+        protected virtual ISet<object> IntersectionOfSets<TView, TViewModel>(ISet<object> foundByView, ISet<object> foundByViewModel)
         {
-            if (foundByView.Count < 1 && typeof(TView) == typeof(object))
+            if (foundByView.Count < 1)
             {
                 return foundByViewModel;
             }
 
-            if (foundByViewModel.Count < 1 && typeof(TViewModel) == typeof(object))
+            if (foundByViewModel.Count < 1)
             {
                 return foundByView;
             }

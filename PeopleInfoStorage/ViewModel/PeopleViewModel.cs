@@ -10,6 +10,7 @@ using PeopleInfoStorage.Model.Data;
 using PeopleInfoStorage.Model.UI;
 using PeopleInfoStorage.View;
 using Shared.ComponentModel;
+using Shared.ComponentModel.Adapter;
 using Shared.Model.Data;
 using Shared.Tool.ViewModel;
 using Shared.View.Navigator;

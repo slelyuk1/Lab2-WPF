@@ -13,9 +13,9 @@ namespace PeopleInfoStorage
     public partial class MainWindow : IViewVisualizer
     {
         private readonly IViewContainer _viewContainer;
-        private readonly AbstractSerializationFacade _serializationFacade;
+        private readonly SerializationFacade _serializationFacade;
 
-        public MainWindow(IViewContainer viewContainer, AbstractSerializationFacade serializationFacade)
+        public MainWindow(IViewContainer viewContainer, SerializationFacade serializationFacade)
         {
             _viewContainer = viewContainer;
             _serializationFacade = serializationFacade;
@@ -33,7 +33,7 @@ namespace PeopleInfoStorage
         {
             PeopleViewModel viewModel = _viewContainer.GetRequiredViewModelAware<PeopleView, PeopleViewModel>().GetViewModel();
             List<PersonInfo> people = new(viewModel.People);
-            _serializationFacade.Serialize(App.PeopleResourceName, people);
+            _serializationFacade.Serialize(new FileSerializer(App.SerializationFile), App.PeopleResourceName, people);
             base.OnClosing(e);
         }
     }

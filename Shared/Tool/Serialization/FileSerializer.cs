@@ -3,21 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Resources;
-using System.Runtime.Serialization;
 
 namespace Shared.Tool.Serialization
 {
-    public class ResourceSerializationFacade : AbstractSerializationFacade
+    public class FileSerializer : ISerializer
     {
         private readonly string _fileName;
 
-        // todo make for many files
-        public ResourceSerializationFacade(IFormatter dataFormatter, string fileName) : base(dataFormatter)
+        // todo is it good practice to pass loggers into constructor
+        public FileSerializer(string fileName)
         {
             _fileName = fileName;
         }
 
-        protected override IDictionary<string, Tuple<Type, byte[]>>? ReadSerializedData()
+        public IDictionary<string, Tuple<Type, byte[]>>? ReadSerializedData()
         {
             if (!File.Exists(_fileName))
             {
@@ -44,7 +43,7 @@ namespace Shared.Tool.Serialization
             return nameToData;
         }
 
-        protected override void WriteSerializedData(IDictionary<string, byte[]> nameToData)
+        public void WriteSerializedData(IDictionary<string, byte[]> nameToData)
         {
             using var writer = new ResourceWriter(_fileName);
             foreach (KeyValuePair<string, byte[]> nameAndData in nameToData)
