@@ -42,28 +42,31 @@ namespace PeopleInfoStorage
 
                     serviceCollection.AddSingleton<IMutableViewContainer, DefaultViewContainer>();
                     serviceCollection.AddSingleton<IViewContainer>(serviceProvider => serviceProvider.GetRequiredService<IMutableViewContainer>());
-
                     serviceCollection.AddSingleton<IViewNavigator, ViewContainerBasedNavigator>();
+
+                    serviceCollection.AddSingleton<PersonInputViewModel>();
+                    serviceCollection.AddSingleton<PersonInputView>();
+
+                    serviceCollection.AddSingleton(serviceProvider =>
+                    {
+                        var appLogger = serviceProvider.GetRequiredService<ILogger<App>>();
+                        var serializationFacade = serviceProvider.GetRequiredService<SerializationFacade>();
+                        IList<PersonInfo> people = GetSavedPeopleInfo(serializationFacade, new FileSerializer(SerializationFile), appLogger);
+                        return new PeopleModel(people, serviceProvider.GetRequiredService<ILogger<PeopleModel>>());
+                    });
+                    serviceCollection.AddSingleton<PeopleViewModel>();
+                    serviceCollection.AddSingleton<PeopleView>();
                 })
                 .Build();
 
             IServiceProvider serviceProvider = host.Services;
-            ILogger<App> logger = serviceProvider.GetRequiredService<ILogger<App>>();
             var container = serviceProvider.GetRequiredService<IMutableViewContainer>();
             var navigator = serviceProvider.GetRequiredService<IViewNavigator>();
 
-            container.AddViewModelAware(new DefaultViewModelAware<PersonInputView, PersonInputViewModel>(
-                new PersonInputView(new PersonInputViewModel(navigator))
-            ));
-
-            var serializationFacade = serviceProvider.GetRequiredService<SerializationFacade>();
-            IList<PersonInfo> people = GetSavedPeopleInfo(serializationFacade, new FileSerializer(SerializationFile), logger);
-
-            container.AddViewModelAware(new DefaultViewModelAware<PeopleView, PeopleViewModel>(
-                new PeopleView(
-                    new PeopleViewModel(navigator, new PeopleModel(people))
-                )
-            ));
+            var personInputView = serviceProvider.GetRequiredService<PersonInputView>();
+            container.AddViewModelAware(new DefaultViewModelAware<PersonInputView, PersonInputViewModel>(personInputView));
+            var peopleView = serviceProvider.GetRequiredService<PeopleView>();
+            container.AddViewModelAware(new DefaultViewModelAware<PeopleView, PeopleViewModel>(peopleView));
 
             navigator.Navigate<PeopleView>();
             serviceProvider.GetRequiredService<MainWindow>().Show();

@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Microsoft.Extensions.Logging;
 using PeopleInfoStorage.Model.Data;
 
 namespace PeopleInfoStorage.Model.UI
 {
     public class PeopleModel
     {
-        public PeopleModel(IEnumerable<PersonInfo> people)
+        private readonly ILogger<PeopleModel> _logger;
+
+        public PeopleModel(IEnumerable<PersonInfo> people, ILogger<PeopleModel> logger)
         {
             People = new ObservableCollection<PersonInfo>(people);
+            _logger = logger;
         }
 
         public ObservableCollection<PersonInfo> People { get; }
@@ -23,8 +26,9 @@ namespace PeopleInfoStorage.Model.UI
 
         public void EditPerson(PersonInfo edited)
         {
-            if (ChosenPerson == null)
+            if (!IsPersonChosen)
             {
+                _logger.LogWarning("Tried to edit without chosen user with: {Edited}", edited);
                 return;
             }
 
@@ -32,7 +36,8 @@ namespace PeopleInfoStorage.Model.UI
             int foundIndex = People.IndexOf(ChosenPerson);
             if (foundIndex == -1)
             {
-                throw new NullReferenceException("No such person in storage to edit!");
+                _logger.LogWarning("Couldn't find an edited by chosen person: {ChosenPerson}", ChosenPerson);
+                return;
             }
 
             People[foundIndex] = edited;
@@ -40,8 +45,9 @@ namespace PeopleInfoStorage.Model.UI
 
         public void DeleteSelectedPerson()
         {
-            if (ChosenPerson == null)
+            if (!IsPersonChosen)
             {
+                _logger.LogWarning("Tried to delete info without selected person");
                 return;
             }
 
