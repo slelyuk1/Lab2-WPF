@@ -59,17 +59,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Content\ProcessesInfoView.xaml.cs">
+    <Compile Include="Model\Data\ReadableProcess.cs" />
+    <Compile Include="Model\UI\ProcessesInfoModel.cs" />
+    <Compile Include="View\ProcessesInfoView.xaml.cs">
       <DependentUpon>ProcessesInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\ReadableProcess.cs" />
-    <Compile Include="Models\ProcessesInfoModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Tools\ObservableItem.cs" />
     <Compile Include="Tools\ProcessCpuCounter.cs" />
-    <Compile Include="Tools\RelayCommand.cs" />
-    <Compile Include="ViewModels\ProcessesInfoViewModel.cs" />
-    <Page Include="Content\ProcessesInfoView.xaml">
+    <Compile Include="ViewModel\ProcessesInfoViewModel.cs" />
+    <Page Include="View\ProcessesInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -87,8 +85,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Managers\NavigationManager.cs" />
-    <Compile Include="Models\NavigationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

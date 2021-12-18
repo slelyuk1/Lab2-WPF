@@ -2,15 +2,14 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
-using TaskManager.Models;
-using TaskManager.Tools;
+using Shared.Tool.ViewModel;
+using TaskManager.Model.Data;
+using TaskManager.Model.UI;
 
-namespace TaskManager.ViewModels
+namespace TaskManager.ViewModel
 {
     internal class ProcessesInfoViewModel : ObservableItem
     {
@@ -41,6 +40,7 @@ namespace TaskManager.ViewModels
                 }
                 catch (Win32Exception)
                 {
+                    // todo handle exception normally
                 }
             }
 
@@ -105,7 +105,7 @@ namespace TaskManager.ViewModels
             {
                 if (_stopProcessCommand == null)
                 {
-                    _stopProcessCommand = new RelayCommand(StopProcess, ProcessSelected);
+                    _stopProcessCommand = new DelegateBasedCommand(StopProcess, ProcessSelected);
                 }
 
                 return _stopProcessCommand;
@@ -118,7 +118,7 @@ namespace TaskManager.ViewModels
             {
                 if (_openFolderCommand == null)
                 {
-                    _openFolderCommand = new RelayCommand(OpenFolder, ProcessSelected);
+                    _openFolderCommand = new DelegateBasedCommand(OpenFolder, ProcessSelected);
                 }
 
                 return _openFolderCommand;

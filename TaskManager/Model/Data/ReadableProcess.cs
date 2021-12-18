@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using Shared.Tool.ViewModel;
 using TaskManager.Tools;
 
-
-namespace TaskManager.Models
+namespace TaskManager.Model.Data
 {
     class ReadableProcess : ObservableItem
     {

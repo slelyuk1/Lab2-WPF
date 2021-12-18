@@ -1,6 +1,5 @@
 ﻿using System.Windows;
-using TaskManager.Managers;
-using TaskManager.Models;
+using TaskManager.View;
 
 namespace TaskManager
 {
@@ -14,9 +13,9 @@ namespace TaskManager
 
             // todo fix exit code 500 (admin rights)
             base.OnStartup(e);
-            MainWindow window = new MainWindow();
-            NavigationManager.Instance.Initialise(new NavigationModel(window));
-            NavigationManager.Instance.Navigate(Views.ProcessesView);
+            var window = new MainWindow();
+            var processesInfoView = new ProcessesInfoView();
+            window.Visualize(processesInfoView);
             window.Show();
         }
     }

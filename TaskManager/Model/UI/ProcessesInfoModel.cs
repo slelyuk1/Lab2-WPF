@@ -2,31 +2,34 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using TaskManager.Model.Data;
 
-namespace TaskManager.Models
+namespace TaskManager.Model.UI
 {
-    class ProcessesInfoModel
+    internal class ProcessesInfoModel
     {
         public void UpdateProcesses(ObservableCollection<ReadableProcess> processes)
         {
-            for (var i = 0; i < processes.Count; i++)
+            foreach (ReadableProcess t in processes)
             {
-                if (processes[i].MainProcess != null)
-                    processes[i].Update();
+                if (t.MainProcess != null)
+                {
+                    t.Update();
+                }
             }
         }
 
         public void RebuildProcesses(ObservableCollection<ReadableProcess> processes)
         {
             var running = new Dictionary<int, Process>();
-            foreach (var process in Process.GetProcesses())
+            foreach (Process process in Process.GetProcesses())
             {
                 running.Add(process.Id, process);
             }
 
             for (var i = 0; i < processes.Count; i++)
             {
-                var cur = processes[i];
+                ReadableProcess cur = processes[i];
                 if (!running.ContainsKey(cur.Id))
                 {
                     processes.RemoveAt(i);
@@ -38,7 +41,7 @@ namespace TaskManager.Models
                 }
             }
 
-            foreach (var process in running.Values)
+            foreach (Process process in running.Values)
             {
                 try
                 {
@@ -46,6 +49,7 @@ namespace TaskManager.Models
                 }
                 catch (Win32Exception)
                 {
+                    // todo make normal exception handling
                 }
             }
         }
