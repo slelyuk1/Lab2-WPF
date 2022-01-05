@@ -5,6 +5,7 @@ using PeopleInfoStorage.Model.Data;
 using PeopleInfoStorage.View;
 using PeopleInfoStorage.ViewModel;
 using Shared.Tool.Serialization;
+using Shared.Tool.Serialization.Serializer;
 using Shared.View.Container;
 using Shared.View.Visualizer;
 

@@ -10,6 +10,8 @@ using PeopleInfoStorage.Model.UI;
 using PeopleInfoStorage.View;
 using PeopleInfoStorage.ViewModel;
 using Shared.Tool.Serialization;
+using Shared.Tool.Serialization.Result;
+using Shared.Tool.Serialization.Serializer;
 using Shared.Tool.View;
 using Shared.View.Container;
 using Shared.View.Navigator;
@@ -51,7 +53,7 @@ namespace PeopleInfoStorage
                     {
                         var appLogger = serviceProvider.GetRequiredService<ILogger<App>>();
                         var serializationFacade = serviceProvider.GetRequiredService<SerializationFacade>();
-                        IList<PersonInfo> people = GetSavedPeopleInfo(serializationFacade, new FileSerializer(SerializationFile), appLogger);
+                        IEnumerable<PersonInfo> people = GetSavedPeopleInfo(serializationFacade, new FileSerializer(SerializationFile), appLogger);
                         return new PeopleModel(people, serviceProvider.GetRequiredService<ILogger<PeopleModel>>());
                     });
                     serviceCollection.AddSingleton<PeopleViewModel>();
@@ -72,28 +74,37 @@ namespace PeopleInfoStorage
             serviceProvider.GetRequiredService<MainWindow>().Show();
         }
 
-        private static IList<PersonInfo> GetSavedPeopleInfo(SerializationFacade serializationFacade, ISerializer serializer, ILogger<App> logger)
+        private static IEnumerable<PersonInfo> GetSavedPeopleInfo(SerializationFacade serializationFacade, ISerializer serializer, ILogger logger)
         {
-            IDictionary<string, object>? deserializedEntries = serializationFacade.Deserialize(serializer);
-            if (deserializedEntries == null)
-            {
-                logger.LogWarning("Couldn't deserialize using serializer: {Serializer}", serializer);
-                return new List<PersonInfo>();
-            }
+            ISerializationResult<IDictionary<string, object>> deserializedEntries = serializationFacade.Deserialize(serializer);
+            IList<PersonInfo>? result = null;
+            deserializedEntries.Process(
+                deserialized =>
+                {
+                    if (deserialized == null)
+                    {
+                        logger.LogWarning("Got empty deserialization result from: {Serializer}", serializer);
+                        return;
+                    }
 
-            if (!deserializedEntries.TryGetValue(PeopleResourceName, out object peopleObject))
-            {
-                logger.LogWarning("Couldn't find resource by resource name: {ResourceName}", PeopleResourceName);
-                return new List<PersonInfo>();
-            }
+                    if (!deserialized.TryGetValue(PeopleResourceName, out object peopleObject))
+                    {
+                        logger.LogWarning("Couldn't find resource by resource name: {ResourceName}", PeopleResourceName);
+                        return;
+                    }
 
-            if (peopleObject is not IList<PersonInfo> people)
-            {
-                logger.LogWarning("Found resource is not of expected type: {Resource}", peopleObject);
-                return new List<PersonInfo>();
-            }
+                    if (peopleObject is not IList<PersonInfo> people)
+                    {
+                        logger.LogWarning("Found resource is not of expected type: {Resource}", peopleObject);
+                        return;
+                    }
 
-            return people;
+                    result = people;
+                },
+                exception => logger.LogError(exception, "An exception occurred during deserialization by: {Serializer}", serializer)
+            );
+
+            return result ?? new List<PersonInfo>();
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Shared.View.Container
             if (viewModelAware == null)
             {
                 throw new InvalidDataException(
-                    "Couldn't find IViewModelAware for viewType=" + typeof(TView) + ", viewModelType=" + typeof(TViewModel)
+                    $"Couldn't find IViewModelAware for viewType={typeof(TView)}, viewModelType={typeof(TViewModel)}"
                 );
             }
 

@@ -52,7 +52,7 @@ namespace Shared.Converter.CustomTypeConverter
                     borderDay = 22;
                     break;
                 default:
-                    throw new InvalidOperationException("Month number is not expected: " + month);
+                    throw new InvalidOperationException($"Month number is not expected: {month}");
             }
 
             bool shift = day >= borderDay;

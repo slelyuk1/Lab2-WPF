@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
+using Shared.Tool.Serialization.Result;
+using Shared.Tool.Serialization.Serializer;
 
 namespace Shared.Tool.Serialization
 {
+    using RawDataDictionary = IDictionary<string, Tuple<Type, byte[]>>;
+    using DataDictionary = IDictionary<string, object>;
+
     public class SerializationFacade
     {
         private readonly IFormatter _dataFormatter;
@@ -19,10 +24,10 @@ namespace Shared.Tool.Serialization
             SerializeAll(serializer, new Dictionary<string, object> {{name, value}});
         }
 
-        public void SerializeAll<T>(ISerializer serializer, IDictionary<string, T> nameToObject) where T : class
+        public void SerializeAll(ISerializer serializer, DataDictionary nameToObject)
         {
             var nameToData = new Dictionary<string, byte[]>();
-            foreach (KeyValuePair<string, T> nameAndObject in nameToObject)
+            foreach (KeyValuePair<string, object> nameAndObject in nameToObject)
             {
                 using var memoryStream = new MemoryStream();
                 _dataFormatter.Serialize(memoryStream, nameAndObject.Value);
@@ -34,22 +39,20 @@ namespace Shared.Tool.Serialization
             serializer.WriteSerializedData(nameToData);
         }
 
-        public IDictionary<string, object>? Deserialize(ISerializer serializer)
+        public ISerializationResult<DataDictionary> Deserialize(ISerializer serializer)
         {
-            IDictionary<string, Tuple<Type, byte[]>>? nameToData = serializer.ReadSerializedData();
-            if (nameToData == null)
+            ISerializationResult<RawDataDictionary> rawSerializationResult = serializer.ReadSerializedData();
+            return DefaultSerializationResult<DataDictionary>.From(rawSerializationResult, rawData =>
             {
-                return null;
-            }
+                IDictionary<string, object> keyToObject = new Dictionary<string, object>();
+                foreach (KeyValuePair<string, Tuple<Type, byte[]>> entry in rawData)
+                {
+                    using var byteStream = new MemoryStream(entry.Value.Item2);
+                    keyToObject.Add(entry.Key, _dataFormatter.Deserialize(byteStream));
+                }
 
-            IDictionary<string, object> result = new Dictionary<string, object>();
-            foreach (KeyValuePair<string, Tuple<Type, byte[]>> entry in nameToData)
-            {
-                using var byteStream = new MemoryStream(entry.Value.Item2);
-                result.Add(entry.Key, _dataFormatter.Deserialize(byteStream));
-            }
-
-            return result;
+                return keyToObject;
+            });
         }
     }
 }

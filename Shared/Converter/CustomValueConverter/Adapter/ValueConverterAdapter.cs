@@ -20,7 +20,7 @@ namespace Shared.Converter.CustomValueConverter.Adapter
             TypeConverter converter = TypeDescriptor.GetConverter(_converterType);
             if (!converter.CanConvertTo(targetType))
             {
-                throw new InvalidOperationException("Converter from type " + _converterType + " cannot convert to type: " + targetType);
+                throw new InvalidOperationException($"Converter from type {_converterType} cannot convert to type: {targetType}");
             }
 
             if (value != null)
@@ -36,7 +36,7 @@ namespace Shared.Converter.CustomValueConverter.Adapter
             TypeConverter converter = TypeDescriptor.GetConverter(_converterType);
             if (!converter.CanConvertFrom(value.GetType()))
             {
-                throw new InvalidOperationException("Converter from type " + _converterType + " cannot convert from type: " + targetType);
+                throw new InvalidOperationException($"Converter from type {_converterType} cannot convert from type: {targetType}");
             }
 
             return converter.ConvertFrom(value);

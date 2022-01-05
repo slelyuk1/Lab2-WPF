@@ -19,8 +19,7 @@ namespace PeopleInfoStorage.Exception
 
     internal class EmailException : PersonException
     {
-        public EmailException(string? invalidEmail)
-            : base("Inappropriate representation of email: " + invalidEmail)
+        public EmailException(string? invalidEmail) : base($"Inappropriate representation of email: {invalidEmail}")
         {
         }
     }
