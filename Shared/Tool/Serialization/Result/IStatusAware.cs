@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Shared.Tool.Serialization.Result
+﻿namespace Shared.Tool.Serialization.Result
 {
     public enum SerializationStatus
     {

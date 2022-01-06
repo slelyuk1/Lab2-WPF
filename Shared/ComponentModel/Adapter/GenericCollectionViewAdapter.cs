@@ -6,6 +6,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 
+// ReSharper disable MemberCanBePrivate.Global
+
 #pragma warning disable 8766
 
 namespace Shared.ComponentModel.Adapter
@@ -120,12 +122,10 @@ namespace Shared.ComponentModel.Adapter
 
         public ObservableCollection<GroupDescription> GroupDescriptions => _implementation.GroupDescriptions;
 
-        // todo make generic
-        public ReadOnlyObservableCollection<object> Groups => _implementation.Groups;
+        ReadOnlyObservableCollection<object> ICollectionView.Groups => _implementation.Groups;
 
         public bool IsEmpty => _implementation.IsEmpty;
 
-        // todo understand what it means
         object? ICollectionView.CurrentItem => CurrentItem;
 
         public T? CurrentItem => (T?) _implementation.CurrentItem;

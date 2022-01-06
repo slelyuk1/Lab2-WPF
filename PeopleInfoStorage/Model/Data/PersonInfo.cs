@@ -59,6 +59,11 @@ namespace PeopleInfoStorage.Model.Data
             return _id.GetHashCode();
         }
 
+        public override string ToString()
+        {
+            return $"PersonInfo: Name={Name}, Surname={Surname}, Email={Email}, BirthDate={BirthDate}";
+        }
+
         private PersonInfo(string name, string surname, string email, DateTime birthDate)
         {
             _id = Guid.NewGuid();
@@ -68,7 +73,8 @@ namespace PeopleInfoStorage.Model.Data
             BirthDate = birthDate;
         }
 
-        private static void ValidateInitializationParameters(string name, string surname, string email, DateTime birthDate)
+        private static void ValidateInitializationParameters(string name, string surname, string email,
+            DateTime birthDate)
         {
             if (IsNameValid(name))
             {

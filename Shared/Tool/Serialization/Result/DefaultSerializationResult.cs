@@ -2,7 +2,7 @@
 
 namespace Shared.Tool.Serialization.Result
 {
-    public class DefaultSerializationResult<TData> : ISerializationResult<TData>
+    public class DefaultSerializationResult<TData> : ISerializationResult<TData> where TData : class
     {
         private readonly Exception? _cause;
         private readonly TData? _data;
@@ -52,14 +52,15 @@ namespace Shared.Tool.Serialization.Result
 
         public static DefaultSerializationResult<TData> From<TOtherData>(
             ISerializationResult<TOtherData> toCopy,
-            Func<TOtherData?, TData?> dataConversionFunction
+            Func<TOtherData, TData?> dataConversionFunction
         )
         {
             DefaultSerializationResult<TData>? result = null;
             RunDependingOnStatus(toCopy.Status,
                 () =>
                 {
-                    TData? convertedData = dataConversionFunction.Invoke(toCopy.Data);
+                    TOtherData? toConvert = toCopy.Data;
+                    TData? convertedData = toConvert != null ? dataConversionFunction.Invoke(toConvert) : null;
                     result = new DefaultSerializationResult<TData>(convertedData);
                 },
                 () => result = new DefaultSerializationResult<TData>(toCopy.Cause)

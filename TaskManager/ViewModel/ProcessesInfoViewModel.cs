@@ -112,18 +112,7 @@ namespace TaskManager.ViewModel
             }
         }
 
-        public ICommand OpenFolderCommand
-        {
-            get
-            {
-                if (_openFolderCommand == null)
-                {
-                    _openFolderCommand = new DelegateBasedCommand(OpenFolder, ProcessSelected);
-                }
-
-                return _openFolderCommand;
-            }
-        }
+        public ICommand OpenFolderCommand => _openFolderCommand ?? (_openFolderCommand = new DelegateBasedCommand(OpenFolder, ProcessSelected));
 
         private bool ProcessSelected(object obj) => SelectedProcess != null;
 

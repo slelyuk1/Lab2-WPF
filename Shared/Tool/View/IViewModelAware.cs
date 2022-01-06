@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace Shared.Tool.View
+﻿namespace Shared.Tool.View
 {
     public interface IViewModelAware<out TView, out TViewModel>
     {

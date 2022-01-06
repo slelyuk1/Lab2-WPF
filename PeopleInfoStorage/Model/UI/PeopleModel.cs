@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Microsoft.Extensions.Logging;
 using PeopleInfoStorage.Model.Data;
@@ -33,7 +34,7 @@ namespace PeopleInfoStorage.Model.UI
             }
 
             // todo make normal
-            int foundIndex = People.IndexOf(ChosenPerson);
+            int foundIndex = People.IndexOf(ChosenPerson ?? throw new InvalidOperationException("ChosenPerson is expected to be non-null"));
             if (foundIndex == -1)
             {
                 _logger.LogWarning("Couldn't find an edited by chosen person: {ChosenPerson}", ChosenPerson);
@@ -51,7 +52,7 @@ namespace PeopleInfoStorage.Model.UI
                 return;
             }
 
-            People.Remove(ChosenPerson);
+            People.Remove(ChosenPerson ?? throw new InvalidOperationException("ChosenPerson is expected to be non-null"));
         }
 
         public bool IsPersonChosen => ChosenPerson != null;

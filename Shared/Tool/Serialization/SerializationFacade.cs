@@ -5,6 +5,8 @@ using System.Runtime.Serialization;
 using Shared.Tool.Serialization.Result;
 using Shared.Tool.Serialization.Serializer;
 
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace Shared.Tool.Serialization
 {
     using RawDataDictionary = IDictionary<string, Tuple<Type, byte[]>>;
@@ -24,10 +26,10 @@ namespace Shared.Tool.Serialization
             SerializeAll(serializer, new Dictionary<string, object> {{name, value}});
         }
 
-        public void SerializeAll(ISerializer serializer, DataDictionary nameToObject)
+        public ISerializationResult SerializeAll(ISerializer serializer, DataDictionary nameToObject)
         {
             var nameToData = new Dictionary<string, byte[]>();
-            foreach (KeyValuePair<string, object> nameAndObject in nameToObject)
+            foreach (var nameAndObject in nameToObject)
             {
                 using var memoryStream = new MemoryStream();
                 _dataFormatter.Serialize(memoryStream, nameAndObject.Value);
@@ -35,17 +37,16 @@ namespace Shared.Tool.Serialization
                 nameToData.Add(nameAndObject.Key, serializedData);
             }
 
-            // todo maybe return some status
-            serializer.WriteSerializedData(nameToData);
+            return serializer.WriteSerializedData(nameToData);
         }
 
         public ISerializationResult<DataDictionary> Deserialize(ISerializer serializer)
         {
-            ISerializationResult<RawDataDictionary> rawSerializationResult = serializer.ReadSerializedData();
+            var rawSerializationResult = serializer.ReadSerializedData();
             return DefaultSerializationResult<DataDictionary>.From(rawSerializationResult, rawData =>
             {
                 IDictionary<string, object> keyToObject = new Dictionary<string, object>();
-                foreach (KeyValuePair<string, Tuple<Type, byte[]>> entry in rawData)
+                foreach (var entry in rawData)
                 {
                     using var byteStream = new MemoryStream(entry.Value.Item2);
                     keyToObject.Add(entry.Key, _dataFormatter.Deserialize(byteStream));
