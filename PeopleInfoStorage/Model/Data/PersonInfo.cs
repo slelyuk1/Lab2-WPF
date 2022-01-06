@@ -7,7 +7,6 @@ using Shared.Model.Data;
 
 namespace PeopleInfoStorage.Model.Data
 {
-    // todo use builder pattern
     [Serializable]
     public class PersonInfo
     {
@@ -15,12 +14,6 @@ namespace PeopleInfoStorage.Model.Data
         public static readonly TypeConverter WesternSignConverter = TypeDescriptor.GetConverter(typeof(WesternSign));
 
         private readonly Guid _id;
-
-        public static PersonInfo From(string name, string surname, string email, DateTime birthDate)
-        {
-            ValidateInitializationParameters(name, surname, email, birthDate);
-            return new PersonInfo(name, surname, email, birthDate);
-        }
 
         public string Name { get; }
         public string Surname { get; }
@@ -64,6 +57,66 @@ namespace PeopleInfoStorage.Model.Data
             return $"PersonInfo: Name={Name}, Surname={Surname}, Email={Email}, BirthDate={BirthDate}";
         }
 
+        public class Builder
+        {
+            private string? _name, _surname, _email;
+            private DateTime? _birthDate;
+
+            public Builder WithName(string name)
+            {
+                if (IsNameValid(name))
+                {
+                    throw new NameException(name);
+                }
+
+                _name = name;
+                return this;
+            }
+
+            public Builder WithSurname(string surname)
+            {
+                if (!IsNameValid(surname))
+                {
+                    throw new NameException(surname);
+                }
+
+                _surname = surname;
+                return this;
+            }
+
+            public Builder WithEmail(string email)
+            {
+                if (!IsEmailValid(email))
+                {
+                    throw new EmailException(email);
+                }
+
+                _email = email;
+                return this;
+            }
+
+            public Builder WithBirthDate(DateTime birthDate)
+            {
+                if (IsBirthDateValid(birthDate))
+                {
+                    throw new BirthDateException(birthDate);
+                }
+
+                _birthDate = birthDate;
+                return this;
+            }
+
+            public PersonInfo Build()
+            {
+                return new PersonInfo(
+                    _name ?? throw new NameException(_name),
+                    _surname ?? throw new NameException(_surname),
+                    _email ?? throw new EmailException(_email),
+                    _birthDate ?? throw new BirthDateException(_birthDate)
+                );
+            }
+        }
+
         private PersonInfo(string name, string surname, string email, DateTime birthDate)
         {
             _id = Guid.NewGuid();
@@ -73,41 +126,17 @@ namespace PeopleInfoStorage.Model.Data
             BirthDate = birthDate;
         }
 
-        private static void ValidateInitializationParameters(string name, string surname, string email,
-            DateTime birthDate)
-        {
-            if (IsNameValid(name))
-            {
-                throw new NameException(name);
-            }
-
-            if (IsNameValid(surname))
-            {
-                throw new NameException(surname);
-            }
-
-            if (!IsEmailValid(email))
-            {
-                throw new EmailException(email);
-            }
-
-            if (IsBirthDateValid(birthDate))
-            {
-                throw new BirthDateException(birthDate);
-            }
-        }
-
-        private static bool IsNameValid(string name)
+        public static bool IsNameValid(string name)
         {
             return name.Length != 0 && char.IsLower(name[0]);
         }
 
-        private static bool IsEmailValid(string email)
+        public static bool IsEmailValid(string email)
         {
             return Regex.IsMatch(email, "\\w+@\\w+\\.\\w+") && !email.Contains(' ');
         }
 
-        private static bool IsBirthDateValid(DateTime birthDate)
+        public static bool IsBirthDateValid(DateTime birthDate)
         {
             int days = (birthDate - DateTime.Now).Days;
             return days > 0 && days / 365 <= 135;

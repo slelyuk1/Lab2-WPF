@@ -69,21 +69,6 @@
 
             <Separator />
 
-            <!-- todo read mode -->
-            <!-- <ToggleButton Command="{Binding Path=FilterCommand}"> -->
-            <!--     <Image Source="{StaticResource FindIcon}" /> -->
-            <!--     <ToggleButton.ToolTip> -->
-            <!--         <ToolTip> -->
-            <!--             <StackPanel> -->
-            <!--                 <TextBlock FontWeight="Bold">Filter People</TextBlock> -->
-            <!--                 <TextBlock>Find people which contain data from tooltip text box</TextBlock> -->
-            <!--             </StackPanel> -->
-            <!--         </ToolTip> -->
-            <!--     </ToggleButton.ToolTip> -->
-            <!-- </ToggleButton> -->
-
-            <!-- <Separator /> -->
-
             <!-- todo normal width -->
             <ComboBox MinWidth="100"
                       SelectedValue="{Binding Path=SelectedProperty}"
@@ -101,7 +86,6 @@
         <DataGrid Grid.Row="1" Grid.Column="0" BorderThickness="0"
                   ItemsSource="{Binding Path=PeopleView}"
                   SelectedItem="{Binding Path=SelectedPerson, Mode=OneWayToSource}"
-                  Sorting="OnSorting"
                   AutoGenerateColumns="False"
                   HorizontalScrollBarVisibility="Visible"
                   IsReadOnly="True">

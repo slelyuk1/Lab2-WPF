@@ -33,7 +33,6 @@ namespace PeopleInfoStorage.Model.UI
                 return;
             }
 
-            // todo make normal
             int foundIndex = People.IndexOf(ChosenPerson ?? throw new InvalidOperationException("ChosenPerson is expected to be non-null"));
             if (foundIndex == -1)
             {

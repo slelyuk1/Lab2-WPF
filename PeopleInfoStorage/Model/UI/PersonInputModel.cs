@@ -5,12 +5,17 @@ namespace PeopleInfoStorage.Model.UI
 {
     public class PeopleInputModel
     {
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string Email { get; set; }
+        public DateTime BirthDate { get; set; }
+
         public PeopleInputModel()
         {
-            Name = "Oleksandr";
-            Surname = "Leliuk";
-            Email = "slelyuk1@gmail.com";
-            BirthDate = new DateTime(2000, 2, 13);
+            Name = "";
+            Surname = "";
+            Email = "";
+            BirthDate = DateTime.Now;
         }
 
         public PeopleInputModel(PersonInfo person)
@@ -21,14 +26,14 @@ namespace PeopleInfoStorage.Model.UI
             BirthDate = person.BirthDate;
         }
 
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Email { get; set; }
-        public DateTime BirthDate { get; set; }
-
         public PersonInfo MakeInfo()
         {
-            return PersonInfo.From(Name, Surname, Email, BirthDate);
+            return new PersonInfo.Builder()
+                .WithName(Name)
+                .WithSurname(Surname)
+                .WithEmail(Email)
+                .WithBirthDate(BirthDate)
+                .Build();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using PeopleInfoStorage.Exception;
 using PeopleInfoStorage.Model.Data;
 using PeopleInfoStorage.Model.UI;
@@ -13,21 +14,24 @@ namespace PeopleInfoStorage.ViewModel
     internal enum ProcessingMode
     {
         Add,
-        Edit,
-        View
+        Edit
     }
 
     public class PersonInputViewModel : ObservableItem
     {
         private static readonly PeopleInputModel DummyModel = new();
 
-        private ProcessingMode _processingMode;
         private readonly IViewNavigator _navigator;
+        private readonly ILogger _logger;
+
+        private ProcessingMode _processingMode;
         private PeopleInputModel? _model;
 
-        public PersonInputViewModel(IViewNavigator navigator)
+
+        public PersonInputViewModel(IViewNavigator navigator, ILogger<PersonInputViewModel> logger)
         {
             _navigator = navigator;
+            _logger = logger;
             _processingMode = ProcessingMode.Add;
             ProcessCommand = new DelegateBasedCommand(ExecuteProcess);
         }
@@ -116,10 +120,9 @@ namespace PeopleInfoStorage.ViewModel
                             viewModel.ReplaceSelectedPerson(newPersonInfo)
                         );
                         break;
-                    case ProcessingMode.View:
-                        throw new NotImplementedException("View mode is still not implemented!");
                     default:
-                        throw new NotImplementedException("This EditMode is still not implemented!");
+                        _logger.LogWarning("Tried to process PersonInfo with not implemented mode");
+                        return;
                 }
 
                 if (newPersonInfo.IsBirthday)
@@ -127,9 +130,10 @@ namespace PeopleInfoStorage.ViewModel
                     MessageBox.Show("Wow, it's your birthday today. Congratulations!", "Birthday");
                 }
             }
-            catch (PersonException ex)
+            catch (PersonException e)
             {
-                MessageBox.Show(ex.Message, "Error!");
+                _logger.LogError(e, "Expected PersonException was caught");
+                MessageBox.Show(e.Message, "Error!");
             }
         }
     }

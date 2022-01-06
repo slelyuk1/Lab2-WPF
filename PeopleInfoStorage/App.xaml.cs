@@ -26,10 +26,6 @@ namespace PeopleInfoStorage
 
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            // todo logging
-            // todo make safe type conversions
-            // todo use LINQ
-
             IHost host = Host.CreateDefaultBuilder(e.Args)
                 .ConfigureLogging(loggingBuilder =>
                 {

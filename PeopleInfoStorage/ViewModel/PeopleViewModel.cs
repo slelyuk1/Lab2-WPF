@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using PeopleInfoStorage.Model.Data;
 using PeopleInfoStorage.Model.UI;
 using PeopleInfoStorage.View;
@@ -34,16 +35,19 @@ namespace PeopleInfoStorage.ViewModel
         private readonly IViewNavigator _navigator;
         private readonly TypeConverter _chineseSignConverter;
         private readonly TypeConverter _westernSignConverter;
+        private readonly ILogger _logger;
 
         private string _filterText;
 
         public PeopleViewModel(
             IViewNavigator navigator,
-            PeopleModel model
+            PeopleModel model,
+            ILogger<PeopleViewModel> logger
         )
         {
             _navigator = navigator;
             _model = model;
+            _logger = logger;
             _chineseSignConverter = TypeDescriptor.GetConverter(typeof(ChineseSign));
             _westernSignConverter = TypeDescriptor.GetConverter(typeof(WesternSign));
 
@@ -85,15 +89,6 @@ namespace PeopleInfoStorage.ViewModel
             set => _model.ChosenPerson = value;
         }
 
-        // todo implement
-        public void Sort(object sender, DataGridSortingEventArgs e)
-        {
-            /* bool ascending = e.Column.SortDirection == ListSortDirection.Ascending;
-             var sorted = ascending ? Users.OrderBy(u => u.Name) : Users.OrderByDescending(u => u.Name);
-             Users = new ObservableCollection<Person>(sorted);
-            */
-        }
-
         public void AddPerson(PersonInfo info)
         {
             _model.AddPerson(info);
@@ -111,51 +106,48 @@ namespace PeopleInfoStorage.ViewModel
 
         private void OpenInputForAdd(object obj)
         {
-            _navigator.ExecuteAndNavigate<PersonInputView, PersonInputViewModel>((_, viewModel) =>
-                viewModel.PrepareForInput()
-            );
+            _navigator.ExecuteAndNavigate<PersonInputView, PersonInputViewModel>((_, viewModel) => viewModel.PrepareForInput());
         }
 
         private void OpenInputForEdit(object obj)
         {
             if (SelectedPerson == null)
             {
-                // todo warn message
+                _logger.LogWarning("Tried to open input for edit with null SelectedPerson");
                 return;
             }
 
-            _navigator.ExecuteAndNavigate<PersonInputView, PersonInputViewModel>((_, viewModel) =>
-                viewModel.PrepareForEdit(SelectedPerson)
-            );
+            _navigator.ExecuteAndNavigate<PersonInputView, PersonInputViewModel>((_, viewModel) => viewModel.PrepareForEdit(SelectedPerson));
         }
 
         private void RunFilter(string filterText)
         {
-            filterText = filterText.ToLower();
+            Type filteredType = typeof(PersonInfo);
+
+            PropertyInfo?[] filteredProperties = SelectedProperty == AllFilterProperty
+                ? filteredType.GetProperties()
+                : new[] {filteredType.GetProperty(SelectedProperty)};
+
             PeopleView.Filter = item =>
             {
-                Type filteredType = typeof(PersonInfo);
+                IEnumerable<string> matchedValues =
+                    from stringValue in
+                        from value in
+                            from property in
+                                filteredProperties
+                            where property != null
+                            select property.GetValue(item, null)
+                        where value != null
+                        select value switch
+                        {
+                            ChineseSign chineseSign => _chineseSignConverter.ConvertToString(chineseSign),
+                            WesternSign westernSign => _westernSignConverter.ConvertToString(westernSign),
+                            _ => value.ToString()
+                        }
+                    where stringValue != null && stringValue.ToLower().Contains(filterText.ToLower())
+                    select stringValue;
 
-                PropertyInfo[] filteredProperties = SelectedProperty == AllFilterProperty
-                    ? filteredType.GetProperties()
-                    : new[] {filteredType.GetProperty(SelectedProperty)};
-
-                foreach (var property in filteredProperties)
-                {
-                    object value = property.GetValue(item, null);
-                    string? stringValue = value switch
-                    {
-                        ChineseSign chineseSign => _chineseSignConverter.ConvertToString(chineseSign),
-                        WesternSign westernSign => _westernSignConverter.ConvertToString(westernSign),
-                        _ => value?.ToString()
-                    };
-                    if (stringValue != null && stringValue.ToLower().Contains(filterText))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return matchedValues.Any();
             };
         }
     }
