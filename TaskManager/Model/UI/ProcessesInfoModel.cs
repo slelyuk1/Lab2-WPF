@@ -11,13 +11,10 @@ namespace TaskManager.Model.UI
     {
         private readonly ILogger<ProcessesInfoModel> _logger;
 
-        public ProcessesInfoModel(IEnumerable<Process> processes, ILogger<ProcessesInfoModel> logger)
+        public ProcessesInfoModel(ILogger<ProcessesInfoModel> logger)
         {
             _logger = logger;
-            ViewedProcesses = new ObservableCollection<ReadableProcess>(
-                from process in processes
-                select new ReadableProcess(process, _logger)
-            );
+            ViewedProcesses = new ObservableCollection<ReadableProcess>();
         }
 
         public ObservableCollection<ReadableProcess> ViewedProcesses { get; }
@@ -59,7 +56,7 @@ namespace TaskManager.Model.UI
 
             foreach (Process process in idToProcess.Values)
             {
-                ViewedProcesses.Add(new ReadableProcess(process));
+                ViewedProcesses.Add(new ReadableProcess(process, _logger));
             }
 
             UpdateProcesses();

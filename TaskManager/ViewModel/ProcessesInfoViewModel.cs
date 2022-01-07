@@ -11,13 +11,11 @@ namespace TaskManager.ViewModel
 {
     public class ProcessesInfoViewModel : ObservableItem
     {
-        // todo move to constructor
-        private const int UpdateInterval = 2000;
-        private const int RebuildInterval = 5000;
+        private const int UpdateInterval = 1000;
+        private const int RebuildInterval = 10000;
 
         private readonly ProcessesInfoModel _model;
         private readonly ILogger<ProcessesInfoViewModel> _logger;
-
 
         private readonly Timer _updateTimer;
         private readonly Timer _rebuildTimer;
@@ -32,9 +30,8 @@ namespace TaskManager.ViewModel
 
             BindingOperations.EnableCollectionSynchronization(Processes, _model);
 
-            _rebuildTimer = new Timer(RebuildProcesses, null, RebuildInterval, RebuildInterval);
-            // todo verify calculation
-            _updateTimer = new Timer(UpdateProcesses, null, UpdateInterval + 1000, UpdateInterval);
+            _rebuildTimer = new Timer(RebuildProcesses, null, 0, RebuildInterval);
+            _updateTimer = new Timer(UpdateProcesses, null, UpdateInterval, UpdateInterval);
         }
 
         public ObservableCollection<ReadableProcess> Processes => _model.ViewedProcesses;

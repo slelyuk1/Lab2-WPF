@@ -22,7 +22,7 @@ namespace TaskManager.Model.UI
 
         public Process ObservedProcess { get; }
 
-        public int? Id => GetValueSafely(() => ObservedProcess.Id);
+        public int? Id => GetValueSafely<int?>(() => ObservedProcess.Id);
 
         public string? Name => GetValueSafely(() => ObservedProcess.ProcessName);
 
@@ -31,7 +31,7 @@ namespace TaskManager.Model.UI
         public DateTime? StartTime => GetValueSafely(() => ObservedProcess.StartTime);
 
         // todo maybe better
-        public float? RamUsage => GetValueSafely(() => (float) ObservedProcess.WorkingSet64 / 1024 / 1024);
+        public double? RamUsage => GetValueSafely<double?>(() => (double) ObservedProcess.WorkingSet64 / 1024 / 1024);
 
         public string? UserName => GetValueSafely(() => ObservedProcess.StartInfo.UserName);
 
@@ -70,7 +70,7 @@ namespace TaskManager.Model.UI
             }
             catch (Exception e)
             {
-                _logger?.LogError(e, "An expected error occurred during process information retrieval");
+                _logger?.LogDebug(e, "An expected error occurred during process information retrieval");
                 return default;
             }
         }

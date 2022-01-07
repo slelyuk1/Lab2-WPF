@@ -109,10 +109,10 @@
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="Module Name"
-                                    Binding="{Binding Path=ModuleName,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
+                                    Binding="{Binding Path=ModuleName,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Location"
                                     Width="*"
-                                    Binding="{Binding Path=FileName,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
+                                    Binding="{Binding Path=FileName,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
 
             </DataGrid.Columns>
 
@@ -133,12 +133,12 @@
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="Thread ID"
-                                    Binding="{Binding Path=Id,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
+                                    Binding="{Binding Path=Id,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="State"
-                                    Binding="{Binding Path=ThreadState,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
+                                    Binding="{Binding Path=ThreadState,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Start Time"
                                     Width="*"
-                                    Binding="{Binding Path=StartTime,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
+                                    Binding="{Binding Path=StartTime,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
 
             </DataGrid.Columns>
 

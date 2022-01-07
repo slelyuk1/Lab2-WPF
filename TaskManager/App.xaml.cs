@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,9 +40,7 @@ namespace TaskManager
                     serviceCollection.AddSingleton<IViewContainer>(provider => provider.GetRequiredService<IMutableViewContainer>());
                     serviceCollection.AddSingleton<IViewNavigator, ViewContainerBasedNavigator>();
 
-                    serviceCollection.AddSingleton(provider =>
-                        new ProcessesInfoModel(Process.GetProcesses(), provider.GetRequiredService<ILogger<ProcessesInfoModel>>())
-                    );
+                    serviceCollection.AddSingleton<ProcessesInfoModel>();
                     serviceCollection.AddSingleton<ProcessesInfoViewModel>();
                     serviceCollection.AddSingleton<ProcessesInfoView>();
                 })
