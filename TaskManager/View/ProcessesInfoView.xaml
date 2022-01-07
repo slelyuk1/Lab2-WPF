@@ -5,7 +5,9 @@
              xmlns:viewModel="clr-namespace:TaskManager.ViewModel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance {x:Type viewModel:ProcessesInfoViewModel}}">
+             d:DataContext="{d:DesignInstance {x:Type viewModel:ProcessesInfoViewModel}}"
+             MinWidth="1000"
+             MinHeight="500">
 
     <Grid>
         <Grid.RowDefinitions>
