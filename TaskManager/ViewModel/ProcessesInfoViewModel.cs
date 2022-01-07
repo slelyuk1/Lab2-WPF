@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Microsoft.Extensions.Logging;
@@ -25,8 +27,8 @@ namespace TaskManager.ViewModel
             _model = model;
             _logger = logger;
 
-            StopProcessCommand = new DelegateBasedCommand(StopProcess, CanProcessSelected);
-            OpenFolderCommand = new DelegateBasedCommand(OpenFolder, CanProcessSelected);
+            StopProcessCommand = new DelegateBasedCommand(StopProcess, _ => CanProcessBeStopped());
+            OpenFolderCommand = new DelegateBasedCommand(OpenFolder, _ => CanProcessBeNavigated());
 
             BindingOperations.EnableCollectionSynchronization(Processes, _model);
 
@@ -55,7 +57,10 @@ namespace TaskManager.ViewModel
 
         public ProcessModuleCollection SelectedProcessModules => _model.SelectedModules ?? new ProcessModuleCollection(new ProcessModule[] { });
 
-        private bool CanProcessSelected(object obj) => _model.SelectedProcess != null;
+        private bool CanProcessBeStopped() => SelectedProcess is {IsActive: true};
+
+        private bool CanProcessBeNavigated() => SelectedProcess is {FileLocation: { }};
+
 
         private void OpenFolder(object obj)
         {
@@ -71,7 +76,15 @@ namespace TaskManager.ViewModel
                 return;
             }
 
-            Process.Start(SelectedProcess.FileLocation);
+            try
+            {
+                Process.Start(SelectedProcess.FileLocation);
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "An error occurred during \"Open Folder\" action");
+                MessageBox.Show("Unfortunately, couldn't open the folder!", "Error!");
+            }
         }
 
         private void StopProcess(object obj)
@@ -82,7 +95,15 @@ namespace TaskManager.ViewModel
                 return;
             }
 
-            SelectedProcess.ObservedProcess.Kill();
+            try
+            {
+                SelectedProcess.ObservedProcess.Kill();
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "An error occurred during \"Stop Process\" action");
+                MessageBox.Show("Unfortunately, couldn't stop the selected process!", "Error!");
+            }
         }
 
         private void UpdateProcesses(object obj)
@@ -93,14 +114,14 @@ namespace TaskManager.ViewModel
             OnPropertyChanged(nameof(SelectedProcessThreads));
             OnPropertyChanged(nameof(SelectedProcessModules));
 
-            _updateTimer.Change(0, UpdateInterval);
+            // _updateTimer.Change(0, UpdateInterval);
         }
 
         private void RebuildProcesses(object obj)
         {
             _rebuildTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _model.RebuildProcesses(Process.GetProcesses());
-            _rebuildTimer.Change(0, RebuildInterval);
+            // _rebuildTimer.Change(0, RebuildInterval);
         }
     }
 }
