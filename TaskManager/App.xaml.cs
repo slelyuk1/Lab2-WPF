@@ -1,21 +1,62 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Shared.Tool.View;
+using Shared.View.Container;
+using Shared.View.Navigator;
+using Shared.View.Visualizer;
+using TaskManager.Model.UI;
 using TaskManager.View;
+using TaskManager.ViewModel;
 
 namespace TaskManager
 {
     public partial class App
     {
-        protected override void OnStartup(StartupEventArgs e)
+        private void OnStartup(object sender, StartupEventArgs e)
         {
             // todo logging
             // todo make safe type conversions
             // todo use LINQ
 
             // todo fix exit code 500 (admin rights)
-            base.OnStartup(e);
-            var window = new MainWindow();
-            var processesInfoView = new ProcessesInfoView();
-            window.Visualize(processesInfoView);
+
+            IHost host = Host.CreateDefaultBuilder()
+                .ConfigureLogging(loggingBuilder =>
+                {
+                    loggingBuilder
+                        .ClearProviders()
+                        .AddConsole(options => options.LogToStandardErrorThreshold = LogLevel.Information);
+                })
+                .ConfigureServices(serviceCollection =>
+                {
+                    serviceCollection.AddSingleton<ContentWindow>();
+                    serviceCollection.AddSingleton<IViewVisualizer>(provider =>
+                        new WindowViewVisualizer(provider.GetRequiredService<ContentWindow>())
+                    );
+                    serviceCollection.AddSingleton<IMutableViewContainer, DefaultViewContainer>();
+                    serviceCollection.AddSingleton<IViewContainer>(provider => provider.GetRequiredService<IMutableViewContainer>());
+                    serviceCollection.AddSingleton<IViewNavigator, ViewContainerBasedNavigator>();
+
+                    serviceCollection.AddSingleton(provider =>
+                        new ProcessesInfoModel(Process.GetProcesses(), provider.GetRequiredService<ILogger<ProcessesInfoModel>>())
+                    );
+                    serviceCollection.AddSingleton<ProcessesInfoViewModel>();
+                    serviceCollection.AddSingleton<ProcessesInfoView>();
+                })
+                .Build();
+
+            IServiceProvider serviceProvider = host.Services;
+            var container = serviceProvider.GetRequiredService<IMutableViewContainer>();
+            var pickDateView = serviceProvider.GetRequiredService<ProcessesInfoView>();
+            container.AddViewModelAware(new DefaultViewModelAware<ProcessesInfoView, ProcessesInfoViewModel>(pickDateView));
+
+            var navigator = serviceProvider.GetRequiredService<IViewNavigator>();
+            var window = serviceProvider.GetRequiredService<ContentWindow>();
+            navigator.Navigate<ProcessesInfoView>();
             window.Show();
         }
     }

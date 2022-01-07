@@ -1,57 +1,65 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using TaskManager.Model.Data;
+using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace TaskManager.Model.UI
 {
-    internal class ProcessesInfoModel
+    public class ProcessesInfoModel
     {
-        public void UpdateProcesses(ObservableCollection<ReadableProcess> processes)
+        private readonly ILogger<ProcessesInfoModel> _logger;
+
+        public ProcessesInfoModel(IEnumerable<Process> processes, ILogger<ProcessesInfoModel> logger)
         {
-            foreach (ReadableProcess t in processes)
+            _logger = logger;
+            ViewedProcesses = new ObservableCollection<ReadableProcess>(
+                from process in processes
+                select new ReadableProcess(process, _logger)
+            );
+        }
+
+        public ObservableCollection<ReadableProcess> ViewedProcesses { get; }
+
+        public ReadableProcess? SelectedProcess { get; set; }
+
+        public ProcessThreadCollection? SelectedThreads => SelectedProcess?.Threads;
+
+        public ProcessModuleCollection? SelectedModules => SelectedProcess?.Modules;
+
+        public void UpdateProcesses()
+        {
+            // todo concurrent modification exception
+            foreach (ReadableProcess viewedProcess in ViewedProcesses)
             {
-                if (t.MainProcess != null)
-                {
-                    t.Update();
-                }
+                viewedProcess.Update();
             }
         }
 
-        public void RebuildProcesses(ObservableCollection<ReadableProcess> processes)
+        public void RebuildProcesses(IEnumerable<Process> runningProcesses)
         {
-            var running = new Dictionary<int, Process>();
-            foreach (Process process in Process.GetProcesses())
-            {
-                running.Add(process.Id, process);
-            }
+            IDictionary<int, Process> idToProcess = runningProcesses.ToDictionary(process => process.Id);
 
-            for (var i = 0; i < processes.Count; i++)
+            for (var i = 0; i < ViewedProcesses.Count; i++)
             {
-                ReadableProcess cur = processes[i];
-                if (!running.ContainsKey(cur.Id))
+                ReadableProcess viewedProcess = ViewedProcesses[i];
+                int? viewedProcessId = viewedProcess.Id;
+                if (viewedProcessId == null || !idToProcess.ContainsKey((int) viewedProcessId))
                 {
-                    processes.RemoveAt(i);
+                    ViewedProcesses.RemoveAt(i);
                 }
                 else
                 {
-                    running.Remove(cur.Id);
-                    cur.Update();
+                    idToProcess.Remove((int) viewedProcessId);
                 }
             }
 
-            foreach (Process process in running.Values)
+            foreach (Process process in idToProcess.Values)
             {
-                try
-                {
-                    processes.Add(new ReadableProcess(process));
-                }
-                catch (Win32Exception)
-                {
-                    // todo make normal exception handling
-                }
+                ViewedProcesses.Add(new ReadableProcess(process));
             }
+
+            UpdateProcesses();
         }
     }
 }

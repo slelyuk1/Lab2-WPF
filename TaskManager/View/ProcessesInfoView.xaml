@@ -26,7 +26,7 @@
                  Height="30">
 
             <ToggleButton Content="Stop Process"
-                          Command="{Binding Path=StopProcessCommand}">
+                          Command="{Binding Path=StopProcessCommand, Mode=OneWay}">
                 <ToggleButton.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -40,7 +40,7 @@
             <Separator />
 
             <ToggleButton Content="Open in File Explorer"
-                          Command="{Binding Path=OpenFolderCommand}">
+                          Command="{Binding Path=OpenFolderCommand, Mode=OneWay}">
                 <ToggleButton.ToolTip>
                     <ToolTip>
                         <StackPanel>
@@ -61,7 +61,7 @@
                   ItemsSource="{Binding Path=Processes,Mode=OneWay}"
                   AutoGenerateColumns="False"
                   ColumnWidth="auto"
-                  SelectedItem="{Binding Path=SelectedProcess}"
+                  SelectedItem="{Binding Path=SelectedProcess, Mode=OneWayToSource}"
                   HorizontalScrollBarVisibility="Visible"
                   ScrollViewer.CanContentScroll="True"
                   IsReadOnly="True">
@@ -76,19 +76,19 @@
                 <!-- </DataGridTextColumn.CellStyle> -->
 
                 <DataGridTextColumn Header="Process Name"
-                                    Binding="{Binding Path=Name,Mode=OneWay}" />
+                                    Binding="{Binding Path=Name,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="ID"
-                                    Binding="{Binding Path=Id,Mode=OneWay}" />
+                                    Binding="{Binding Path=Id,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Threads"
-                                    Binding="{Binding Path=ThreadsCount,Mode=OneWay}" />
+                                    Binding="{Binding Path=ThreadsCount,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Start Time"
-                                    Binding="{Binding Path=StartTime,Mode=OneWay}" />
+                                    Binding="{Binding Path=StartTime,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="RAM"
-                                    Binding="{Binding Path=RamUsage,Mode=OneWay}" />
+                                    Binding="{Binding Path=RamUsage,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Active"
-                                    Binding="{Binding Path=IsActive,Mode=OneWay}" />
+                                    Binding="{Binding Path=IsActive,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Location"
-                                    Binding="{Binding Path=FileLocation,Mode=OneWay}" />
+                                    Binding="{Binding Path=FileLocation,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
 
             </DataGrid.Columns>
 
@@ -109,10 +109,10 @@
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="Module Name"
-                                    Binding="{Binding Path=ModuleName,Mode=OneWay}" />
+                                    Binding="{Binding Path=ModuleName,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Location"
                                     Width="*"
-                                    Binding="{Binding Path=FileName,Mode=OneWay}" />
+                                    Binding="{Binding Path=FileName,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
 
             </DataGrid.Columns>
 
@@ -133,12 +133,12 @@
             <DataGrid.Columns>
 
                 <DataGridTextColumn Header="Thread ID"
-                                    Binding="{Binding Path=Id,Mode=OneWay}" />
+                                    Binding="{Binding Path=Id,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="State"
-                                    Binding="{Binding Path=ThreadState,Mode=OneWay}" />
+                                    Binding="{Binding Path=ThreadState,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Start Time"
                                     Width="*"
-                                    Binding="{Binding Path=StartTime,Mode=OneWay}" />
+                                    Binding="{Binding Path=StartTime,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
 
             </DataGrid.Columns>
 

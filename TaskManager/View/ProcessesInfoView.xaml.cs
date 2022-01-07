@@ -4,10 +4,10 @@ namespace TaskManager.View
 {
     public partial class ProcessesInfoView
     {
-        public ProcessesInfoView()
+        public ProcessesInfoView(ProcessesInfoViewModel model)
         {
             InitializeComponent();
-            DataContext = new ProcessesInfoViewModel();
+            DataContext = model;
         }
     }
 }

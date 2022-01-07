@@ -1,150 +1,110 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
+using Microsoft.Extensions.Logging;
 using Shared.Tool.ViewModel;
-using TaskManager.Model.Data;
 using TaskManager.Model.UI;
 
 namespace TaskManager.ViewModel
 {
-    internal class ProcessesInfoViewModel : ObservableItem
+    public class ProcessesInfoViewModel : ObservableItem
     {
+        // todo move to constructor
         private const int UpdateInterval = 2000;
         private const int RebuildInterval = 5000;
 
-        private ICommand _stopProcessCommand, _openFolderCommand;
-        private ObservableCollection<ReadableProcess> _processes;
-        private ProcessThreadCollection _threads;
-        private ProcessModuleCollection _modules;
+        private readonly ProcessesInfoModel _model;
+        private readonly ILogger<ProcessesInfoViewModel> _logger;
 
-        private ReadableProcess _selected;
-        private readonly object _locker = new object();
+        private readonly object _locker = new();
 
-        public Timer UpdateTimer { get; }
-        public Timer RebuildTimer { get; }
-        private ProcessesInfoModel Model { get; }
+        private readonly Timer _updateTimer;
+        private readonly Timer _rebuildTimer;
 
-
-        public ProcessesInfoViewModel()
+        public ProcessesInfoViewModel(ProcessesInfoModel model, ILogger<ProcessesInfoViewModel> logger)
         {
-            LinkedList<ReadableProcess> temp = new LinkedList<ReadableProcess>();
-            foreach (var process in Process.GetProcesses())
-            {
-                try
-                {
-                    temp.AddLast(new ReadableProcess(process));
-                }
-                catch (Win32Exception)
-                {
-                    // todo handle exception normally
-                }
-            }
+            _model = model;
+            _logger = logger;
 
-            _processes = new ObservableCollection<ReadableProcess>(temp);
+            StopProcessCommand = new DelegateBasedCommand(StopProcess, CanProcessSelected);
+            OpenFolderCommand = new DelegateBasedCommand(OpenFolder, CanProcessSelected);
 
             BindingOperations.EnableCollectionSynchronization(Processes, _locker);
-            Model = new ProcessesInfoModel();
 
-            RebuildTimer = new Timer(RebuildProcesses, null, RebuildInterval, RebuildInterval);
-            UpdateTimer = new Timer(UpdateProcesses, null, UpdateInterval + 1000, UpdateInterval);
+            _rebuildTimer = new Timer(RebuildProcesses, null, RebuildInterval, RebuildInterval);
+            // todo verify calculation
+            _updateTimer = new Timer(UpdateProcesses, null, UpdateInterval + 1000, UpdateInterval);
         }
 
-        public ReadableProcess SelectedProcess
+        public ObservableCollection<ReadableProcess> Processes => _model.ViewedProcesses;
+
+        public ICommand StopProcessCommand { get; }
+
+        public ICommand OpenFolderCommand { get; }
+
+        public ReadableProcess? SelectedProcess
         {
-            get => _selected;
+            private get => _model.SelectedProcess;
             set
             {
-                _selected = value;
-                if (_selected != null)
-                {
-                    SelectedProcessThreads = SelectedProcess.Threads;
-                    SelectedProcessModules = SelectedProcess.Modules;
-                }
-
-                OnPropertyChanged();
+                _model.SelectedProcess = value;
+                OnPropertyChanged(nameof(SelectedProcessThreads));
+                OnPropertyChanged(nameof(SelectedProcessModules));
             }
         }
 
-        public ProcessThreadCollection SelectedProcessThreads
-        {
-            get => _threads;
-            private set
-            {
-                _threads = value;
-                OnPropertyChanged();
-            }
-        }
+        public ProcessThreadCollection SelectedProcessThreads => _model.SelectedThreads ?? new ProcessThreadCollection(new ProcessThread[] { });
 
-        public ProcessModuleCollection SelectedProcessModules
-        {
-            get => _modules;
-            private set
-            {
-                _modules = value;
-                OnPropertyChanged();
-            }
-        }
+        public ProcessModuleCollection SelectedProcessModules => _model.SelectedModules ?? new ProcessModuleCollection(new ProcessModule[] { });
 
-        public ObservableCollection<ReadableProcess> Processes
-        {
-            get => _processes;
-            private set
-            {
-                _processes = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ICommand StopProcessCommand
-        {
-            get
-            {
-                if (_stopProcessCommand == null)
-                {
-                    _stopProcessCommand = new DelegateBasedCommand(StopProcess, ProcessSelected);
-                }
-
-                return _stopProcessCommand;
-            }
-        }
-
-        public ICommand OpenFolderCommand => _openFolderCommand ?? (_openFolderCommand = new DelegateBasedCommand(OpenFolder, ProcessSelected));
-
-        private bool ProcessSelected(object obj) => SelectedProcess != null;
+        private bool CanProcessSelected(object obj) => _model.SelectedProcess != null;
 
         private void OpenFolder(object obj)
         {
+            if (SelectedProcess == null)
+            {
+                _logger.LogWarning("Tried to open folder without selected process");
+                return;
+            }
+
+            if (SelectedProcess.FileLocation == null)
+            {
+                _logger.LogWarning("Tried to open folder for process without FileLocation");
+                return;
+            }
+
             Process.Start(SelectedProcess.FileLocation);
         }
 
         private void StopProcess(object obj)
         {
-            SelectedProcess.MainProcess.Kill();
+            if (SelectedProcess == null)
+            {
+                _logger.LogWarning("Tried to stop process without selected process");
+                return;
+            }
+
+            SelectedProcess.ObservedProcess.Kill();
         }
 
         private void UpdateProcesses(object obj)
         {
-            UpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            Model.UpdateProcesses(Processes);
+            _updateTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _model.UpdateProcesses();
 
-            if (SelectedProcess != null)
-            {
-                SelectedProcessThreads = SelectedProcess.Threads;
-                SelectedProcessModules = SelectedProcess.Modules;
-            }
+            OnPropertyChanged(nameof(SelectedProcessThreads));
+            OnPropertyChanged(nameof(SelectedProcessModules));
 
-            UpdateTimer.Change(0, UpdateInterval);
+            _updateTimer.Change(0, UpdateInterval);
         }
 
         private void RebuildProcesses(object obj)
         {
-            RebuildTimer.Change(Timeout.Infinite, Timeout.Infinite);
-            Model.RebuildProcesses(Processes);
-            RebuildTimer.Change(0, RebuildInterval);
+            _rebuildTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            _model.RebuildProcesses(Process.GetProcesses());
+            _rebuildTimer.Change(0, RebuildInterval);
         }
     }
 }

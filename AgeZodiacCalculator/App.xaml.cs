@@ -28,7 +28,9 @@ namespace AgeZodiacCalculator
                 .ConfigureServices(serviceCollection =>
                 {
                     serviceCollection.AddSingleton<ContentWindow, ContentWindow>();
-                    serviceCollection.AddSingleton<IViewVisualizer>(provider => provider.GetRequiredService<ContentWindow>());
+                    serviceCollection.AddSingleton<IViewVisualizer>(provider =>
+                        new WindowViewVisualizer(provider.GetRequiredService<ContentWindow>())
+                    );
                     serviceCollection.AddSingleton<IMutableViewContainer, DefaultViewContainer>();
                     serviceCollection.AddSingleton<IViewContainer>(provider => provider.GetRequiredService<IMutableViewContainer>());
                     serviceCollection.AddSingleton<IViewNavigator, ViewContainerBasedNavigator>();

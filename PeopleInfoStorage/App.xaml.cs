@@ -35,8 +35,10 @@ namespace PeopleInfoStorage
                 .ConfigureServices(serviceCollection =>
                 {
                     serviceCollection.AddSingleton(new SerializationFacade(new BinaryFormatter()));
-                    serviceCollection.AddSingleton<MainWindow, MainWindow>();
-                    serviceCollection.AddSingleton<IViewVisualizer, MainWindow>(serviceProvider => serviceProvider.GetRequiredService<MainWindow>());
+                    serviceCollection.AddSingleton<ContentWindow>();
+                    serviceCollection.AddSingleton<IViewVisualizer>(serviceProvider =>
+                        new WindowViewVisualizer(serviceProvider.GetRequiredService<ContentWindow>())
+                    );
 
                     serviceCollection.AddSingleton<IMutableViewContainer, DefaultViewContainer>();
                     serviceCollection.AddSingleton<IViewContainer>(serviceProvider => serviceProvider.GetRequiredService<IMutableViewContainer>());
@@ -67,7 +69,7 @@ namespace PeopleInfoStorage
             container.AddViewModelAware(new DefaultViewModelAware<PeopleView, PeopleViewModel>(peopleView));
 
             navigator.Navigate<PeopleView>();
-            serviceProvider.GetRequiredService<MainWindow>().Show();
+            serviceProvider.GetRequiredService<ContentWindow>().Show();
         }
 
         private static IEnumerable<PersonInfo> GetSavedPeopleInfo(SerializationFacade serializationFacade, ISerializer serializer, ILogger logger)

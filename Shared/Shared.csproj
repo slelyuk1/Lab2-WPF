@@ -115,6 +115,7 @@
         <Compile Include="View\Navigator\IViewNavigator.cs" />
         <Compile Include="View\Navigator\ViewContainerBasedNavigator.cs" />
         <Compile Include="View\Visualizer\IViewVisualizer.cs" />
+        <Compile Include="View\Visualizer\WindowViewVisualizer.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
