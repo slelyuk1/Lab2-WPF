@@ -25,10 +25,8 @@ namespace TaskManager.Model.UI
 
         public ProcessModuleCollection? SelectedModules => SelectedProcess?.Modules;
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateProcesses()
         {
-            // todo concurrent modification exception
             foreach (ReadableProcess viewedProcess in ViewedProcesses)
             {
                 viewedProcess.Update();

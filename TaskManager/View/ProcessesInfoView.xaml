@@ -67,14 +67,6 @@
                   IsReadOnly="True">
 
             <DataGrid.Columns>
-
-                <!-- TODO resolve issue -->
-                <!-- <DataGridTextColumn.CellStyle> -->
-                <!-- <Style TargetType="DataGridCell"> -->
-                <!-- <Setter Property="ToolTip" Value="{Binding Path=ThreadsInfo,Mode=OneWay}" /> -->
-                <!-- </Style> -->
-                <!-- </DataGridTextColumn.CellStyle> -->
-
                 <DataGridTextColumn Header="Process Name"
                                     Binding="{Binding Path=Name,Mode=OneWay, TargetNullValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="ID"

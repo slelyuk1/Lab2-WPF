@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using AgeZodiacCalculator.Model.Data;
 using Microsoft.Extensions.Logging;
 using Shared.Model.Data;
@@ -56,6 +57,7 @@ namespace AgeZodiacCalculator.Model.UI.Impl
 
         public WesternSign? WesternSign => ConvertDateToEnum<WesternSign>();
 
+        [SuppressMessage("ReSharper", "ComplexObjectDestructuringProblem")]
         private T? ConvertDateToEnum<T>()
         {
             if (!IsTimeValid(SelectedDate))

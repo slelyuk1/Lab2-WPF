@@ -17,12 +17,6 @@ namespace TaskManager
     {
         private void OnStartup(object sender, StartupEventArgs e)
         {
-            // todo logging
-            // todo make safe type conversions
-            // todo use LINQ
-
-            // todo fix exit code 500 (admin rights)
-
             IHost host = Host.CreateDefaultBuilder()
                 .ConfigureLogging(loggingBuilder =>
                 {

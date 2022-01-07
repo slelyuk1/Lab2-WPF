@@ -6,11 +6,8 @@ using Shared.Tool.ViewModel;
 
 namespace TaskManager.Model.UI
 {
-    // todo verify for nullpointers
     public class ReadableProcess : ObservableItem
     {
-        private const string UnknownValue = "Unknown";
-
         private readonly ILogger? _logger;
 
         public ReadableProcess(Process observedProcess, ILogger? logger = null)
@@ -30,7 +27,6 @@ namespace TaskManager.Model.UI
 
         public DateTime? StartTime => GetValueSafely(() => ObservedProcess.StartTime);
 
-        // todo maybe better
         public double? RamUsage => GetValueSafely<double?>(() => (double) ObservedProcess.WorkingSet64 / 1024 / 1024);
 
         public string? UserName => GetValueSafely(() => ObservedProcess.StartInfo.UserName);
