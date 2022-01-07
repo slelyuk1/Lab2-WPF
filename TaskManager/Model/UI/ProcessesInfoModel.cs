@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 
 namespace TaskManager.Model.UI
@@ -27,6 +28,7 @@ namespace TaskManager.Model.UI
 
         public ProcessModuleCollection? SelectedModules => SelectedProcess?.Modules;
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateProcesses()
         {
             // todo concurrent modification exception
@@ -36,6 +38,7 @@ namespace TaskManager.Model.UI
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void RebuildProcesses(IEnumerable<Process> runningProcesses)
         {
             IDictionary<int, Process> idToProcess = runningProcesses.ToDictionary(process => process.Id);

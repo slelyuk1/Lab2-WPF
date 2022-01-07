@@ -18,7 +18,6 @@ namespace TaskManager.ViewModel
         private readonly ProcessesInfoModel _model;
         private readonly ILogger<ProcessesInfoViewModel> _logger;
 
-        private readonly object _locker = new();
 
         private readonly Timer _updateTimer;
         private readonly Timer _rebuildTimer;
@@ -31,7 +30,7 @@ namespace TaskManager.ViewModel
             StopProcessCommand = new DelegateBasedCommand(StopProcess, CanProcessSelected);
             OpenFolderCommand = new DelegateBasedCommand(OpenFolder, CanProcessSelected);
 
-            BindingOperations.EnableCollectionSynchronization(Processes, _locker);
+            BindingOperations.EnableCollectionSynchronization(Processes, _model);
 
             _rebuildTimer = new Timer(RebuildProcesses, null, RebuildInterval, RebuildInterval);
             // todo verify calculation
