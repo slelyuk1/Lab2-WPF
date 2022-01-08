@@ -132,8 +132,8 @@ namespace PeopleInfoStorage.ViewModel
             }
             catch (PersonException e)
             {
-                _logger.LogError(e, "Expected PersonException was caught");
-                MessageBox.Show("Unfortunately, couldn't perform specified action!", "Error!");
+                _logger.LogInformation(e, "Expected PersonException was caught");
+                MessageBox.Show(e.Message, "Error!");
             }
         }
     }

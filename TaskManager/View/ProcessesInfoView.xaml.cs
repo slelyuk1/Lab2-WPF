@@ -6,8 +6,8 @@ namespace TaskManager.View
     {
         public ProcessesInfoView(ProcessesInfoViewModel model)
         {
-            InitializeComponent();
             DataContext = model;
+            InitializeComponent();
         }
     }
 }

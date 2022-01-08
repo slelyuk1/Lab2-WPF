@@ -53,9 +53,9 @@ namespace AgeZodiacCalculator.Model.UI.Impl
             }
         }
 
-        public ChineseSign? ChineseSign => ConvertDateToEnum<ChineseSign>();
+        public ChineseSign? ChineseSign => ConvertDateToEnum<ChineseSign?>();
 
-        public WesternSign? WesternSign => ConvertDateToEnum<WesternSign>();
+        public WesternSign? WesternSign => ConvertDateToEnum<WesternSign?>();
 
         [SuppressMessage("ReSharper", "ComplexObjectDestructuringProblem")]
         private T? ConvertDateToEnum<T>()
@@ -86,15 +86,8 @@ namespace AgeZodiacCalculator.Model.UI.Impl
 
         private static bool IsTimeValid(DateTime date)
         {
-            TimeSpan span = DateTime.Now - date;
-            int daysDifference = span.Days;
-            if (daysDifference < 0)
-            {
-                return false;
-            }
-
-            int years = daysDifference / 365;
-            return years < 135;
+            int days = (date - DateTime.Now).Days;
+            return days < 0 || days / 365 > 135;
         }
     }
 }

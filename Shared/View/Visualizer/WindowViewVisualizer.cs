@@ -13,28 +13,23 @@ namespace Shared.View.Visualizer
 
         public void Visualize(FrameworkElement toVisualize)
         {
-            _window.Title = toVisualize.Name;
+            double? minHeight = MeasureIsSpecified(toVisualize.MinHeight) ? toVisualize.MinHeight : null;
+            double? minWidth = MeasureIsSpecified(toVisualize.MinWidth) ? toVisualize.MinWidth : null;
 
-            double? minHeight = double.IsNaN(toVisualize.MinHeight) || double.IsInfinity(toVisualize.MinHeight) ? null : toVisualize.MinHeight;
-            double? minWidth = double.IsNaN(toVisualize.MinWidth) || double.IsInfinity(toVisualize.MinWidth) ? null : toVisualize.MinWidth;
-            _window.MinHeight = minHeight ?? 0;
-            _window.MinWidth = minWidth ?? 0;
+            _window.MinHeight = minHeight ?? _window.MinHeight;
+            _window.MinWidth = minWidth ?? _window.MinWidth;
 
-            double? height = double.IsNaN(toVisualize.Height) || double.IsInfinity(toVisualize.Height) ? null : toVisualize.Height;
-            double? width = double.IsNaN(toVisualize.Width) || double.IsInfinity(toVisualize.Width) ? null : toVisualize.Width;
-            height ??= minHeight;
-            width ??= minHeight;
-            if (height != null)
-            {
-                _window.Height = (double) height;
-            }
-
-            if (width != null)
-            {
-                _window.Width = (double) width;
-            }
+            double? height = MeasureIsSpecified(toVisualize.Height) ? toVisualize.Height : minHeight;
+            double? width = MeasureIsSpecified(toVisualize.Width) ? toVisualize.Width : minWidth;
+            _window.Height = height ?? _window.Height;
+            _window.Width = width ?? _window.Width;
 
             _window.Content = toVisualize;
+        }
+
+        private static bool MeasureIsSpecified(double measure)
+        {
+            return !double.IsNaN(measure) && !double.IsInfinity(measure);
         }
     }
 }

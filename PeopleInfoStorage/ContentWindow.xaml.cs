@@ -16,6 +16,7 @@ namespace PeopleInfoStorage
 
         public ContentWindow(IViewContainer viewContainer, SerializationFacade serializationFacade)
         {
+            InitializeComponent();
             _viewContainer = viewContainer;
             _serializationFacade = serializationFacade;
         }

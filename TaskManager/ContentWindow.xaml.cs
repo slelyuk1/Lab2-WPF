@@ -2,5 +2,9 @@
 {
     public partial class ContentWindow
     {
+        public ContentWindow()
+        {
+            InitializeComponent();
+        }
     }
 }

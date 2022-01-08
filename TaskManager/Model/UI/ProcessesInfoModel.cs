@@ -25,6 +25,7 @@ namespace TaskManager.Model.UI
 
         public ProcessModuleCollection? SelectedModules => SelectedProcess?.Modules;
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void UpdateProcesses()
         {
             foreach (ReadableProcess viewedProcess in ViewedProcesses)

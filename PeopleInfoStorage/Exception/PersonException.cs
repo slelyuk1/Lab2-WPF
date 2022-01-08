@@ -27,7 +27,7 @@ namespace PeopleInfoStorage.Exception
     internal class BirthDateException : PersonException
     {
         public BirthDateException(DateTime? invalidBirthDate)
-            : base($"Inappropriate birthday date: {invalidBirthDate}. Years must in range [1:135]")
+            : base($"Inappropriate birthday date: {invalidBirthDate}. Years must be in range [1:135]")
         {
         }
     }

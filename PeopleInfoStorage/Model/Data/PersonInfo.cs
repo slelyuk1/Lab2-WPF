@@ -64,7 +64,7 @@ namespace PeopleInfoStorage.Model.Data
 
             public Builder WithName(string name)
             {
-                if (IsNameValid(name))
+                if (!IsNameValid(name))
                 {
                     throw new NameException(name);
                 }
@@ -97,7 +97,7 @@ namespace PeopleInfoStorage.Model.Data
 
             public Builder WithBirthDate(DateTime birthDate)
             {
-                if (IsBirthDateValid(birthDate))
+                if (!IsBirthDateValid(birthDate))
                 {
                     throw new BirthDateException(birthDate);
                 }
@@ -128,7 +128,7 @@ namespace PeopleInfoStorage.Model.Data
 
         public static bool IsNameValid(string name)
         {
-            return name.Length != 0 && char.IsLower(name[0]);
+            return name.Length != 0 && char.IsUpper(name[0]);
         }
 
         public static bool IsEmailValid(string email)
@@ -139,7 +139,7 @@ namespace PeopleInfoStorage.Model.Data
         public static bool IsBirthDateValid(DateTime birthDate)
         {
             int days = (birthDate - DateTime.Now).Days;
-            return days > 0 && days / 365 <= 135;
+            return days < 0 || days / 365 > 135;
         }
     }
 }

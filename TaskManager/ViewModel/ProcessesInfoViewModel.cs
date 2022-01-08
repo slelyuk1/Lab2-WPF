@@ -114,14 +114,14 @@ namespace TaskManager.ViewModel
             OnPropertyChanged(nameof(SelectedProcessThreads));
             OnPropertyChanged(nameof(SelectedProcessModules));
 
-            // _updateTimer.Change(0, UpdateInterval);
+            _updateTimer.Change(0, UpdateInterval);
         }
 
         private void RebuildProcesses(object obj)
         {
             _rebuildTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _model.RebuildProcesses(Process.GetProcesses());
-            // _rebuildTimer.Change(0, RebuildInterval);
+            _rebuildTimer.Change(0, RebuildInterval);
         }
     }
 }

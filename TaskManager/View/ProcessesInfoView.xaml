@@ -6,14 +6,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance {x:Type viewModel:ProcessesInfoViewModel}}"
-             MinWidth="1000"
-             MinHeight="500">
+             MinWidth="1100"
+             MinHeight="400">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="0.12*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="0.5*" />
+            <RowDefinition Height="0.1*" />
+            <RowDefinition Height="0.6*" />
+            <RowDefinition Height="0.3*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -24,8 +24,7 @@
         <ToolBar Grid.Column="0"
                  Grid.Row="0"
                  Grid.ColumnSpan="2"
-                 VerticalAlignment="Top"
-                 Height="30">
+                 VerticalAlignment="Top">
 
             <ToggleButton Content="Stop Process"
                           Command="{Binding Path=StopProcessCommand, Mode=OneWay}">
@@ -105,7 +104,6 @@
                 <DataGridTextColumn Header="Module Name"
                                     Binding="{Binding Path=ModuleName,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Location"
-                                    Width="*"
                                     Binding="{Binding Path=FileName,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
 
             </DataGrid.Columns>
@@ -131,7 +129,6 @@
                 <DataGridTextColumn Header="State"
                                     Binding="{Binding Path=ThreadState,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
                 <DataGridTextColumn Header="Start Time"
-                                    Width="*"
                                     Binding="{Binding Path=StartTime,Mode=OneWay, FallbackValue={StaticResource UnknownStringValue}}" />
 
             </DataGrid.Columns>
