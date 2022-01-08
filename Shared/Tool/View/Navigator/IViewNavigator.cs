@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Shared.View.Navigator
+namespace Shared.Tool.View.Navigator
 {
     public interface IViewNavigator
     {

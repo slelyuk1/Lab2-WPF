@@ -6,8 +6,8 @@ using PeopleInfoStorage.Exception;
 using PeopleInfoStorage.Model.Data;
 using PeopleInfoStorage.Model.UI;
 using PeopleInfoStorage.View;
+using Shared.Tool.View.Navigator;
 using Shared.Tool.ViewModel;
-using Shared.View.Navigator;
 
 namespace PeopleInfoStorage.ViewModel
 {

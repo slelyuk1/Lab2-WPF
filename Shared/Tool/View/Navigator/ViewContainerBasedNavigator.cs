@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows;
-using Shared.Tool.View;
-using Shared.View.Container;
-using Shared.View.Visualizer;
+using Shared.Tool.View.Container;
+using Shared.Tool.View.Visualizer;
 
-namespace Shared.View.Navigator
+namespace Shared.Tool.View.Navigator
 {
     public class ViewContainerBasedNavigator : IViewNavigator
     {

@@ -1,6 +1,4 @@
-﻿using Shared.Tool.View;
-
-namespace Shared.View.Container
+﻿namespace Shared.Tool.View.Container
 {
     public interface IViewContainer
     {

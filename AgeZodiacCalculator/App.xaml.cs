@@ -8,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Shared.Tool.View;
-using Shared.View.Container;
-using Shared.View.Navigator;
-using Shared.View.Visualizer;
+using Shared.Tool.View.Container;
+using Shared.Tool.View.Navigator;
+using Shared.Tool.View.Visualizer;
 
 namespace AgeZodiacCalculator
 {

@@ -13,9 +13,9 @@ using Shared.Tool.Serialization;
 using Shared.Tool.Serialization.Result;
 using Shared.Tool.Serialization.Serializer;
 using Shared.Tool.View;
-using Shared.View.Container;
-using Shared.View.Navigator;
-using Shared.View.Visualizer;
+using Shared.Tool.View.Container;
+using Shared.Tool.View.Navigator;
+using Shared.Tool.View.Visualizer;
 
 namespace PeopleInfoStorage
 {

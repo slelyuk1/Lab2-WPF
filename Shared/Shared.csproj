@@ -107,15 +107,15 @@
         <Compile Include="Tool\Serialization\Serializer\ISerializer.cs" />
         <Compile Include="Tool\ViewModel\DelegateBasedCommand.cs" />
         <Compile Include="Tool\ViewModel\ObservableItem.cs" />
-        <Compile Include="Tool\View\IViewModelAware.cs" />
+        <Compile Include="Tool\View\Container\DefaultViewContainer.cs" />
+        <Compile Include="Tool\View\Container\IMutableViewContainer.cs" />
+        <Compile Include="Tool\View\Container\IViewContainer.cs" />
         <Compile Include="Tool\View\DefaultViewModelAware.cs" />
-        <Compile Include="View\Container\DefaultViewContainer.cs" />
-        <Compile Include="View\Container\IMutableViewContainer.cs" />
-        <Compile Include="View\Container\IViewContainer.cs" />
-        <Compile Include="View\Navigator\IViewNavigator.cs" />
-        <Compile Include="View\Navigator\ViewContainerBasedNavigator.cs" />
-        <Compile Include="View\Visualizer\IViewVisualizer.cs" />
-        <Compile Include="View\Visualizer\WindowViewVisualizer.cs" />
+        <Compile Include="Tool\View\IViewModelAware.cs" />
+        <Compile Include="Tool\View\Navigator\IViewNavigator.cs" />
+        <Compile Include="Tool\View\Navigator\ViewContainerBasedNavigator.cs" />
+        <Compile Include="Tool\View\Visualizer\IViewVisualizer.cs" />
+        <Compile Include="Tool\View\Visualizer\WindowViewVisualizer.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />

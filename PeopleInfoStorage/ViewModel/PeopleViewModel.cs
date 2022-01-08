@@ -12,8 +12,8 @@ using PeopleInfoStorage.Model.UI;
 using PeopleInfoStorage.View;
 using Shared.ComponentModel.Adapter;
 using Shared.Model.Data;
+using Shared.Tool.View.Navigator;
 using Shared.Tool.ViewModel;
-using Shared.View.Navigator;
 
 namespace PeopleInfoStorage.ViewModel
 {

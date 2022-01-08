@@ -5,7 +5,7 @@ using PeopleInfoStorage.View;
 using PeopleInfoStorage.ViewModel;
 using Shared.Tool.Serialization;
 using Shared.Tool.Serialization.Serializer;
-using Shared.View.Container;
+using Shared.Tool.View.Container;
 
 namespace PeopleInfoStorage
 {

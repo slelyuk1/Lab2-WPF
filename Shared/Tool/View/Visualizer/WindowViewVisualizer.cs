@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Shared.View.Visualizer
+namespace Shared.Tool.View.Visualizer
 {
     public class WindowViewVisualizer : IViewVisualizer
     {

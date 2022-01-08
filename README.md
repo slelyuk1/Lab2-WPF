@@ -37,7 +37,7 @@ It is an application which allows its user to keep and manage information about 
 
 Other parameters, which are displayed in the table, are calculated based on the parameters specified in the table above.
 
-Implemented features:
+#### Implemented features:
 
 * Can display/create/edit/delete data entered in the application.
 * Can serialize data so that it can be used during next application execution.
@@ -55,7 +55,7 @@ Implemented features:
 It is an application which allows its user to display information about currently running processes in its OS. Information is kept actual by periodic
 update of processes parameters.
 
-Implemented Features:
+#### Implemented Features:
 
 * Displays such information about the process:
     * Name
@@ -79,4 +79,18 @@ Implemented Features:
 
 ![TaskManager App Animation](animations/TaskManagerAnimation.gif)
 
+### Shared Project
+
+#### Description
+
+This is a project which contains classes which are used by all projects specified above. Also, there are some classes which simplify the
+implementation of projects specified above. Functionality in this project can be divided in such modules:
+
+* **ComponentModel.Adapter** - classes which adapt some classes from System.ComponentModel namespace to the needs of above projects.
+* **Converter** - classes which provide converter functionality.
+* **Model** - classes which represent data structures.
+* **Tool** - classes which simplify implementation of needed functionality:
+    * **Serialization** - classes which simplify serialization functionality usage.
+    * **View** - classes which simplify implementation of "View" part of functionality from MVVM pattern.
+    * **ViewModel** - classes which simplify implementation of "ViewModel" part of functionality from MVVM pattern.
 
