@@ -2,7 +2,7 @@
 
 ## Description
 
-This is my project which contains projects I created to study basics of C# and WPF in university. During implementation of these projects I tried:
+This is a repository, which contains projects I created to study basics of C# and WPF in university. During implementation of these projects I tried:
 
 * to stick to SOLID design principles.
 * to use known programming patterns where it was possible.
@@ -52,7 +52,7 @@ Other parameters, which are displayed in the table, are calculated based on the 
 
 #### Description
 
-It is an application which allows its user to display information about currently running processes in its OS. Information is kept actual by periodic
+It is an application, which allows its user to display information about currently running processes in its OS. Information is kept actual by periodic
 update of processes parameters.
 
 #### Implemented Features:
